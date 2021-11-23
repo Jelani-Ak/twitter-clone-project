@@ -1,10 +1,10 @@
 package com.jelaniak.twittercloneproject.user;
 
+import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,8 +22,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUserById(String id) {
-        return userRepository.findById(id);
+    public User findUserById(String id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User by id: [" + id + "] was not found."));
     }
 
     public User updateUser(User user) {
