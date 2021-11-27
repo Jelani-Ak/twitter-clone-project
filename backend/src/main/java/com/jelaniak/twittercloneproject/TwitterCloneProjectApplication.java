@@ -9,5 +9,4 @@ public class TwitterCloneProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(TwitterCloneProjectApplication.class, args);
     }
-
 }

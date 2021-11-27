@@ -4,37 +4,37 @@ import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.Calendar;
 
 
 @Service
 @RequiredArgsConstructor
-public class TweetService {
+public class TweetService implements Serializable {
 
     private final TweetRepository tweetRepository;
 
     public void createTweet(Tweet tweet) {
         tweet.setTweetId(UUID.randomUUID().toString());
-        tweet.setUser(tweet.getUser());
+        tweet.setUsername(tweet.getUsername());
         tweet.setUrl(tweet.getUrl());
         tweet.setText(tweet.getText());
         tweet.setMediaUrl(tweet.getMediaUrl());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());
-        tweet.setCreatedDate(Calendar.getInstance());
+        tweet.setCreatedDate(Calendar.getInstance().toString());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
         tweetRepository.save(tweet);
     }
 
-    public List<Tweet> findAllTweets() {
-        return tweetRepository.findAll();
+    public void findAllTweets() {
+        tweetRepository.findAll();
     }
 
-    public Tweet findTweetById(String id) {
-        return tweetRepository.findById(id)
+    public void findTweetById(String id) {
+        tweetRepository.findById(id)
                 .orElseThrow(() -> new TweetNotFoundException("Tweet by id: [" + id + "] was not found."));
     }
 

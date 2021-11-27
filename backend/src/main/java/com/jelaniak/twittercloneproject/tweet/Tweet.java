@@ -8,27 +8,23 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.time.Instant;
-import java.util.Calendar;
-
 @Document(value = "Tweet")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tweet implements Serializable {
+public class Tweet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false, updatable = false)
     private String tweetId;
-    private User user;
+    private User username;
     private String url;
     @NonNull
     private String text;
     private String mediaUrl;
     private Integer commentCount;
     private Integer retweetCount;
-    private Calendar createdDate;
+    private String createdDate;
     private Integer likeCount;
     private TweetType tweetType;
 }
