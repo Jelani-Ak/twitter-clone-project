@@ -1,0 +1,43 @@
+/* Debugging */
+* {
+  /*border-width: 1px;*/
+  /*border-style: solid;*/
+  /*border-color: darkorange;*/
+}
+
+.form-button {
+
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+#mat-form-field-textarea {
+  height: 90px;
+}
+
+#add-media-button {
+  float: left;
+  transition-duration: 0.25s;
+}
+
+#remove-media-button {
+  float: left;
+  color: white;
+  background: #673ab7;
+  transition-duration: 0.25s;
+}
+
+#add-media-button:hover {
+  background: #673ab7;
+  color: white;
+  transition-duration: 0.25s;
+}
+
+#compose-tweet-button {
+  margin-left: auto;
+  margin-right: 0;
+  color: white;
+  background: #673ab7;
+}

@@ -1,0 +1,26 @@
+<div id="container">
+  <h1 id="compose-tweet-title" mat-dialog-title>Compose Tweet</h1>
+
+  <mat-dialog-content>
+    <form [formGroup]="saveTweetDetails">
+      <!-- Title -->
+      <mat-form-field appearance="fill">
+        <mat-label>Tweet Text</mat-label>
+        <textarea #input
+                  matInput
+                  maxlength="280"
+                  id="mat-form-field-textarea"
+                  placeholder="What's happening"
+                  [formControl]="content"></textarea>
+        <mat-hint align="end">{{input.value?.length || 0}}/280</mat-hint>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button id="add-media-button" class="form-button" mat-button>Add media</button>
+    <button id="remove-media-button" class="form-button" mat-button style="margin-right: 16px">Remove</button>
+    filename-example.txt
+    <button id="compose-tweet-button" mat-button mat-dialog-close>Create</button>
+  </mat-dialog-actions>
+</div>

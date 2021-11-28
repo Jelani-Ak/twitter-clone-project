@@ -6,18 +6,21 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {AppRoutingModule} from './app-routing.module';
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatDialogModule} from "@angular/material/dialog";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HeaderComponent} from './core/components/header/header.component';
 import {FooterComponent} from './core/components/footer/footer.component';
 import {HomeComponent} from './modules/home/pages/home/home.component';
 import {ButtonComponent} from './shared/components/button/button.component';
 import {NavigationPanelComponent} from './core/components/navigation-panel/navigation-panel.component';
 import {SearchNewsPanelComponent} from './core/components/search-news-panel/search-news-panel.component';
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
+import {DialogCreateTweetComponent} from './shared/components/dialog-create-tweet/dialog-create-tweet.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,7 @@ import {MatInputModule} from "@angular/material/input";
     ButtonComponent,
     NavigationPanelComponent,
     SearchNewsPanelComponent,
+    DialogCreateTweetComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +43,10 @@ import {MatInputModule} from "@angular/material/input";
     MatButtonModule,
     FlexLayoutModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule
 
   ],
   providers: [],
