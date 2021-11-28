@@ -1,0 +1,12 @@
+/*.inner-container {*/
+/*  border-width: 1px;*/
+/*  border-style: solid;*/
+/*  border-color: darkorange;*/
+/*}*/
+
+.aligned-with-icon {
+  font-size: 25px;
+  margin-top: 15px;
+  display: flex;
+  position: relative;
+}

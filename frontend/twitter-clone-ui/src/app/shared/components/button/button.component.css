@@ -1,0 +1,36 @@
+.button {
+  background: white;
+  color: black;
+  border: none;
+  margin: 10px;
+  padding: 12px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  width: 100%;
+  font-size: 20px;
+  min-width: auto;
+  transition-duration: 0.25s;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+
+.button:hover {
+  background: #673ab7;
+  color: white;
+  transition-duration: 0.25s;
+}
+
+.icon-display {
+  padding-left: 10px;
+  padding-right: 17px;
+  padding-bottom: 4px;
+  transform: scale(1.5);
+}
