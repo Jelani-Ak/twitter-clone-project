@@ -4,8 +4,8 @@ import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,7 +14,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User addUser(User user) {
+    public void addUser(User user) {
         user.setUserId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
         user.setPassword(user.getPassword());
@@ -24,7 +24,7 @@ public class UserService {
         user.setBioLocation(user.getUserHandle());
         user.setBioExternalLink(user.getBioExternalLink());
         user.setBioText(user.getBioText());
-        user.setCreatedDate(Calendar.getInstance().toString());
+        user.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
         user.setFollow(user.isFollow());
@@ -35,20 +35,20 @@ public class UserService {
         user.setTweetCount(user.getTweetCount());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
         user.setEnabled(user.isEnabled());
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public void findAllUsers() {
+        userRepository.findAll();
     }
 
-    public User findUserById(String id) {
-        return userRepository.findById(id)
+    public void findUserById(String id) {
+        userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by id: [" + id + "] was not found."));
     }
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
 
     public void deleteUser(String id) {
