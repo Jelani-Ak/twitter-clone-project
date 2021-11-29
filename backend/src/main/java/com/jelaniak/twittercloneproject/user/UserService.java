@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -14,7 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public void addUser(User user) {
+    public User addUser(User user) {
         user.setUserId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
         user.setPassword(user.getPassword());
@@ -35,20 +36,19 @@ public class UserService {
         user.setTweetCount(user.getTweetCount());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
         user.setEnabled(user.isEnabled());
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
-    public void findAllUsers() {
-        userRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public void findUserById(String id) {
-        userRepository.findById(id)
+    public User findUserById(String id) {
+        return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User by id: [" + id + "] was not found."));
     }
 
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public void updateUser() {
     }
 
     public void deleteUser(String id) {

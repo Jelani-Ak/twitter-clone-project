@@ -8,17 +8,16 @@ import {User} from "./user";
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
-  users!: User[];
+  users: User[] = [];
 
   constructor(private userService: UserService) {
+
   }
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe((data: User[]) => {
-      console.log(data);
-      this.users = data;
+    this.userService.getAllUsers().subscribe((users) => {
+      console.log(users);
+      this.users = users;
     });
   }
-
 }

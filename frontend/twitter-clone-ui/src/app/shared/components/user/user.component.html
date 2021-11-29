@@ -1,23 +1,25 @@
-<div id="container">
-  <div id="card">
-    <h3 id="text-center">Users List</h3>
-    <div id="card-body">
-      <table id="table table-striped">
+<div class="container">
+  <div class="card">
+    <h3 class="text-center">Users List</h3>
+    <div class="card-body">
+      <table class="table table-striped">
         <thead>
-        <th>Id</th>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Email</th>
-        <th>Display Name</th>
-        <th>User Handle</th>
-        <th>Bio Location</th>
-        <th>Bio External Link</th>
-        <th>Bio Text</th>
-        <th>Created Date</th>
-        <th>Picture Avatar URL</th>
-        <th>Picture Background URL</th>
-        <th>Tweet Count</th>
-        <th>Tweet Quote Count</th>
+        <tr>
+          <th>Id</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Email</th>
+          <th>Display Name</th>
+          <th>User Handle</th>
+          <th>Bio Location</th>
+          <th>Bio External Link</th>
+          <th>Bio Text</th>
+          <th>Created Date</th>
+          <th>Picture Avatar URL</th>
+          <th>Picture Background URL</th>
+          <th>Tweet Count</th>
+          <th>Tweet Quote Count</th>
+        </tr>
         </thead>
         <tbody>
         <tr *ngFor="let user of users">

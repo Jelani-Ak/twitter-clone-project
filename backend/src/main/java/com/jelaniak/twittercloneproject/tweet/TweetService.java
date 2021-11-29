@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 import java.util.Calendar;
 
@@ -15,7 +16,7 @@ public class TweetService implements Serializable {
 
     private final TweetRepository tweetRepository;
 
-    public void createTweet(Tweet tweet) {
+    public Tweet createTweet(Tweet tweet) {
         tweet.setTweetId(UUID.randomUUID().toString());
         tweet.setUsername(tweet.getUsername());
         tweet.setUrl(tweet.getUrl());
@@ -26,15 +27,15 @@ public class TweetService implements Serializable {
         tweet.setCreatedDate(Calendar.getInstance().toString());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
-        tweetRepository.save(tweet);
+        return tweetRepository.save(tweet);
     }
 
-    public void findAllTweets() {
-        tweetRepository.findAll();
+    public List<Tweet> findAllTweets() {
+        return tweetRepository.findAll();
     }
 
-    public void findTweetById(String id) {
-        tweetRepository.findById(id)
+    public Tweet findTweetById(String id) {
+        return tweetRepository.findById(id)
                 .orElseThrow(() -> new TweetNotFoundException("Tweet by id: [" + id + "] was not found."));
     }
 

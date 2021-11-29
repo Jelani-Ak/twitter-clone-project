@@ -1,17 +1,12 @@
 package com.jelaniak.twittercloneproject.user;
 
 import com.jelaniak.twittercloneproject.tweet.Tweet;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
@@ -19,10 +14,9 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
     private String userId;
     private String username; // Login name
     private String password;
@@ -43,6 +37,4 @@ public class User implements Serializable {
     private Integer tweetCount;
     private Integer tweetQuoteCount;
     private boolean enabled;
-
-
 }

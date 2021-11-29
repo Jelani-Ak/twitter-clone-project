@@ -8,13 +8,13 @@ import {User} from "../../../shared/components/user/user";
 })
 export class UserService {
 
-  private baseUrl = "http://localhost:8080/api/user";
+  private baseUrl = "http://localhost:8080/api/v1/user";
 
   constructor(private http: HttpClient) {
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}`);
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.baseUrl + '/all');
   }
 
 }

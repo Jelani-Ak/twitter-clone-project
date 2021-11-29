@@ -8,13 +8,13 @@ import {Tweet} from "../../../shared/components/tweet/tweet";
 })
 export class TweetService {
 
-  private baseUrl = "http://localhost:8080/api/tweet";
+  private baseUrl = "http://localhost:8080/api/v1/tweet";
 
   constructor(private http: HttpClient) {
   }
 
   getTweets(): Observable<Tweet[]> {
-    return this.http.get<Tweet[]>(`${this.baseUrl}`);
+    return this.http.get<Tweet[]>(this.baseUrl + '/all');
   }
 
   composeTweet() {

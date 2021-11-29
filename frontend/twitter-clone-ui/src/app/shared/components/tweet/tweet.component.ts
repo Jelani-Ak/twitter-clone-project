@@ -8,17 +8,15 @@ import {Tweet} from "./tweet";
   styleUrls: ['./tweet.component.css']
 })
 export class TweetComponent implements OnInit {
-
-  tweets!: Tweet[];
+  tweets: Tweet[] = [];
 
   constructor(private tweetService: TweetService) {
   }
 
   ngOnInit(): void {
-    this.tweetService.getTweets().subscribe((data: Tweet[]) => {
-      console.log(data);
-      this.tweets = data;
+    this.tweetService.getTweets().subscribe((tweets: Tweet[]) => {
+      console.log(tweets);
+      this.tweets = tweets;
     });
   }
-
 }

@@ -4,29 +4,31 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(User user) {
-        userService.addUser(user);
+    public User createUser(User user) {
+        return userService.addUser(user);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void getUserById(@PathVariable String id) {
-        userService.findUserById(id);
+    public User getUserById(@PathVariable String id) {
+        return userService.findUserById(id);
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public void getAllUsers() {
-        userService.findAllUsers();
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @DeleteMapping("/delete/{id}")
