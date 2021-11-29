@@ -19,7 +19,7 @@ public class TweetService implements Serializable {
         tweet.setTweetId(UUID.randomUUID().toString());
         tweet.setUsername(tweet.getUsername());
         tweet.setUrl(tweet.getUrl());
-        tweet.setText(tweet.getText());
+        tweet.setContent(tweet.getContent());
         tweet.setMediaUrl(tweet.getMediaUrl());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());

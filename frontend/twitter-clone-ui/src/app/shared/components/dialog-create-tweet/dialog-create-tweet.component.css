@@ -17,15 +17,19 @@
   height: 90px;
 }
 
-#add-media-button {
-  float: left;
-  transition-duration: 0.25s;
+#container {
+  height: 200px
 }
 
 #remove-media-button {
   float: left;
   color: white;
   background: #673ab7;
+  transition-duration: 0.25s;
+}
+
+#add-media-button {
+  float: left;
   transition-duration: 0.25s;
 }
 
@@ -40,4 +44,11 @@
   margin-right: 0;
   color: white;
   background: #673ab7;
+  transition-duration: 0.25s;
+}
+
+#compose-tweet-button:hover, #remove-media-button:hover {
+  color: black;
+  background: white;
+  transition-duration: 0.25s;
 }

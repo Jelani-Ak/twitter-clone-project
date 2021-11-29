@@ -8,16 +8,16 @@ import {FormControl, FormGroup} from "@angular/forms";
 })
 export class DialogCreateTweetComponent implements OnInit {
 
-  saveTweetDetails: FormGroup;
   content: FormControl = new FormControl('');
 
   constructor() {
-    this.saveTweetDetails = new FormGroup({
-      content: this.content
-    })
   }
 
   ngOnInit(): void {
+  }
+
+  onSubmit() {
+
   }
 
 }

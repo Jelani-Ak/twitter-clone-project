@@ -32,10 +32,10 @@ public class User implements Serializable {
     private String bioLocation;
     private String bioExternalLink;
     private String bioText;
-    private Instant createdDate;
+    private String createdDate;
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
-    private String follow;
+    private boolean follow;
     private Set<String> following;
     private Set<String> followers;
     private Set<String> followersMutual;

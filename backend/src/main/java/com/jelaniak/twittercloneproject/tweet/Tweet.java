@@ -20,7 +20,7 @@ public class Tweet {
     private User username;
     private String url;
     @NonNull
-    private String text;
+    private String content;
     private String mediaUrl;
     private Integer commentCount;
     private Integer retweetCount;
