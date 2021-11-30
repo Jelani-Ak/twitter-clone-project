@@ -1,12 +1,15 @@
 package com.jelaniak.twittercloneproject.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.jelaniak.twittercloneproject.tweet.Tweet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -23,10 +26,12 @@ public class User {
     private String email;
     private String displayName; // (Name above userHandle)
     private String userHandle; // (@ExampleName)
+    private String bioText;
     private String bioLocation;
     private String bioExternalLink;
-    private String bioText;
-    private String createdDate;
+    @CreatedDate
+    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdDate;
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
     private boolean follow;

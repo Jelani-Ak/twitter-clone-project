@@ -1,11 +1,15 @@
 package com.jelaniak.twittercloneproject.tweet;
 
-import com.jelaniak.twittercloneproject.user.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.time.LocalDateTime;
+
 
 @Document(value = "Tweet")
 @Data
@@ -21,7 +25,9 @@ public class Tweet {
     private String mediaUrl;
     private Integer commentCount;
     private Integer retweetCount;
-    private String createdDate;
+    @CreatedDate
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdDate;
     private Integer likeCount;
     private TweetType tweetType;
 }

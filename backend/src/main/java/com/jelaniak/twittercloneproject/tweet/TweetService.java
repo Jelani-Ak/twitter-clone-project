@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-import java.util.Calendar;
 
 
 @Service
@@ -24,7 +23,7 @@ public class TweetService implements Serializable {
         tweet.setMediaUrl(tweet.getMediaUrl());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());
-        tweet.setCreatedDate(Calendar.getInstance().toString());
+        tweet.setCreatedDate(tweet.getCreatedDate());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
         return tweetRepository.save(tweet);

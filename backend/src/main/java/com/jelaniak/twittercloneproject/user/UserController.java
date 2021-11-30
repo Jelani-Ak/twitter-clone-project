@@ -15,13 +15,19 @@ public class UserController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(User user) {
-        return userService.addUser(user);
+    public User createUser(@RequestBody User user) {
+        return userService.createUser(user);
+    }
+
+    @PostMapping("/create/debug")
+    @ResponseStatus(HttpStatus.CREATED)
+    public User createUserDebug(@RequestBody User user) {
+        return userService.createUserDebug(user);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User getUserById(@PathVariable String id) {
+    public User findUserById(@PathVariable String id) {
         return userService.findUserById(id);
     }
 
@@ -35,5 +41,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void deleteUser(@PathVariable String id) {
         userService.deleteUser(id);
+    }
+
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 }

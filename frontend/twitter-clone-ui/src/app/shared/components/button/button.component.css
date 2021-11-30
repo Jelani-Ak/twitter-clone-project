@@ -1,6 +1,6 @@
 .button {
-  background: white;
-  color: black;
+  background: #673AB7;
+  color: white;
   border: none;
   margin: 10px;
   padding: 8px 0;
@@ -23,8 +23,8 @@
 }
 
 .button:hover {
-  background: #673ab7;
-  color: white;
+  background: white;
+  color: black;
   transition-duration: 0.25s;
 }
 

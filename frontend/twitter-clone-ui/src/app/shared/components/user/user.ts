@@ -2,7 +2,7 @@ export interface User {
   userId?: number;
   username: string;
   password: string;
-  emailAddress: string;
+  email: string;
   displayName: string;
   userHandle: string;
   bioText: string;
