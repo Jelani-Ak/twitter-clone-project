@@ -21,8 +21,8 @@ import {NavigationButtonComponent} from './shared/components/navigation-button/n
 import {NavigationPanelComponent} from './core/components/navigation-panel/navigation-panel.component';
 import {SearchNewsPanelComponent} from './core/components/search-news-panel/search-news-panel.component';
 import {DialogCreateTweetComponent} from './core/components/dialog-create-tweet/dialog-create-tweet.component';
-import {UserComponent} from './shared/components/user/user.component';
-import {TweetComponent} from './shared/components/tweet/tweet.component';
+import {UserComponent} from './shared/components/models/user/user.component';
+import {TweetComponent} from './shared/components/models/tweet/tweet.component';
 import {MatTableModule} from "@angular/material/table";
 import {UserService} from "./core/services/user/user.service";
 import {TweetService} from "./core/services/tweet/tweet.service";

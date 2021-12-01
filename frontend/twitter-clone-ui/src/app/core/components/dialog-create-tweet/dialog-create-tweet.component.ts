@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {NgForm} from "@angular/forms";
 import {TweetService} from "../../services/tweet/tweet.service";
-import {Tweet} from "../../../shared/components/tweet/tweet";
+import {Tweet} from "../../../shared/components/models/tweet/tweet";
 
 @Component({
   selector: 'app-dialog-create-tweet',
@@ -10,6 +9,8 @@ import {Tweet} from "../../../shared/components/tweet/tweet";
 })
 export class DialogCreateTweetComponent implements OnInit {
 
+  content!: string;
+
   constructor(private tweetService: TweetService) {
 
   }
@@ -17,11 +18,21 @@ export class DialogCreateTweetComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onAddTweet(addForm: NgForm): void {
-    this.tweetService.composeTweet(addForm.value).subscribe(
+  addTweet() {
+    let tweet: Tweet = {
+      username: "",
+      url: "",
+      content: this.content,
+      commentCount: 0,
+      retweetCount: 0,
+      createdDate: "",
+      likeCount: 0
+    };
+    this.tweetService.composeTweet(tweet).subscribe(
       (response: Tweet) => {
         console.log(response)
-        console.log(addForm.value)
+        console.log(tweet)
+        console.log(this.content)
       })
   }
 }

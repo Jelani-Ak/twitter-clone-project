@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Tweet} from "../../../shared/components/tweet/tweet";
+import {Tweet} from "../../../shared/components/models/tweet/tweet";
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,10 @@ export class TweetService {
 
   getTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.baseUrl + '/all');
+  }
+
+  getTweet(tweetId: number) {
+    return this.http.get<Tweet>(this.baseUrl + '/' + tweetId)
   }
 
   composeTweet(tweet: Tweet): Observable<Tweet> {

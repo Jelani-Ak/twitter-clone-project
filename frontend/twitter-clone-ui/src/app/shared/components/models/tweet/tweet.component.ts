@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TweetService} from "../../../core/services/tweet/tweet.service";
+import {TweetService} from "../../../../core/services/tweet/tweet.service";
 import {Tweet} from "./tweet";
 
 @Component({
@@ -18,5 +18,9 @@ export class TweetComponent implements OnInit {
       console.log(tweets);
       this.tweets = tweets;
     });
+  }
+
+  addTweet(tweet: Tweet) {
+    this.tweetService.composeTweet(tweet).subscribe(() => this.tweets.push(tweet));
   }
 }

@@ -15,7 +15,7 @@ public class TweetController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Tweet createTweet(Tweet tweet) {
+    public Tweet createTweet(@RequestBody Tweet tweet) {
         return tweetService.createTweet(tweet);
     }
 

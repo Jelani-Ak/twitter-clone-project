@@ -1,21 +1,21 @@
 <div id="container">
-  <h2 mat-dialog-title>Compose Tweet</h2>
   <mat-dialog-content id="mat-dialog-container">
 
-    <form #addForm="ngForm" (ngSubmit)="onAddTweet(addForm.value)" method="post">
+    <form method="post">
       <mat-form-field appearance="fill">
         <!-- Form Heading -->
-        <mat-label>Tweet Text</mat-label>
+        <mat-label>Compose Tweet</mat-label>
         <!-- Text area -->
-        <textarea
+        <input
           #input
+          [(ngModel)]="content"
+          [ngModelOptions]="{standalone: true}"
           class="mat-form-field-textarea"
-          id="content"
           matInput
           maxlength="280"
           name="content"
-          placeholder="What's happening">
-        </textarea>
+          placeholder="What's happening"
+          type="text">
         <!-- Maximum character limit -->
         <mat-hint align="end">{{input.value?.length || 0}}/280</mat-hint>
       </mat-form-field>
@@ -24,7 +24,8 @@
         <button class="form-button" id="add-media-button" mat-button type="button">Add media</button>
         <button class="form-button" id="remove-media-button" mat-button type="button">Remove</button>
         filename-example.txt
-        <button id="compose-tweet-button" mat-button mat-dialog-close type="submit">Create</button>
+        <button (click)="addTweet()" id="compose-tweet-button" mat-button mat-dialog-close type="submit">Create
+        </button>
       </mat-dialog-actions>
     </form>
   </mat-dialog-content>
