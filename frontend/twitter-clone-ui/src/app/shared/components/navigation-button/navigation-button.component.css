@@ -2,13 +2,13 @@
   background: #673AB7;
   color: white;
   border: none;
-  margin: 10px;
+  margin-top: 10px;
   padding: 8px 0;
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
   text-align: left;
-  width: 80%;
+  width: 90%;
   font-size: 20px;
   min-width: auto;
   transition-duration: 0.25s;

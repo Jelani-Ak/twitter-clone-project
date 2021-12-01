@@ -1,14 +1,14 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {DialogCreateTweetComponent} from "../dialog-create-tweet/dialog-create-tweet.component";
+import {DialogCreateTweetComponent} from "../../../core/components/dialog-create-tweet/dialog-create-tweet.component";
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css']
+  templateUrl: './navigation-button.component.html',
+  styleUrls: ['./navigation-button.component.css']
 })
-export class ButtonComponent implements OnInit {
+export class NavigationButtonComponent implements OnInit {
 
   @Input() text!: string;
   @Input() icon!: string;
@@ -24,9 +24,15 @@ export class ButtonComponent implements OnInit {
       case "Tweet":
         this.openDialog();
         break;
+      case "Explore":
+      case "Notifications":
+      case "Messages":
+      case "Bookmarks":
+      case "Lists":
+      case "Profile":
       case "More":
         //Open combobox
-        console.log("More not implemented yet")
+        console.log(this.text + " not implemented yet")
         break;
       default:
         this.goToUrl(this.text)
@@ -42,7 +48,7 @@ export class ButtonComponent implements OnInit {
 
     dialogConfig.autoFocus = true;
     dialogConfig.width = "700" + "px";
-    dialogConfig.height = "450" + "px";
+    dialogConfig.height = "298" + "px";
 
     this.dialog.open(DialogCreateTweetComponent, dialogConfig);
   }

@@ -17,12 +17,15 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './core/components/header/header.component';
 import {FooterComponent} from './core/components/footer/footer.component';
 import {HomeComponent} from './modules/home/pages/home/home.component';
-import {ButtonComponent} from './shared/components/button/button.component';
+import {NavigationButtonComponent} from './shared/components/navigation-button/navigation-button.component';
 import {NavigationPanelComponent} from './core/components/navigation-panel/navigation-panel.component';
 import {SearchNewsPanelComponent} from './core/components/search-news-panel/search-news-panel.component';
-import {DialogCreateTweetComponent} from './shared/components/dialog-create-tweet/dialog-create-tweet.component';
-import { UserComponent } from './shared/components/user/user.component';
-import { TweetComponent } from './shared/components/tweet/tweet.component';
+import {DialogCreateTweetComponent} from './core/components/dialog-create-tweet/dialog-create-tweet.component';
+import {UserComponent} from './shared/components/user/user.component';
+import {TweetComponent} from './shared/components/tweet/tweet.component';
+import {MatTableModule} from "@angular/material/table";
+import {UserService} from "./core/services/user/user.service";
+import {TweetService} from "./core/services/tweet/tweet.service";
 
 @NgModule({
   declarations: [
@@ -30,7 +33,7 @@ import { TweetComponent } from './shared/components/tweet/tweet.component';
     HeaderComponent,
     FooterComponent,
     HomeComponent,
-    ButtonComponent,
+    NavigationButtonComponent,
     NavigationPanelComponent,
     SearchNewsPanelComponent,
     DialogCreateTweetComponent,
@@ -50,10 +53,11 @@ import { TweetComponent } from './shared/components/tweet/tweet.component';
     MatInputModule,
     MatDialogModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule
 
   ],
-  providers: [],
+  providers: [UserService, TweetService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

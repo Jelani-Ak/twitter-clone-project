@@ -10,6 +10,11 @@
 /*  background-color: #121212;*/
 /*}*/
 
+textarea {
+  resize: none;
+  font-size: 15px;
+}
+
 .form-button {
 
 }
@@ -18,18 +23,28 @@
   width: 100%;
 }
 
-#mat-form-field-textarea {
-  height: 90px;
+.mat-dialog-title {
+  margin: 0;
 }
 
-#container {
-  height: 200px
+.mat-dialog-content {
+  display: inline;
+}
+
+.mat-dialog-actions {
+  padding: 0;
+}
+
+.mat-form-field-textarea {
+  height: 90px;
+  overflow: hidden;
 }
 
 #remove-media-button {
   float: left;
   color: white;
   background: #673ab7;
+  margin-right: 16px;
   transition-duration: 0.25s;
 }
 

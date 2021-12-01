@@ -4,6 +4,10 @@
 /*  border-color: darkorange;*/
 /*}*/
 
+* {
+  justify-content: center;
+}
+
 .aligned-with-icon {
   font-size: 25px;
   margin-top: 15px;

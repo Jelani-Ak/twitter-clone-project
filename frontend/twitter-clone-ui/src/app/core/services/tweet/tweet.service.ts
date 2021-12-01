@@ -17,7 +17,7 @@ export class TweetService {
     return this.http.get<Tweet[]>(this.baseUrl + '/all');
   }
 
-  composeTweet() {
-
+  composeTweet(tweet: Tweet): Observable<Tweet> {
+    return this.http.post<Tweet>((this.baseUrl + '/create'), tweet)
   }
 }
