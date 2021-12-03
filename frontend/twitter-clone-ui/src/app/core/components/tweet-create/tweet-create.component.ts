@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {TweetService} from "../../services/tweet/tweet.service";
+import {TweetService} from "../../http/tweet/tweet.service";
 import {Tweet} from "../../../shared/components/models/tweet/tweet";
 
 @Component({
   selector: 'app-dialog-create-tweet',
-  templateUrl: './dialog-create-tweet.component.html',
-  styleUrls: ['./dialog-create-tweet.component.css']
+  templateUrl: './tweet-create.component.html',
+  styleUrls: ['./tweet-create.component.css']
 })
-export class DialogCreateTweetComponent implements OnInit {
+export class TweetCreateComponent implements OnInit {
 
   content!: string;
 

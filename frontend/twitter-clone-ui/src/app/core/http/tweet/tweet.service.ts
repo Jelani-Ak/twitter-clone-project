@@ -13,11 +13,11 @@ export class TweetService {
   constructor(private http: HttpClient) {
   }
 
-  getTweets(): Observable<Tweet[]> {
+  getAllTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.baseUrl + '/all');
   }
 
-  getTweet(tweetId: number) {
+  getTweet(tweetId: number): Observable<Tweet> {
     return this.http.get<Tweet>(this.baseUrl + '/' + tweetId)
   }
 

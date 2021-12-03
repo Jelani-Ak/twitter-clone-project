@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {DialogCreateTweetComponent} from "../../../core/components/dialog-create-tweet/dialog-create-tweet.component";
+import {TweetCreateComponent} from "../../../core/components/tweet-create/tweet-create.component";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-button',
+  selector: 'app-navigation-button',
   templateUrl: './navigation-button.component.html',
   styleUrls: ['./navigation-button.component.css']
 })
@@ -19,7 +19,7 @@ export class NavigationButtonComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onClick() {
+  navigate() {
     switch (this.text) {
       case "Tweet":
         this.openDialog();
@@ -27,15 +27,20 @@ export class NavigationButtonComponent implements OnInit {
       case "Explore":
       case "Notifications":
       case "Messages":
+      //Direct messages
       case "Bookmarks":
+      //Tweets that have been saved
       case "Lists":
+
       case "Profile":
+      //Allow the user to change details/settings
       case "More":
-        //Open combobox
+        //Open combobox with extra features
         console.log(this.text + " not implemented yet")
         break;
       default:
         this.goToUrl(this.text)
+        break;
     }
   }
 
@@ -48,8 +53,7 @@ export class NavigationButtonComponent implements OnInit {
 
     dialogConfig.autoFocus = true;
     dialogConfig.width = "700" + "px";
-    dialogConfig.height = "298" + "px";
 
-    this.dialog.open(DialogCreateTweetComponent, dialogConfig);
+    this.dialog.open(TweetCreateComponent, dialogConfig);
   }
 }

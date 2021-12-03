@@ -1,20 +1,20 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {DialogCreateTweetComponent} from './dialog-create-tweet.component';
+import {TweetCreateComponent} from './tweet-create.component';
 
 describe('DialogCreateTweetComponent', () => {
-  let component: DialogCreateTweetComponent;
-  let fixture: ComponentFixture<DialogCreateTweetComponent>;
+  let component: TweetCreateComponent;
+  let fixture: ComponentFixture<TweetCreateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DialogCreateTweetComponent]
+      declarations: [TweetCreateComponent]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogCreateTweetComponent);
+    fixture = TestBed.createComponent(TweetCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

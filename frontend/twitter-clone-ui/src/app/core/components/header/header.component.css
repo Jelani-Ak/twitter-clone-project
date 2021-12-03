@@ -1,3 +1,24 @@
 .example-spacer {
   flex: 1 1 auto;
 }
+
+.user-management-button {
+  border-radius: 0;
+}
+
+.user-management-button:hover {
+  color: black;
+  background-color: white;
+  transition-duration: 0.25s;
+}
+
+#header {
+  background: rgb(103, 58, 183);
+  background: linear-gradient(
+    90deg,
+    rgba(103, 58, 183, 1) 0%,
+    rgba(90, 43, 173, 1) 75%,
+    rgba(62, 19, 143, 1) 100%
+  );
+  margin-bottom: 10px;
+}

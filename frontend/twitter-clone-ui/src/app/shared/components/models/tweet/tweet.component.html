@@ -1,1 +1,15 @@
-<p>tweet works!</p>
+<div id="tweet-container" *ngFor="let tweet of tweets">
+  <div>
+    <!-- Username + UserHandle + Date -->
+  </div>
+  <p>
+    {{tweet.createdDate}}
+  </p>
+  <p>
+    {{tweet.content}}
+  </p>
+
+  <p>
+    <!-- <img src="{{tweet.media}}"> -->
+  </p>
+</div>

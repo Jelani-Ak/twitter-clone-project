@@ -1,5 +1,20 @@
 .search-form {
   width: 100%;
-  padding: 10px;
+  margin: 0;
+  padding: 0 10px;
   box-sizing: border-box;
+}
+
+.mat-form-field-appearance-outline {
+  margin: 0;
+}
+
+.container {
+  color: white;
+  background-color: #673AB7;
+  border-color: #673AB7;
+  border-style: solid;
+  border-width: 2px;
+  padding: 10px;
+  margin: 0 10px 10px 10px;
 }

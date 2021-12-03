@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {TweetService} from "../../../../core/services/tweet/tweet.service";
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {TweetService} from "../../../../core/http/tweet/tweet.service";
 import {Tweet} from "./tweet";
 
 @Component({
@@ -9,18 +9,28 @@ import {Tweet} from "./tweet";
 })
 export class TweetComponent implements OnInit {
   tweets: Tweet[] = [];
+  columnsToDisplay = [
+    'userId',
+    'username',
+    'password'
+  ];
 
-  constructor(private tweetService: TweetService) {
+  constructor(private tweetService: TweetService, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    this.tweetService.getTweets().subscribe((tweets: Tweet[]) => {
-      console.log(tweets);
-      this.tweets = tweets;
-    });
+    this.getTweets();
   }
 
   addTweet(tweet: Tweet) {
     this.tweetService.composeTweet(tweet).subscribe(() => this.tweets.push(tweet));
+    this.cd.detectChanges()
+  }
+
+  getTweets() {
+    this.tweetService.getAllTweets().subscribe((tweets) => {
+      console.log(tweets);
+      this.tweets = tweets;
+    });
   }
 }

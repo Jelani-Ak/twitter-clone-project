@@ -1,9 +1,7 @@
-#lorem-ipsum {
-  text-align: justify;
-}
-
-#page-title {
-  margin-top: 25px;
-  margin-left: 25px;
-  font-size: 35px;
+.tweet-container {
+  border-color: #673AB7;
+  border-style: solid;
+  border-width: 2px;
+  margin-bottom: 10px;
+  padding: 10px;
 }
