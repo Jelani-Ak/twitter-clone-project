@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -29,8 +30,9 @@ public class User {
     private String bioText;
     private String bioLocation;
     private String bioExternalLink;
+
     @CreatedDate
-    @JsonFormat(pattern="dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
@@ -38,6 +40,8 @@ public class User {
     private Set<String> following;
     private Set<String> followers;
     private Set<String> followersMutual;
+    
+    @DBRef
     private List<Tweet> tweets;
     private Integer tweetCount;
     private Integer tweetQuoteCount;

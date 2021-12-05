@@ -25,6 +25,7 @@ public class Tweet {
     private String mediaUrl;
     private Integer commentCount;
     private Integer retweetCount;
+
     @CreatedDate
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;

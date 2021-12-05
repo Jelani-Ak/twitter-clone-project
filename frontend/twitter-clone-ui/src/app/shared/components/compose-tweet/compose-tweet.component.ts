@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Tweet} from "../models/tweet/tweet";
+import {Tweet} from "../../models/tweet/tweet";
 import {TweetService} from "../../../core/http/tweet/tweet.service";
 
 @Component({

@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {TweetService} from "../../../../core/http/tweet/tweet.service";
+import {TweetService} from "../../../core/http/tweet/tweet.service";
 import {Tweet} from "./tweet";
 
 @Component({

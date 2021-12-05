@@ -41,7 +41,6 @@ public class UserService {
         user.setUsername(user.getUsername());
         user.setPassword(user.getPassword());
         user.setCreatedDate(user.getCreatedDate());
-        user.setFollow(user.isFollow());
         return userRepository.save(user);
     }
 
@@ -65,6 +64,11 @@ public class UserService {
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
         return userRepository.save(user);
+    }
+
+    public void followUser(User user) {
+        user.setFollow(user.isFollow());
+        userRepository.save(user);
     }
 
     public void getFollowData(User user) {
