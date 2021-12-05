@@ -1,15 +1,32 @@
-<div id="tweet-container" *ngFor="let tweet of tweets">
-  <div>
-    <!-- Username + UserHandle + Date -->
+<div class="tweet-container" *ngFor="let tweet of tweets">
+  <div class="inner-tweet-container" fxFlex="15%">
+    <img
+      src="https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg"
+    >
   </div>
-  <p>
-    {{tweet.createdDate}}
-  </p>
-  <p>
-    {{tweet.content}}
-  </p>
+  <div class="inner-tweet-container" fxFlex="100%">
+    <div id="details" style="display: flex">
+      <!-- Username + UserHandle + Date -->
+      <p id="username" style="margin-right: 10px">Username</p>
+      <p id="handle" style="margin-right: 10px">@Username</p>
+      <p id="date" style="text-align: right">{{tweet.createdDate}}</p>
+    </div>
 
-  <p>
-    <!-- <img src="{{tweet.media}}"> -->
-  </p>
+    <br/>
+
+    <div id="Content">
+
+      <p style="text-align: justify">
+        {{tweet.content}}
+      </p>
+
+      <p>
+        <!-- <img src="{{tweet.media}}"> -->
+      </p>
+
+      <br/>
+
+
+    </div>
+  </div>
 </div>

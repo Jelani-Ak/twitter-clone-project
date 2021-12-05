@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {TweetService} from "../../http/tweet/tweet.service";
-import {Tweet} from "../../../shared/components/models/tweet/tweet";
+import {Tweet} from "../models/tweet/tweet";
+import {TweetService} from "../../../core/http/tweet/tweet.service";
 
 @Component({
-  selector: 'app-dialog-create-tweet',
-  templateUrl: './tweet-create.component.html',
-  styleUrls: ['./tweet-create.component.css']
+  selector: 'app-compose-tweet',
+  templateUrl: './compose-tweet.component.html',
+  styleUrls: ['./compose-tweet.component.css']
 })
-export class TweetCreateComponent implements OnInit {
+export class ComposeTweetComponent implements OnInit {
 
   content!: string;
+  fileSelected!: boolean;
 
   constructor(private tweetService: TweetService) {
-
   }
 
   ngOnInit(): void {

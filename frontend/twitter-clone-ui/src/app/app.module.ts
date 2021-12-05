@@ -20,12 +20,13 @@ import {HomeComponent} from './modules/home/pages/home/home.component';
 import {NavigationButtonComponent} from './shared/components/navigation-button/navigation-button.component';
 import {NavigationPanelComponent} from './core/components/navigation-panel/navigation-panel.component';
 import {SearchNewsPanelComponent} from './core/components/search-news-panel/search-news-panel.component';
-import {TweetCreateComponent} from './core/components/tweet-create/tweet-create.component';
+import {DialogBoxComponent} from './core/components/dialog-box/dialog-box.component';
 import {UserComponent} from './shared/components/models/user/user.component';
 import {TweetComponent} from './shared/components/models/tweet/tweet.component';
 import {MatTableModule} from "@angular/material/table";
 import {UserService} from "./core/http/user/user.service";
 import {TweetService} from "./core/http/tweet/tweet.service";
+import { ComposeTweetComponent } from './shared/components/compose-tweet/compose-tweet.component';
 
 @NgModule({
   declarations: [
@@ -36,9 +37,10 @@ import {TweetService} from "./core/http/tweet/tweet.service";
     NavigationButtonComponent,
     NavigationPanelComponent,
     SearchNewsPanelComponent,
-    TweetCreateComponent,
+    DialogBoxComponent,
     UserComponent,
     TweetComponent,
+    ComposeTweetComponent,
   ],
   imports: [
     BrowserModule,

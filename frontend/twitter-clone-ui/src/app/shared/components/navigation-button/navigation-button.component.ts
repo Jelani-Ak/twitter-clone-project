@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {TweetCreateComponent} from "../../../core/components/tweet-create/tweet-create.component";
+import {DialogBoxComponent} from "../../../core/components/dialog-box/dialog-box.component";
 import {Router} from "@angular/router";
 
 @Component({
@@ -54,6 +54,6 @@ export class NavigationButtonComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = "700" + "px";
 
-    this.dialog.open(TweetCreateComponent, dialogConfig);
+    this.dialog.open(DialogBoxComponent, dialogConfig);
   }
 }

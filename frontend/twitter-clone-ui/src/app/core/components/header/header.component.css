@@ -4,6 +4,7 @@
 
 .user-management-button {
   border-radius: 0;
+  transition-duration: 0.25s;
 }
 
 .user-management-button:hover {

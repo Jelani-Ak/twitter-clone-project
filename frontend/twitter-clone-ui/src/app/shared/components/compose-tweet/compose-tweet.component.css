@@ -1,0 +1,53 @@
+/* Debugging */
+* {
+  /*border-width: 1px;*/
+  /*border-style: solid;*/
+  /*border-color: darkorange;*/
+}
+
+button {
+  border-radius: 0;
+}
+
+textarea {
+  resize: none;
+  font-size: 15px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-textarea {
+  height: 90px;
+}
+
+.tweet-button {
+  color: white;
+  background: #673ab7;
+  transition-duration: 0.25s;
+}
+
+.tweet-button:hover {
+  color: black;
+  background: white;
+  transition-duration: 0.25s;
+}
+
+#button-row {
+  margin-top: 10px;
+}
+
+#remove-media-button,
+#add-media-button {
+  margin-right: 10px;
+}
+
+#compose-tweet-button {
+  float: right;
+}
+
+#compose-tweet-button:disabled {
+  color: #8677ac;
+  background: #b5a1e7;
+}
