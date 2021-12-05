@@ -1,7 +1,6 @@
-package com.jelaniak.twittercloneproject.user;
+package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jelaniak.twittercloneproject.tweet.Tweet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,7 +39,7 @@ public class User {
     private Set<String> following;
     private Set<String> followers;
     private Set<String> followersMutual;
-    
+
     @DBRef
     private List<Tweet> tweets;
     private Integer tweetCount;

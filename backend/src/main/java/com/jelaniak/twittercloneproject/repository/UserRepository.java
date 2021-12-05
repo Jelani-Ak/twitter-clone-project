@@ -1,5 +1,6 @@
-package com.jelaniak.twittercloneproject.user;
+package com.jelaniak.twittercloneproject.repository;
 
+import com.jelaniak.twittercloneproject.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

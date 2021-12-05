@@ -1,5 +1,7 @@
-package com.jelaniak.twittercloneproject.user;
+package com.jelaniak.twittercloneproject.controller;
 
+import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

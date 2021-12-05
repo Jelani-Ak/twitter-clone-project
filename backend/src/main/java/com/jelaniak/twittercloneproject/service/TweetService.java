@@ -1,6 +1,8 @@
-package com.jelaniak.twittercloneproject.tweet;
+package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
+import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

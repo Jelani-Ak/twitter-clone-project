@@ -1,6 +1,7 @@
-package com.jelaniak.twittercloneproject.tweet;
+package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.jelaniak.twittercloneproject.enums.TweetType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,3 +33,4 @@ public class Tweet {
     private Integer likeCount;
     private TweetType tweetType;
 }
+

@@ -1,6 +1,8 @@
-package com.jelaniak.twittercloneproject.user;
+package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
+import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

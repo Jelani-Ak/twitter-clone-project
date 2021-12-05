@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.media;
+package com.jelaniak.twittercloneproject.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
