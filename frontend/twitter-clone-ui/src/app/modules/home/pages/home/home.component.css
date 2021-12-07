@@ -1,9 +1,7 @@
-#title-container {
-  color: white;
-  background: #673AB7;
-  padding: 18px;
-}
-
 .tweet-container {
-  margin-bottom: 7px;
+  border-color: #673AB7;
+  border-style: solid;
+  border-width: 2px;
+  margin-bottom: 10px;
+  padding: 16px;
 }

@@ -4,13 +4,12 @@ img {
 }
 
 .tweet-container {
-  /*border-color: #673AB7;*/
-  /*border-style: solid;*/
-  /*border-width: 2px;*/
-  margin: 10px 0 10px 0;
+  border-color: #673AB7;
+  border-style: solid;
+  border-width: 2px;
+  margin: 10px 0;
 }
 
 .inner-tweet-container {
-  padding: 15px;
-  background: #f5f5f5;
+  padding: 10px;
 }

@@ -5,10 +5,10 @@
   /*border-width: 1px;*/
   /*border-style: solid;*/
   /*border-color: darkorange;*/
-  /*border-radius: 15px;*/
 }
 
 html, body {
+  height: 100%;
   /*color: white;*/
   /*background-color: #121212;*/
 }

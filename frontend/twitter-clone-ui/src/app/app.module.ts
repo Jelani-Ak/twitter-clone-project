@@ -27,8 +27,6 @@ import {MatTableModule} from "@angular/material/table";
 import {UserService} from "./core/http/user/user.service";
 import {TweetService} from "./core/http/tweet/tweet.service";
 import {ComposeTweetComponent} from './shared/components/compose-tweet/compose-tweet.component';
-import { LoginComponent } from './modules/home/pages/login/login.component';
-import { UserManagementButtonComponent } from './shared/components/user-management-button/user-management-button.component';
 
 @NgModule({
   declarations: [
@@ -43,8 +41,6 @@ import { UserManagementButtonComponent } from './shared/components/user-manageme
     UserComponent,
     TweetComponent,
     ComposeTweetComponent,
-    LoginComponent,
-    UserManagementButtonComponent,
   ],
   imports: [
     BrowserModule,
