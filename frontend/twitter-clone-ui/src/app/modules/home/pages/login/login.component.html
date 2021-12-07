@@ -1,0 +1,34 @@
+<div class="tweet-container" id="title-container">
+  <p id="page-title">Login</p>
+</div>
+
+<div class="formContent">
+  <div *ngIf="invalidLogin" class="alert alert-warning">{{errorMessage}}</div>
+  <div *ngIf="loginSuccess" class="alert alert-success">{{successMessage}}</div>
+
+  <form>
+    <mat-form-field appearance="fill" class="user-management-form">
+      <mat-label>Username</mat-label>
+      <input [(ngModel)]="username"
+             id="username"
+             matInput
+             name="username"
+             type="text">
+    </mat-form-field>
+
+    <br/>
+
+    <mat-form-field appearance="fill" class="user-management-form">
+      <mat-label>Password</mat-label>
+      <input [(ngModel)]="password"
+             id="password"
+             matInput
+             name="password"
+             type="text">
+    </mat-form-field>
+
+    <br/>
+
+    <input (click)="handleLogin()"  type="submit" value="Log In">
+  </form>
+</div>

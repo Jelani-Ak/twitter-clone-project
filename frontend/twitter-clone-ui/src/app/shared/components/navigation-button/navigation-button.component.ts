@@ -31,7 +31,7 @@ export class NavigationButtonComponent implements OnInit {
       case "Bookmarks":
       //Tweets that have been saved
       case "Lists":
-
+      //
       case "Profile":
       //Allow the user to change details/settings
       case "More":

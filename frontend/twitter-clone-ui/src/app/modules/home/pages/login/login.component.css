@@ -5,5 +5,9 @@
 }
 
 .tweet-container {
-  margin-bottom: 7px;
+  margin-bottom: 10px;
+}
+
+.user-management-form {
+  width: 100%;
 }

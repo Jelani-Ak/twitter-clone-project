@@ -1,48 +1,58 @@
 package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
-@Document(value = "User")
-@Data
+@Getter
+@Setter
+@Entity
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
-    private String username; // Login name
+
+    @NotBlank(message = "Username is required")
+    private String username;
+
+    @NotBlank(message = "Password is required")
     private String password;
+
+    @Email
+    @NotEmpty(message = "Email is required")
     private String email;
-    private String displayName; // (Name above userHandle)
+
+    @NotBlank(message = "Display name is required")
+    private String displayName;
+
+    @NotBlank(message = "@Handle is required")
     private String userHandle; // (@ExampleName)
+
     private String bioText;
     private String bioLocation;
     private String bioExternalLink;
+    private String pictureAvatarUrl;
+    private String pictureBackgroundUrl;
+    private Integer tweetCount;
+    private Integer tweetQuoteCount;
 
     @CreatedDate
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;
-    private String pictureAvatarUrl;
-    private String pictureBackgroundUrl;
-    private boolean follow;
-    private Set<String> following;
-    private Set<String> followers;
-    private Set<String> followersMutual;
 
-    @DBRef
-    private List<Tweet> tweets;
-    private Integer tweetCount;
-    private Integer tweetQuoteCount;
+    private boolean follow;
     private boolean enabled;
 }

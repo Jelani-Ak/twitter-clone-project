@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.enums;
+package com.jelaniak.twittercloneproject.model;
 
 public enum TweetType {
     TWEET, RETWEET, MEDIA, LIKED

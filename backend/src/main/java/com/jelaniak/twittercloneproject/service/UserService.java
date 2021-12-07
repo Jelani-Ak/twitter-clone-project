@@ -4,20 +4,22 @@ import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // Create a new user with all credentials
     public User createUserDebug(User user) {
         user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());
@@ -28,20 +30,17 @@ public class UserService {
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
         user.setFollow(user.isFollow());
-        user.setFollowing(user.getFollowing());
-        user.setFollowers(user.getFollowers());
-        user.setFollowersMutual(user.getFollowersMutual());
-        user.setTweets(user.getTweets());
         user.setTweetCount(user.getTweetCount());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
         user.setEnabled(user.isEnabled());
         return userRepository.save(user);
     }
 
+    // Create a new user
     public User createUser(User user) {
-        user.setUserId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setEmail(user.getEmail());
         user.setCreatedDate(user.getCreatedDate());
         return userRepository.save(user);
     }
@@ -56,7 +55,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        user.setPassword(user.getPassword());
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());
@@ -71,18 +70,6 @@ public class UserService {
     public void followUser(User user) {
         user.setFollow(user.isFollow());
         userRepository.save(user);
-    }
-
-    public void getFollowData(User user) {
-        user.setFollowing(user.getFollowing());
-        user.setFollowers(user.getFollowers());
-        user.setFollowersMutual(user.getFollowersMutual());
-    }
-
-    public void getTweetData(User user) {
-        user.setTweets(user.getTweets());
-        user.setTweetCount(user.getTweetCount());
-        user.setTweetQuoteCount(user.getTweetQuoteCount());
     }
 
     public void validateUser(User user) {
