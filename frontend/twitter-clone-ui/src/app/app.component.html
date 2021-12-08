@@ -4,7 +4,11 @@
 
 <div class="twitter-clone">
   <app-navigation-panel fxFlex="300px"></app-navigation-panel>
-  <app-home fxFlex="600px" *ngIf="router.url === '/home'"></app-home>
-  <app-user *ngIf="router.url !== '/home'"></app-user>
+
+  <app-home *ngIf="router.url === '/home'" fxFlex="600px"></app-home>
+  <app-login *ngIf="router.url === '/login'" fxFlex="600px"></app-login>
+
+  <app-user *ngIf="router.url === ('/')" fxFlex="600px"></app-user>
+
   <app-search-news-panel fxFlex="300px"></app-search-news-panel>
 </div>

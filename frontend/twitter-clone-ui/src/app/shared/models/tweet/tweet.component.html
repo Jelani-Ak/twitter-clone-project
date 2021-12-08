@@ -1,5 +1,5 @@
 <div class="tweet-container" *ngFor="let tweet of tweets">
-  <div class="inner-tweet-container" fxFlex="15%">
+  <div class="profile-image-container" fxFlex="15%">
     <img
       src="https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg"
     >
@@ -15,18 +15,31 @@
     <br/>
 
     <div id="Content">
-
       <p style="text-align: justify">
         {{tweet.content}}
       </p>
 
-      <p>
-        <!-- <img src="{{tweet.media}}"> -->
-      </p>
-
       <br/>
 
+      <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur iusto,
+        suscipit. Asperiores consequatur
+        et ex illo labore laboriosam mollitia obcaecati optio pariatur possimus quam, quod recusandae soluta sunt
+        suscipit tempore veniam veritatis voluptatem! Ad aperiam architecto beatae distinctio dolorum exercitationem
+        fuga fugiat id incidunt ipsam ipsum laboriosam laudantium maiores nam nihil quis repellendus reprehenderit saepe
+        sapiente, sint sunt tenetur velit veritatis vitae voluptatem? Aliquid laborum libero, magnam modi mollitia
+        perspiciatis quam quas quidem recusandae voluptate.</p>
 
+      <span>
+        <!-- <img src="{{tweet.media}}"> -->
+        <!-- <video src="{{tweet.media}}"> -->
+      </span>
+
+      <span>
+        <!-- Reply Count -->
+        <!-- Retweet Count -->
+        <!-- Like Count -->
+        <!-- Share -->
+      </span>
     </div>
   </div>
 </div>

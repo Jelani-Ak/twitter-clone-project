@@ -4,6 +4,9 @@ import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +19,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User createUserDebug(User user) {
+        user.setUserId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword((user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());
@@ -34,6 +38,7 @@ public class UserService {
         user.setTweets(user.getTweets());
         user.setTweetCount(user.getTweetCount());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
+        user.setFollow(user.isFollow());
         user.setEnabled(user.isEnabled());
         return userRepository.save(user);
     }
@@ -41,8 +46,10 @@ public class UserService {
     public User createUser(User user) {
         user.setUserId(UUID.randomUUID().toString());
         user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword((user.getPassword()));
         user.setCreatedDate(user.getCreatedDate());
+        user.setFollow(false);
+        user.setEnabled(false);
         return userRepository.save(user);
     }
 
@@ -56,7 +63,7 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        user.setPassword(user.getPassword());
+        user.setPassword((user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());

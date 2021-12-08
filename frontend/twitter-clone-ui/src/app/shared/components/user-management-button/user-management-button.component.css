@@ -1,0 +1,11 @@
+.user-management-button {
+  border-radius: 0;
+  margin-left: 10px;
+  transition-duration: 0.25s;
+}
+
+.user-management-button:hover {
+  color: black;
+  background-color: white;
+  transition-duration: 0.25s;
+}

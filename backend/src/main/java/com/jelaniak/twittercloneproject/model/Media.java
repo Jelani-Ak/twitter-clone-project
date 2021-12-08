@@ -6,10 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(value = "Media")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(value = "Media")
 public class Media {
 
     @Id
