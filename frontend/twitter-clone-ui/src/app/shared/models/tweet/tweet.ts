@@ -1,7 +1,7 @@
 export interface Tweet {
   tweetId?: number;
   username: string;
-  url: string;
+  tweetUrl: string;
   content: string;
   commentCount: number;
   retweetCount: number;

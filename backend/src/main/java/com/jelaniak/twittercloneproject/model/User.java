@@ -6,9 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,13 +38,25 @@ public class User {
 
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
-    private Set<User> following;
-    private Set<User> followers;
-    private Set<User> followersMutual;
-    private List<Tweet> tweets;
+
+    private String[] authorities;
+
+    @DBRef
+    private Set<User> following = new HashSet<>();
+
+    @DBRef
+    private Set<User> followers = new HashSet<>();
+
+    @DBRef
+    private Set<User> followersMutual = new HashSet<>();
+
+    @DBRef
+    private List<Tweet> tweets = new ArrayList<>();
+
     private Integer tweetCount;
     private Integer tweetQuoteCount;
 
     private boolean follow;
     private boolean enabled;
+    private boolean isNonLocked;
 }

@@ -21,7 +21,7 @@ export class ComposeTweetComponent implements OnInit {
   addTweet() {
     let tweet: Tweet = {
       username: "",
-      url: "",
+      tweetUrl: "",
       content: this.content,
       commentCount: 0,
       retweetCount: 0,

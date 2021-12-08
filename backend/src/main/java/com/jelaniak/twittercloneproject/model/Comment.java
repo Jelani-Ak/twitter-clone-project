@@ -12,21 +12,22 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(value = "Tweet")
-public class Tweet {
+@Document(value = "Comment")
+public class Comment {
 
     @Id
-    private String tweetId;
-    private String tweetUrl;
+    private String commentId;
+    private String commentUrl;
 
     @DBRef
     private User user;
+
+    @DBRef
+    private Tweet tweet;
 
     @DBRef
     private Media media;
@@ -39,13 +40,7 @@ public class Tweet {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdDate;
 
-    @DBRef
-    private List<Comment> comment = new ArrayList<>();
-
     private Integer commentCount;
     private Integer retweetCount;
     private Integer likeCount;
-
-    private TweetType tweetType;
 }
-

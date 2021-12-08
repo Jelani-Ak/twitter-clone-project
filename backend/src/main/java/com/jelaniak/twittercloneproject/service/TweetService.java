@@ -1,14 +1,17 @@
 package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
+import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
+import java.util.Optional;
 
 
 @Service
@@ -16,13 +19,13 @@ import java.util.UUID;
 public class TweetService implements Serializable {
 
     private final TweetRepository tweetRepository;
+    private final CommentRepository commentRepository;
 
-    public Tweet createTweet(Tweet tweet) {
-//        tweet.setTweetId(UUID.randomUUID().toString());
-        tweet.setUser(tweet.getUser());
-        tweet.setUrl(tweet.getUrl());
+    public Tweet createTweet(User user, Tweet tweet) {
+        tweet.setUser(user);
+        tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setContent(tweet.getContent());
-        tweet.setMediaUrl(tweet.getMediaUrl());
+        tweet.setMedia(tweet.getMedia());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());
         tweet.setCreatedDate(tweet.getCreatedDate());
@@ -31,16 +34,35 @@ public class TweetService implements Serializable {
         return tweetRepository.save(tweet);
     }
 
+    public Comment createTweetComment(User user, String tweetId, Comment comment) {
+        Optional<Tweet> tweet = tweetRepository.findById(tweetId);
+
+        if (tweet.isPresent()) {
+            comment.setUser(user);
+            comment.setCommentUrl(comment.getCommentUrl());
+            comment.setTweet(comment.getTweet());
+            comment.setMedia(comment.getMedia());
+            comment.setContent(comment.getContent());
+            comment.setCommentCount(comment.getCommentCount());
+            comment.setRetweetCount(comment.getRetweetCount());
+            comment.setLikeCount(comment.getLikeCount());
+
+            tweet.get().getComment().add(comment);
+        }
+
+        return commentRepository.save(comment);
+    }
+
     public List<Tweet> findAllTweets() {
         return tweetRepository.findAll();
     }
 
-    public Tweet findTweetById(String id) {
-        return tweetRepository.findById(id)
-                .orElseThrow(() -> new TweetNotFoundException("Tweet by id: [" + id + "] was not found."));
+    public Tweet findTweetById(String tweetId) {
+        return tweetRepository.findById(tweetId)
+                .orElseThrow(() -> new TweetNotFoundException("Tweet by Id: [" + tweetId + "] was not found."));
     }
 
-    public void deleteTweet(String id) {
-        tweetRepository.deleteById(id);
+    public void deleteTweet(String tweetId) {
+        tweetRepository.deleteById(tweetId);
     }
 }

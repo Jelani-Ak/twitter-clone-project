@@ -1,6 +1,7 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.TweetService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,8 @@ public class TweetController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Tweet createTweet(@RequestBody Tweet tweet) {
-        return tweetService.createTweet(tweet);
+    public Tweet createTweet(@RequestAttribute User user, @RequestBody Tweet tweet) {
+        return tweetService.createTweet(user, tweet);
     }
 
     @GetMapping("/{id}")
