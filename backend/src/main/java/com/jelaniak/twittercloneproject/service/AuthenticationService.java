@@ -1,6 +1,7 @@
 package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.dto.RegisterRequest;
+import com.jelaniak.twittercloneproject.model.NotificationEmail;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.model.VerificationToken;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
@@ -18,6 +19,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final MailService mailService;
 
     public void signUp(RegisterRequest registerRequest) {
         User user = new User();
@@ -30,6 +32,10 @@ public class AuthenticationService {
         userRepository.save(user);
 
         String token = generateVerificationToken(user);
+        mailService.sendMail(new NotificationEmail("Please Activate your Account.",
+                user.getEmail(), "Thank you for signing up to Spring Twitter!, " +
+                "Please click on the below url to activate your account : " +
+                "http://localhost:8080/api/auth/accountVerification/" + token));
     }
 
     private String generateVerificationToken(User user) {
