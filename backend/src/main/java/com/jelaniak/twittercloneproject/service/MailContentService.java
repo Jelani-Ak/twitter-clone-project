@@ -1,15 +1,17 @@
 package com.jelaniak.twittercloneproject.service;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 @Service
+@NoArgsConstructor
 @AllArgsConstructor
 public class MailContentService {
 
-    private final TemplateEngine templateEngine;
+    private TemplateEngine templateEngine;
 
     public String build(String message) {
         Context context = new Context();

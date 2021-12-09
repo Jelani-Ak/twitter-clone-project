@@ -3,6 +3,8 @@ package com.jelaniak.twittercloneproject.config;
 import com.jelaniak.twittercloneproject.model.Role;
 import com.jelaniak.twittercloneproject.service.UserService;
 import io.jsonwebtoken.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.Set;
 
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class JwtTokenProvider {
 
     @Value("${security.jwt.token.secret-key:secret}")

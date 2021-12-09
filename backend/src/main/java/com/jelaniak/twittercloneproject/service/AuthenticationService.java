@@ -7,19 +7,21 @@ import com.jelaniak.twittercloneproject.model.VerificationToken;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import com.jelaniak.twittercloneproject.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationService {
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
-    private final VerificationTokenRepository verificationTokenRepository;
-    private final MailService mailService;
+    private PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
+    private VerificationTokenRepository verificationTokenRepository;
+    private MailService mailService;
 
     public void signUp(RegisterRequest registerRequest) {
         User user = new User();
