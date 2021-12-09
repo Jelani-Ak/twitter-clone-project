@@ -10,10 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @NoArgsConstructor
@@ -42,6 +39,9 @@ public class User {
     private String[] authorities;
 
     @DBRef
+    private Set<Role> roles = new HashSet<>();
+
+    @DBRef
     private Set<User> following = new HashSet<>();
 
     @DBRef
@@ -58,5 +58,4 @@ public class User {
 
     private boolean follow;
     private boolean enabled;
-    private boolean isNonLocked;
 }

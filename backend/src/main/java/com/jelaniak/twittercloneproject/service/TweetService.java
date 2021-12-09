@@ -21,8 +21,8 @@ public class TweetService implements Serializable {
     private final TweetRepository tweetRepository;
     private final CommentRepository commentRepository;
 
-    public Tweet createTweet(User user, Tweet tweet) {
-        tweet.setUser(user);
+    public Tweet createTweet(Tweet tweet) {
+        tweet.setUser(tweet.getUser());
         tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setContent(tweet.getContent());
         tweet.setMedia(tweet.getMedia());
@@ -34,11 +34,11 @@ public class TweetService implements Serializable {
         return tweetRepository.save(tweet);
     }
 
-    public Comment createTweetComment(User user, String tweetId, Comment comment) {
+    public Comment createTweetComment(String tweetId, Comment comment) {
         Optional<Tweet> tweet = tweetRepository.findById(tweetId);
 
         if (tweet.isPresent()) {
-            comment.setUser(user);
+            comment.setUser(comment.getUser());
             comment.setCommentUrl(comment.getCommentUrl());
             comment.setTweet(comment.getTweet());
             comment.setMedia(comment.getMedia());

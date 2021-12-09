@@ -19,7 +19,7 @@ public class TweetController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Tweet createTweet(@RequestAttribute User user, @RequestBody Tweet tweet) {
-        return tweetService.createTweet(user, tweet);
+        return tweetService.createTweet(tweet);
     }
 
     @GetMapping("/{id}")

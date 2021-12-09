@@ -31,7 +31,7 @@ public class MailService {
             javaMailSender.send(mimeMessagePreparator);
             log.info("Activation email sent!");
         } catch (MailException e) {
-            throw new SpringTwitterException("Exception occured when sending email to "
+            throw new SpringTwitterException("Exception occurred when sending email to "
                     + notificationEmail.getRecipient());
         }
     }
