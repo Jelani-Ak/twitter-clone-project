@@ -68,8 +68,8 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException("User by id: [" + id + "] was not found."));
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByUsername(email);
     }
 
 
@@ -113,9 +113,9 @@ public class UserService implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        User user = userRepository.findByEmail(email);
-        if (user != null) {
-            List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+        Optional<User> user = userRepository.findByUsername(email);
+        if (user.isPresent()) {
+            List<GrantedAuthority> authorities = getUserAuthority(user.get().getRoles());
             return buildUserForAuthentication(user, authorities);
         } else {
             throw new UsernameNotFoundException("username not found");
@@ -131,7 +131,7 @@ public class UserService implements UserDetailsService {
         return new ArrayList<>(roles);
     }
 
-    private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+    private UserDetails buildUserForAuthentication(Optional<User> user, List<GrantedAuthority> authorities) {
+        return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), authorities);
     }
 }

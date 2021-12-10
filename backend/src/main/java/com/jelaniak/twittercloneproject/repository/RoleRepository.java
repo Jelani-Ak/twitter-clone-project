@@ -1,11 +1,14 @@
 package com.jelaniak.twittercloneproject.repository;
 
 import com.jelaniak.twittercloneproject.model.Role;
+import com.jelaniak.twittercloneproject.model.RoleType;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface RoleRepository extends MongoRepository<Role, String> {
 
-    Role findByRole(String role);
+    Optional<Role> findByName(RoleType name);
 }

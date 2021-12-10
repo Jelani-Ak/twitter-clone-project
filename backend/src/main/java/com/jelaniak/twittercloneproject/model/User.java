@@ -9,6 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -20,8 +22,12 @@ public class User {
 
     @Id
     private String userId;
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
+    @Email
+    @NotBlank
     private String email;
     private String displayName;
     private String userHandle; // (@ExampleName)
