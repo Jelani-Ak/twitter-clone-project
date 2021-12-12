@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Tweet} from "../../models/tweet/tweet";
-import {TweetService} from "../../../core/http/tweet/tweet.service";
+import {TweetService} from "../../../core/services/tweet/tweet.service";
 
 @Component({
   selector: 'app-compose-tweet',

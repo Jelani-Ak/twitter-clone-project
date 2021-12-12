@@ -5,6 +5,8 @@ import com.jelaniak.twittercloneproject.model.Role;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.RoleRepository;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +19,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
     private UserRepository userRepository;
@@ -25,7 +28,7 @@ public class UserService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User createUserDebug(User user) {
-        user.setUserId(UUID.randomUUID().toString());
+        user.setUserId(Long.parseLong(UUID.randomUUID().toString()));
         user.setUsername(user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setEmail(user.getEmail());
@@ -50,7 +53,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User createUser(User user) {
-        user.setUserId(UUID.randomUUID().toString());
+        user.setUserId(Long.parseLong(UUID.randomUUID().toString()));
         user.setUsername(user.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setCreatedDate(user.getCreatedDate());

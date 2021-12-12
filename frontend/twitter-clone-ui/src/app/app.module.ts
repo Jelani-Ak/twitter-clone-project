@@ -24,11 +24,13 @@ import {DialogBoxComponent} from './core/components/dialog-box/dialog-box.compon
 import {UserComponent} from './shared/models/user/user.component';
 import {TweetComponent} from './shared/models/tweet/tweet.component';
 import {MatTableModule} from "@angular/material/table";
-import {UserService} from "./core/http/user/user.service";
-import {TweetService} from "./core/http/tweet/tweet.service";
+import {UserService} from "./core/services/user/user.service";
+import {TweetService} from "./core/services/tweet/tweet.service";
 import {ComposeTweetComponent} from './shared/components/compose-tweet/compose-tweet.component';
 import {UserManagementButtonComponent} from './shared/components/user-management-button/user-management-button.component';
 import {LoginComponent} from "./modules/home/pages/login/login.component";
+import { RegisterComponent } from './modules/home/pages/register/register.component';
+import { ProfileComponent } from './modules/home/pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,8 @@ import {LoginComponent} from "./modules/home/pages/login/login.component";
     ComposeTweetComponent,
     LoginComponent,
     UserManagementButtonComponent,
+    RegisterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
