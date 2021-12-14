@@ -1,9 +1,7 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
-import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +54,9 @@ public class TweetService implements Serializable {
         return tweetRepository.findAll();
     }
 
-    public Tweet findTweetById(String tweetId) {
+    public Tweet findTweetById(String tweetId) throws Exception {
         return tweetRepository.findById(tweetId)
-                .orElseThrow(() -> new TweetNotFoundException("Tweet by Id: [" + tweetId + "] was not found."));
+                .orElseThrow(() -> new Exception("Tweet by Id: [" + tweetId + "] was not found."));
     }
 
     public void deleteTweet(String tweetId) {

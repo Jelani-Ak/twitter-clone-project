@@ -80,3 +80,4 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+backend/src/main/resources/application-dev.properties

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {DialogBoxComponent} from "../../../core/components/dialog-box/dialog-box.component";
+import {DialogBoxComponent} from "../dialog-box/dialog-box.component";
 import {Router} from "@angular/router";
 
 @Component({

@@ -24,7 +24,7 @@ public class TweetController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Tweet getTweetById(@PathVariable String id) {
+    public Tweet getTweetById(@PathVariable String id) throws Exception {
         return tweetService.findTweetById(id);
     }
 

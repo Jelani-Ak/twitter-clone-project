@@ -29,7 +29,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User findUserById(@PathVariable String id) {
+    public User findUserById(@PathVariable String id) throws Exception {
         return userService.findUserById(id);
     }
 

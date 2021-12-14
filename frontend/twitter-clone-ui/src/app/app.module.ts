@@ -14,13 +14,13 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 import {AppComponent} from './app.component';
-import {HeaderComponent} from './core/components/header/header.component';
-import {FooterComponent} from './core/components/footer/footer.component';
+import {HeaderComponent} from './core/header/header.component';
+import {FooterComponent} from './core/footer/footer.component';
 import {HomeComponent} from './modules/home/pages/home/home.component';
 import {NavigationButtonComponent} from './shared/components/navigation-button/navigation-button.component';
-import {NavigationPanelComponent} from './core/components/navigation-panel/navigation-panel.component';
-import {SearchNewsPanelComponent} from './core/components/search-news-panel/search-news-panel.component';
-import {DialogBoxComponent} from './core/components/dialog-box/dialog-box.component';
+import {NavigationPanelComponent} from './shared/components/navigation-panel/navigation-panel.component';
+import {SearchNewsPanelComponent} from './shared/components/search-news-panel/search-news-panel.component';
+import {DialogBoxComponent} from './shared/components/dialog-box/dialog-box.component';
 import {UserComponent} from './shared/models/user/user.component';
 import {TweetComponent} from './shared/models/tweet/tweet.component';
 import {MatTableModule} from "@angular/material/table";

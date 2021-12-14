@@ -1,6 +1,5 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.SpringTwitterException;
 import com.jelaniak.twittercloneproject.model.NotificationEmail;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ public class MailService {
     private JavaMailSender javaMailSender;
     private MailContentService mailContentService;
 
-    public void sendMail(NotificationEmail notificationEmail) throws SpringTwitterException {
+    public void sendMail(NotificationEmail notificationEmail) throws Exception {
         MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(notificationEmail.getRecipient());
@@ -33,7 +32,7 @@ public class MailService {
             javaMailSender.send(mimeMessagePreparator);
             log.info("Activation email sent!");
         } catch (MailException e) {
-            throw new SpringTwitterException("Exception occurred when sending email to "
+            throw new Exception("Exception occurred when sending email to "
                     + notificationEmail.getRecipient());
         }
     }

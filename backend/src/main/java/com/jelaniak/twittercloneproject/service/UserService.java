@@ -1,36 +1,26 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.UserNotFoundException;
-import com.jelaniak.twittercloneproject.model.Role;
 import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.RoleRepository;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User createUserDebug(User user) {
         user.setUserId(Long.parseLong(UUID.randomUUID().toString()));
         user.setUsername(user.getUsername());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword((user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());
@@ -55,7 +45,7 @@ public class UserService implements UserDetailsService {
     public User createUser(User user) {
         user.setUserId(Long.parseLong(UUID.randomUUID().toString()));
         user.setUsername(user.getUsername());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword((user.getPassword()));
         user.setCreatedDate(user.getCreatedDate());
         user.setFollow(false);
         user.setEnabled(false);
@@ -66,9 +56,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public User findUserById(String id) {
+    public User findUserById(String id) throws Exception {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User by id: [" + id + "] was not found."));
+                .orElseThrow(() -> new Exception("User by id: [" + id + "] was not found."));
     }
 
     public Optional<User> findUserByEmail(String email) {
@@ -77,7 +67,7 @@ public class UserService implements UserDetailsService {
 
 
     public User updateUser(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword((user.getPassword()));
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
         user.setUserHandle(user.getUserHandle());
@@ -112,29 +102,5 @@ public class UserService implements UserDetailsService {
 
     public void deleteUser(String id) {
         userRepository.deleteById(id);
-    }
-
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-        Optional<User> user = userRepository.findByUsername(email);
-        if (user.isPresent()) {
-            List<GrantedAuthority> authorities = getUserAuthority(user.get().getRoles());
-            return buildUserForAuthentication(user, authorities);
-        } else {
-            throw new UsernameNotFoundException("username not found");
-        }
-    }
-
-    private List<GrantedAuthority> getUserAuthority(Set<Role> userRoles) {
-        Set<GrantedAuthority> roles = new HashSet<>();
-        userRoles.forEach((role) -> {
-            roles.add(new SimpleGrantedAuthority(role.getRole().toString()));
-        });
-
-        return new ArrayList<>(roles);
-    }
-
-    private UserDetails buildUserForAuthentication(Optional<User> user, List<GrantedAuthority> authorities) {
-        return new org.springframework.security.core.userdetails.User(user.get().getEmail(), user.get().getPassword(), authorities);
     }
 }
