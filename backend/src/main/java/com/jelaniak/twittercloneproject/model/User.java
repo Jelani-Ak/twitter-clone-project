@@ -26,7 +26,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    private Long userId;
+    private String userId;
     @NotBlank
     private String username;
     @NotBlank

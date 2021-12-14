@@ -2,30 +2,18 @@ package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
-
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
-    }
-
-    @PostMapping("/create/debug")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createUserDebug(@RequestBody User user) {
-        return userService.createUserDebug(user);
-    }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -45,9 +33,11 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public User updateUser(@RequestBody User user) {
-        return userService.updateUser(user);
+    public User updateUser(
+            @PathVariable("id") String id,
+            @RequestBody User user) throws Exception {
+        return userService.updateUser(id, user);
     }
 }

@@ -2,6 +2,7 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class TweetService implements Serializable {
     private final TweetRepository tweetRepository;
     private final CommentRepository commentRepository;
 
-    public Tweet createTweet(Tweet tweet) {
+    public Tweet createTweet(User userId, Tweet tweet) {
         tweet.setUser(tweet.getUser());
         tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setContent(tweet.getContent());
@@ -31,21 +32,23 @@ public class TweetService implements Serializable {
         return tweetRepository.save(tweet);
     }
 
-    public Comment createTweetComment(String tweetId, Comment comment) {
+    public Comment createTweetComment(String tweetId, Comment comment) throws Exception {
         Optional<Tweet> tweet = tweetRepository.findById(tweetId);
 
-        if (tweet.isPresent()) {
-            comment.setUser(comment.getUser());
-            comment.setCommentUrl(comment.getCommentUrl());
-            comment.setTweet(comment.getTweet());
-            comment.setMedia(comment.getMedia());
-            comment.setContent(comment.getContent());
-            comment.setCommentCount(comment.getCommentCount());
-            comment.setRetweetCount(comment.getRetweetCount());
-            comment.setLikeCount(comment.getLikeCount());
-
-            tweet.get().getComment().add(comment);
+        if (tweet.isEmpty()) {
+            throw new Exception("Tweet not found");
         }
+
+        comment.setUser(comment.getUser());
+        comment.setCommentUrl(comment.getCommentUrl());
+        comment.setTweet(comment.getTweet());
+        comment.setMedia(comment.getMedia());
+        comment.setContent(comment.getContent());
+        comment.setCommentCount(comment.getCommentCount());
+        comment.setRetweetCount(comment.getRetweetCount());
+        comment.setLikeCount(comment.getLikeCount());
+
+        tweet.get().getComment().add(comment);
 
         return commentRepository.save(comment);
     }
