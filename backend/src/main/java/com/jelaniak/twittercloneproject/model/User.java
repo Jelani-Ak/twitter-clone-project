@@ -63,7 +63,6 @@ public class User {
     private Integer tweetQuoteCount;
 
     private boolean follow;
-    private boolean locked;
     private boolean enabled;
 
     public User(String username, String email, String encode) {

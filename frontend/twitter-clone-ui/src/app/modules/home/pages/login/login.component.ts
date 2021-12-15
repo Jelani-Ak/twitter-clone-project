@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {RegistrationService} from "../../../../core/services/registration/registration.service";
+import {User} from "../../../../shared/models/user/user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -8,28 +11,27 @@ import {Component, OnInit} from '@angular/core';
 
 export class LoginComponent implements OnInit {
 
-  username!: string;
-  password!: string;
-  errorMessage = "Invalid Credentials";
-  successMessage!: String;
-  invalidLogin = false;
-  loginSuccess = false;
+  user = new User();
+  message = "";
 
-  constructor() {
+  constructor(
+    private registrationService: RegistrationService,
+    private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
-  handleLogin() {
-    // this.authService.login().subscribe((result) => {
-    //   this.invalidLogin = false;
-    //   this.loginSuccess = true;
-    //   this.successMessage = "Login Succesful";
-    //   //Redirect to main page
-    // }, () => {
-    //   this.invalidLogin = true;
-    //   this.loginSuccess = false;
-    // });
+  loginUser() {
+    this.registrationService.logUserInFromRemote(this.user).subscribe(
+      data => {
+        console.log("Response received");
+        this.router.navigateByUrl("/home");
+      }
+    );
+  }
+
+  goToSignUpPage() {
+    this.router.navigateByUrl("/register")
   }
 }

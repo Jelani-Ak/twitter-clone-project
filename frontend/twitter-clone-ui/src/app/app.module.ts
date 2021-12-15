@@ -11,6 +11,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDialogModule} from "@angular/material/dialog";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatTableModule} from "@angular/material/table";
 
 
 import {AppComponent} from './app.component';
@@ -23,14 +24,14 @@ import {SearchNewsPanelComponent} from './shared/components/search-news-panel/se
 import {DialogBoxComponent} from './shared/components/dialog-box/dialog-box.component';
 import {UserComponent} from './shared/models/user/user.component';
 import {TweetComponent} from './shared/models/tweet/tweet.component';
-import {MatTableModule} from "@angular/material/table";
-import {UserService} from "./core/services/user/user.service";
-import {TweetService} from "./core/services/tweet/tweet.service";
 import {ComposeTweetComponent} from './shared/components/compose-tweet/compose-tweet.component';
 import {UserManagementButtonComponent} from './shared/components/user-management-button/user-management-button.component';
 import {LoginComponent} from "./modules/home/pages/login/login.component";
-import { RegisterComponent } from './modules/home/pages/register/register.component';
-import { ProfileComponent } from './modules/home/pages/profile/profile.component';
+import {RegisterComponent} from './modules/home/pages/register/register.component';
+import {ProfileComponent} from './modules/home/pages/profile/profile.component';
+
+import {UserService} from "./core/services/user/user.service";
+import {TweetService} from "./core/services/tweet/tweet.service";
 
 @NgModule({
   declarations: [

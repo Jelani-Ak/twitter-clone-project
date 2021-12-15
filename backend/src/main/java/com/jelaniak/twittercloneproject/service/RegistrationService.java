@@ -31,6 +31,10 @@ public class RegistrationService {
         return userRepository.save(user);
     }
 
+    public User findByUsernameAndPassword(String username, String password) {
+        return userRepository.findByUsernameAndPassword(username, password);
+    }
+
     public User createUserDebug(User user) throws Exception {
         String tempEmail = user.getEmail();
 

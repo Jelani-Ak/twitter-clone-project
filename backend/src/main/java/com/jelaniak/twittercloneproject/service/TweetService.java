@@ -19,7 +19,7 @@ public class TweetService implements Serializable {
     private final TweetRepository tweetRepository;
     private final CommentRepository commentRepository;
 
-    public Tweet createTweet(User userId, Tweet tweet) {
+    public Tweet createTweet(Tweet tweet) {
         tweet.setUser(tweet.getUser());
         tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setContent(tweet.getContent());
