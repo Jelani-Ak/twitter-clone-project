@@ -4,6 +4,7 @@
 
 <div class="form-container">
   <form #loginform="ngForm" (ngSubmit)="loginUser()">
+    <!--<editor-fold desc="Username">-->
     <mat-form-field appearance="fill" class="user-management-form">
       <mat-label>Username</mat-label>
       <input #username="ngModel"
@@ -14,12 +15,15 @@
              name="username"
              required
              type="text">
+      <mat-error *ngIf="username.errors && (username.invalid && username.touched)">
+        Username is required
+      </mat-error>
     </mat-form-field>
-    <div *ngIf="username.errors && (username.invalid && username.touched)">
-      <p class="bad-credentials-alert"><small>Username is required</small></p>
-    </div>
+    <!--</editor-fold>-->
+
     <br/>
 
+    <!--<editor-fold desc="Password">-->
     <mat-form-field appearance="fill" class="user-management-form">
       <mat-label>Password</mat-label>
       <input #password="ngModel"
@@ -30,15 +34,15 @@
              name="password"
              required
              type="password">
+      <mat-error *ngIf="password.errors && (password.invalid && password.touched)">
+        Password is required
+      </mat-error>
     </mat-form-field>
-    <div *ngIf="password.errors && (password.invalid && password.touched)">
-      <p class="bad-credentials-alert"><small>Password is required</small></p>
-    </div>
+    <!--</editor-fold>-->
 
     <br/>
-    <span>
-      <button class="login-button" mat-button type="submit">Login</button>
-      <button (click)="goToSignUpPage()" class="login-button" mat-button style="float: right" type="button">Register</button>
-    </span>
+
+    <button class="login-button" mat-button type="submit">Login</button>
+    <small (click)="goToSignUpPage()">Don't have an account? Register here</small>
   </form>
 </div>

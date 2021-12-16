@@ -10,10 +10,7 @@
 
 .user-management-form {
   width: 100%;
-}
-
-.bad-credentials-alert {
-  color: red;
+  margin-bottom: 5px;
 }
 
 .login-button {

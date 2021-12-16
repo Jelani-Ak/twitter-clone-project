@@ -18,14 +18,14 @@
 
     <dependencies>
 
-        <!--<editor-fold desc="Mongo DB">-->
+        <!--<editor-fold desc="MongoDB">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
         <!--</editor-fold>-->
 
-        <!--<editor-fold desc="Web Development and Auto Configuration">-->
+        <!--<editor-fold desc="Spring MVC, REST and Tomcat">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -66,7 +66,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-            <version>2.5.6</version>
         </dependency>
         <!--</editor-fold>-->
 

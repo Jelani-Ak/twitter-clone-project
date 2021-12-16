@@ -32,6 +32,7 @@ import {ProfileComponent} from './modules/home/pages/profile/profile.component';
 
 import {UserService} from "./core/services/user/user.service";
 import {TweetService} from "./core/services/tweet/tweet.service";
+import { LandingPageComponent } from './modules/home/pages/landing-page/landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {TweetService} from "./core/services/tweet/tweet.service";
     UserManagementButtonComponent,
     RegisterComponent,
     ProfileComponent,
+    LandingPageComponent,
   ],
   imports: [
     BrowserModule,
