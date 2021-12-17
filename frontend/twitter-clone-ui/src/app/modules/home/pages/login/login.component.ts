@@ -12,11 +12,11 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
 
   user = new User();
-  message = "";
 
   constructor(
-    private registrationService: RegistrationService,
-    private router: Router) {
+    private router: Router,
+    private registrationService: RegistrationService
+  ) {
   }
 
   ngOnInit(): void {
@@ -25,13 +25,11 @@ export class LoginComponent implements OnInit {
   loginUser() {
     this.registrationService.logUserInFromRemote(this.user).subscribe(
       data => {
-        console.log("Response received");
-        this.router.navigateByUrl("/home");
+        console.log("Login Successful");
+        setTimeout(() => {
+          this.router.navigateByUrl("/home");
+        }, 2000);
       }
     );
-  }
-
-  goToSignUpPage() {
-    this.router.navigateByUrl("/register")
   }
 }

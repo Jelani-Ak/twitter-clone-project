@@ -43,6 +43,6 @@
     <br/>
 
     <button class="login-button" mat-button type="submit">Login</button>
-    <small (click)="goToSignUpPage()">Don't have an account? Register here</small>
+    <small [routerLink]="['/register']">Don't have an account? Register here</small>
   </form>
 </div>

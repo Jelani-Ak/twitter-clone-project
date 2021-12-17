@@ -10,7 +10,7 @@
       <mat-label>Username</mat-label>
       <input #username="ngModel"
              [(ngModel)]="user.username"
-             [class.is-invalid]="username.invalid && username.touched"
+             autocomplete="off"
              id="username"
              matInput
              name="username"
@@ -29,7 +29,7 @@
       <mat-label>Password</mat-label>
       <input #password="ngModel"
              [(ngModel)]="user.password"
-             [class.is-invalid]="password.invalid && password.touched"
+             autocomplete="off"
              id="password"
              matInput
              name="password"
@@ -48,15 +48,18 @@
       <mat-label>Confirm Password</mat-label>
       <input #confirmPassword="ngModel"
              (ngModel)="user.password"
-             [class.is-invalid]="password.invalid && password.touched"
+             autocomplete="off"
              id="confirmPassword"
              matInput
              name="confirmPassword"
              required
              type="password">
-      <mat-error *ngIf="(confirmPassword.value !== password.value) && confirmPassword.touched">
-        Password and Confirm Password do not Match
-      </mat-error>
+      <mat-hint style="color: green" *ngIf="(confirmPassword.value === password.value) && confirmPassword.touched">
+        Emails Match
+      </mat-hint>
+      <mat-hint style="color: red" *ngIf="(confirmPassword.value !== password.value) && confirmPassword.touched">
+        Emails must match
+      </mat-hint>
     </mat-form-field>
     <!--</editor-fold>-->
 
@@ -67,7 +70,7 @@
       <mat-label>Email</mat-label>
       <input #email="ngModel"
              [(ngModel)]="user.email"
-             [class.is-invalid]="email.invalid && email.touched"
+             autocomplete="off"
              id="email"
              matInput
              name="email"
@@ -86,20 +89,24 @@
       <mat-label>Confirm Email</mat-label>
       <input #confirmEmail="ngModel"
              (ngModel)="user.email"
+             autocomplete="off"
              id="confirmEmail"
              matInput
              name="confirmEmail"
              required
              type="email">
-      <mat-error *ngIf="(confirmEmail.value !== email.value) && confirmEmail.touched">
-        Email and Confirm Email do not Match
-      </mat-error>
+      <mat-hint style="color: green" *ngIf="(confirmEmail.value === email.value) && confirmEmail.touched">
+        Emails Match
+      </mat-hint>
+      <mat-hint style="color: red" *ngIf="(confirmEmail.value !== email.value) && confirmEmail.touched">
+        Emails must match
+      </mat-hint>
     </mat-form-field>
     <!--</editor-fold>-->
 
     <br/>
 
     <button class="login-button" mat-button type="submit">Register</button>
-    <small (click)="goToLoginPage()" [routerLink]="['/login']">Already have an account? Login here</small>
+    <small [routerLink]="['/login']">Already have an account? Login here</small>
   </form>
 </div>

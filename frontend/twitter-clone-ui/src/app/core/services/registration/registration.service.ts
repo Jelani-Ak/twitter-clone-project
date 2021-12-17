@@ -16,4 +16,8 @@ export class RegistrationService {
   public logUserInFromRemote(user: User): Observable<any> {
     return this.http.post<any>(this.baseurl + "/login", user)
   }
+
+  public registerUserFromRemote(user: User): Observable<any> {
+    return this.http.post<any>(this.baseurl + "/user", user);
+  }
 }
