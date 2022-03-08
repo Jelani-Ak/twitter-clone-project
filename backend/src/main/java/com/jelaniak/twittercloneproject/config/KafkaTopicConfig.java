@@ -10,7 +10,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic TwitterCloneTopic() {
-        return TopicBuilder.name("TwiterClone")
+        return TopicBuilder.name("TwitterClone")
                 .build();
     }
 }
