@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from "@angular/common/http";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -12,6 +12,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatTableModule} from "@angular/material/table";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 import {AppComponent} from './app.component';
@@ -29,10 +30,13 @@ import {UserManagementButtonComponent} from './shared/components/user-management
 import {LoginComponent} from "./modules/home/pages/login/login.component";
 import {RegisterComponent} from './modules/home/pages/register/register.component';
 import {ProfileComponent} from './modules/home/pages/profile/profile.component';
+import {LandingPageComponent} from './modules/home/pages/landing-page/landing-page.component';
 
 import {UserService} from "./core/services/user/user.service";
 import {TweetService} from "./core/services/tweet/tweet.service";
-import { LandingPageComponent } from './modules/home/pages/landing-page/landing-page/landing-page.component';
+import { MediaComponent } from './shared/models/media/media.component';
+import { CommentComponent } from './shared/models/comment/comment.component';
+
 
 @NgModule({
   declarations: [
@@ -52,6 +56,8 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
     RegisterComponent,
     ProfileComponent,
     LandingPageComponent,
+    MediaComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,11 +73,12 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
     MatDialogModule,
     FormsModule,
     ReactiveFormsModule,
-    MatTableModule
-
+    MatTableModule,
+    MatSnackBarModule
   ],
   providers: [UserService, TweetService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
+
 }

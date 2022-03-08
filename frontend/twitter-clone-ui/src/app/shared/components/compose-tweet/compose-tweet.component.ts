@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Tweet} from "../../models/tweet/tweet";
 import {TweetService} from "../../../core/services/tweet/tweet.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-compose-tweet',
@@ -9,30 +10,28 @@ import {TweetService} from "../../../core/services/tweet/tweet.service";
 })
 export class ComposeTweetComponent implements OnInit {
 
+  tweet = new Tweet();
+
   content!: string;
   fileSelected!: boolean;
 
-  constructor(private tweetService: TweetService) {
+
+  constructor(
+    private snackbar: MatSnackBar,
+    private tweetService: TweetService
+  ) {
   }
 
   ngOnInit(): void {
   }
 
   addTweet() {
-    let tweet: Tweet = {
-      username: "",
-      tweetUrl: "",
-      content: this.content,
-      commentCount: 0,
-      retweetCount: 0,
-      createdDate: "",
-      likeCount: 0
-    };
-    this.tweetService.composeTweet(tweet).subscribe(
-      (response: Tweet) => {
-        console.log(response)
-        console.log(tweet)
+    this.tweetService.composeTweet(this.tweet).subscribe(
+      data => {
+        console.log(data)
+        console.log(this.tweet)
         console.log(this.content)
+        this.snackbar.open("Tweet Created Successfully", undefined, {duration: 2500})
       })
   }
 }

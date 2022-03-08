@@ -7,7 +7,7 @@
         <!-- Text area -->
         <textarea
           #input
-          [(ngModel)]="content"
+          [(ngModel)]="tweet.content"
           [ngModelOptions]="{standalone: true}"
           class="mat-form-field-textarea"
           id="content"
@@ -28,7 +28,7 @@
       <span *ngIf="fileSelected" style="margin-right: 10px">filename-example-placeholder.txt</span>
       <button
         (click)="addTweet()"
-        [disabled]="!content"
+        [disabled]="!tweet.content"
         class="tweet-button"
         id="compose-tweet-button"
         mat-button
