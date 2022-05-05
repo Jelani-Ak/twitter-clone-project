@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
-
     @Autowired
     private final UserService userService;
 

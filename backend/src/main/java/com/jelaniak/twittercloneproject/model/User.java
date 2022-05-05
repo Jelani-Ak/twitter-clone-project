@@ -67,8 +67,4 @@ public class User {
 
     private boolean follow;
     private boolean enabled;
-
-    public User(String username, String email, String encode) {
-
-    }
 }

@@ -25,6 +25,14 @@
         </dependency>
         <!--</editor-fold>-->
 
+        <!--<editor-fold desc="MongoDB Testing">-->
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--</editor-fold>-->
+
         <!--<editor-fold desc="Spring MVC, REST and Tomcat">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -32,7 +40,7 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--<editor-fold desc="Reduce Boilerplate Code (Getters & Setters, etc.)">-->
+        <!--<editor-fold desc="Lombok">-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -48,7 +56,7 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--<editor-fold desc="File hosting">-->
+        <!--<editor-fold desc="AWS3">-->
         <dependency>
             <groupId>io.awspring.cloud</groupId>
             <artifactId>spring-cloud-aws-context</artifactId>
@@ -69,6 +77,7 @@
         </dependency>
         <!--</editor-fold>-->
 
+        <!--<editor-fold desc="Apache Kafka">-->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>

@@ -22,7 +22,7 @@ public class RegistrationService {
             }
 
             user.setUsername(user.getUsername());
-            user.setPassword((user.getPassword()));
+            user.setPassword(user.getPassword());
             user.setCreatedDate(user.getCreatedDate());
             user.setFollow(false);
             user.setEnabled(false);
@@ -35,6 +35,7 @@ public class RegistrationService {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
+    // Create a user defining all details
     public User createUserDebug(User user) throws Exception {
         String tempEmail = user.getEmail();
 
