@@ -6,6 +6,7 @@ import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
@@ -13,13 +14,21 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class TweetService implements Serializable {
 
     private final TweetRepository tweetRepository;
     private final CommentRepository commentRepository;
 
+    public TweetService(
+            TweetRepository tweetRepository,
+            CommentRepository commentRepository
+    ) {
+        this.tweetRepository = tweetRepository;
+        this.commentRepository = commentRepository;
+    }
+
     public Tweet createTweet(Tweet tweet) {
+        tweet.setTweetId(new ObjectId());
         tweet.setUser(tweet.getUser());
         tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setContent(tweet.getContent());
@@ -32,13 +41,14 @@ public class TweetService implements Serializable {
         return tweetRepository.save(tweet);
     }
 
-    public Comment createTweetComment(String tweetId, Comment comment) throws Exception {
+    public Comment createTweetComment(ObjectId tweetId, Comment comment) throws Exception {
         Optional<Tweet> tweet = tweetRepository.findById(tweetId);
 
         if (tweet.isEmpty()) {
             throw new Exception("Tweet not found");
         }
 
+        comment.setCommentId(new ObjectId());
         comment.setUser(comment.getUser());
         comment.setCommentUrl(comment.getCommentUrl());
         comment.setTweet(comment.getTweet());
@@ -57,12 +67,12 @@ public class TweetService implements Serializable {
         return tweetRepository.findAll();
     }
 
-    public Tweet findTweetById(String tweetId) throws Exception {
+    public Tweet findTweetById(ObjectId tweetId) throws Exception {
         return tweetRepository.findById(tweetId)
                 .orElseThrow(() -> new Exception("Tweet by Id: [" + tweetId + "] was not found."));
     }
 
-    public void deleteTweet(String tweetId) {
+    public void deleteTweet(ObjectId tweetId) {
         tweetRepository.deleteById(tweetId);
     }
 }

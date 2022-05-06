@@ -2,7 +2,7 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,20 +10,23 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User findUserById(String id) throws Exception {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new Exception("User by id: [" + id + "] was not found."));
+    public User findByUserId(ObjectId userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NullPointerException("User with userId: [" + userId + "] was not found."));
     }
 
-    public User updateUser(String id, User user) throws Exception {
-        User savedUser = findUserById(id);
+    public User updateUser(ObjectId id, User user) {
+        User savedUser = findByUserId(id);
 
         savedUser.setPassword((user.getPassword()));
         savedUser.setEmail(user.getEmail());
@@ -56,10 +59,10 @@ public class UserService {
     }
 
     public void validateUser(User user) {
-        user.setEnabled(user.isEnabled());
+        user.setVerified(true);
     }
 
-    public void deleteUser(String id) {
-        userRepository.deleteById(id);
+    public void deleteUser(ObjectId userId) {
+        userRepository.deleteByUserId(userId);
     }
 }

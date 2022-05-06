@@ -5,16 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.swing.event.DocumentListener;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +27,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    private String userId;
+    private ObjectId userId;
     @NotBlank
     private String username;
     @NotBlank
@@ -66,5 +64,5 @@ public class User {
     private Integer tweetQuoteCount;
 
     private boolean follow;
-    private boolean enabled;
+    private boolean verified;
 }

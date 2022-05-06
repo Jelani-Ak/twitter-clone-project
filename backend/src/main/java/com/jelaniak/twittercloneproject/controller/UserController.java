@@ -3,6 +3,7 @@ package com.jelaniak.twittercloneproject.controller;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User findUserById(@PathVariable String id) throws Exception {
-        return userService.findUserById(id);
+    public User findUserById(@PathVariable ObjectId id) throws Exception {
+        return userService.findByUserId(id);
     }
 
     @GetMapping("/all")
@@ -31,14 +32,14 @@ public class UserController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUser(@PathVariable String id) {
+    public void deleteUser(@PathVariable ObjectId id) {
         userService.deleteUser(id);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public User updateUser(
-            @PathVariable("id") String id,
+            @PathVariable("id") ObjectId id,
             @RequestBody User user) throws Exception {
         return userService.updateUser(id, user);
     }

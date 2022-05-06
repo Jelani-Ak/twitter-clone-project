@@ -2,40 +2,76 @@ package com.jelaniak.twittercloneproject.repository;
 
 import com.jelaniak.twittercloneproject.model.User;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@DataMongoTest
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
+@DataMongoTest(properties = {"spring.mongodb.embedded.version=4.0.2"})
 class UserRepositoryTest {
 
     @Autowired
-    private UserRepository userRepositoryTest;
+    private UserRepository userRepository;
 
     @Test
-    void findByUsername() {
+    void checkUsernameExists() {
         //given
         String username = "Jelani";
 
         User user = new User();
         user.setUsername(username);
 
-        userRepositoryTest.save(user);
-
         //when
-        boolean expected = userRepositoryTest.existsByUsername(username);
+        userRepository.save(user);
+
+        boolean expected = userRepository.existsByUsername(username);
 
         //then
         assertThat(expected).isTrue();
     }
 
     @Test
-    void findByEmail() {
+    void checkUsernameDoesNotExist() {
+        //given
+        String username = "Jelani";
+
+        //when
+        boolean expected = userRepository.existsByUsername(username);
+
+        //then
+        assertThat(expected).isFalse();
     }
 
     @Test
-    void findByUsernameAndPassword() {
+    void checkEmailExists() {
+        //given
+        String email = "JelaniTestEmail@test.co.uk";
+
+        User user = new User();
+        user.setEmail(email);
+
+        //when
+        userRepository.save(user);
+
+        boolean expected = userRepository.existsByEmail(email);
+
+        //then
+        assertThat(expected).isTrue();
+    }
+
+    @Test
+    void checkEmailDoesNotExist() {
+        //given
+        String email = "TestEmail@test.co.uk";
+
+        //when
+        boolean expected = userRepository.existsByEmail(email);
+
+        //then
+        assertThat(expected).isFalse();
     }
 }
