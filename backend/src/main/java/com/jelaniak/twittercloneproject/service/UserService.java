@@ -22,8 +22,7 @@ public class UserService {
     }
 
     public User findByUserId(ObjectId userId) {
-        return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new NullPointerException("User with userId: [" + userId + "] was not found."));
+        return userRepository.findByUserId(userId).orElseThrow();
     }
 
     public User updateUser(ObjectId id, User user) {
@@ -43,8 +42,11 @@ public class UserService {
     }
 
     public void followUser(User user) {
-        user.setFollow(user.isFollow());
-        userRepository.save(user);
+        user.setFollow(true);
+    }
+
+    public void unfollowUser(User user) {
+        user.setFollow(false);
     }
 
     public void getFollowData(User user) {
@@ -72,9 +74,9 @@ public class UserService {
         String tempUsername = user.getUsername();
 
         //Check if username and email is valid
-        if ((tempEmail != null && !"".equals(tempEmail)) && (tempUsername != null && !"".equals(tempUsername))) {
+        if ((tempEmail != null && !"".equals(tempEmail)) || (tempUsername != null && !"".equals(tempUsername))) {
             //Check if username or email already exists
-            if (userRepository.findByUsernameAndEmail(tempUsername, tempEmail).isPresent()) {
+            if (userRepository.existsByUsernameAndEmail(tempUsername, tempEmail)) {
                 throw new Exception("User with " + tempEmail + " already exists");
             }
 
@@ -98,10 +100,10 @@ public class UserService {
         String tempEmail = user.getEmail();
         String tempUsername = user.getUsername();
 
-        //Check if username and email is valid
-        if ((tempEmail != null && !"".equals(tempEmail)) && (tempUsername != null && !"".equals(tempUsername))) {
-            //Check if username or email already exists
-            if (userRepository.findByUsernameAndEmail(tempUsername, tempEmail).isPresent()) {
+        //Check if username or email is valid
+        if ((tempEmail != null && !"".equals(tempEmail)) || (tempUsername != null && !"".equals(tempUsername))) {
+            //Check if username and email already exists
+            if (userRepository.existsByUsernameAndEmail(tempUsername, tempEmail)) {
                 throw new Exception("User with " + tempEmail + " already exists");
             }
 

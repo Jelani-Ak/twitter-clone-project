@@ -48,16 +48,9 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    @DBRef
     private Set<User> following = new HashSet<>();
-
-    @DBRef
     private Set<User> followers = new HashSet<>();
-
-    @DBRef
     private Set<User> followersMutual = new HashSet<>();
-
-    @DBRef
     private List<Tweet> tweets = new ArrayList<>();
 
     private Integer tweetCount;
@@ -65,4 +58,12 @@ public class User {
 
     private boolean follow;
     private boolean verified;
+
+    public User(String username) {
+
+    }
+
+    public User(String username, String password, String email) {
+
+    }
 }

@@ -29,6 +29,16 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--</editor-fold>-->
+
+        <!--<editor-fold desc="Fongo">-->
+        <dependency>
+            <groupId>com.github.fakemongo</groupId>
+            <artifactId>fongo</artifactId>
+            <version>2.2.0-RC2</version>
+            <scope>test</scope>
         </dependency>
         <!--</editor-fold>-->
 
@@ -47,10 +57,18 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--<editor-fold desc="JUnit">-->
+        <!--<editor-fold desc="Testing">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--</editor-fold>-->
+
+        <!--<editor-fold desc="H2 Database Testing">-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
             <scope>test</scope>
         </dependency>
         <!--</editor-fold>-->
