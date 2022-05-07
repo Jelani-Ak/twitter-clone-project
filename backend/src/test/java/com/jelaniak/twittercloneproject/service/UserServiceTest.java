@@ -3,38 +3,26 @@ package com.jelaniak.twittercloneproject.service;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.Mockito.verify;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@DataMongoTest(properties = {"spring.mongodb.embedded.version=4.0.2"})
 class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
     private UserService userService;
-    private AutoCloseable autoCloseable;
 
     @BeforeEach
     void setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this);
         userService = new UserService(userRepository);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        autoCloseable.close();
     }
 
     @Test

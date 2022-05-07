@@ -7,21 +7,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@DataMongoTest(properties = {"spring.mongodb.embedded.version=4.0.2"})
 class RegistrationServiceTest {
+
     @Mock
     private UserRepository userRepository;
 
     @Test
     void createUser() {
-        //given
+        //given - precondition or setup
         User user = new User();
 
         user.setUsername("Jelani");
@@ -29,10 +28,10 @@ class RegistrationServiceTest {
         user.setEmail("JelaniTestEmail@test.co.uk");
         user.setDisplayName("Jayako");
 
-        //when
+        //when - action or the behaviour that we are going test
         userRepository.save(user);
 
-        //then
+        //then - verify the output
         ArgumentCaptor<User> userArgumentCaptor =
                 ArgumentCaptor.forClass(User.class);
 

@@ -2,19 +2,16 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
-import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
-import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TweetService implements Serializable {
+public class TweetService {
 
     private final TweetRepository tweetRepository;
     private final CommentRepository commentRepository;

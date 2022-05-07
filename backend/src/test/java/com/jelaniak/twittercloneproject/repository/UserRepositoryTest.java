@@ -1,37 +1,45 @@
 package com.jelaniak.twittercloneproject.repository;
 
 import com.jelaniak.twittercloneproject.model.User;
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
-@DataMongoTest(properties = {"spring.mongodb.embedded.version=4.0.2"})
 class UserRepositoryTest {
 
-    @Autowired
+    @Mock
     private UserRepository userRepository;
 
     @Test
     void checkUsernameExists() {
-        //given
+        //given - precondition or setup
         String username = "Jelani";
 
         User user = new User();
         user.setUsername(username);
 
-        //when
         userRepository.save(user);
 
+        //when - action or the behaviour that we are going test
         boolean expected = userRepository.existsByUsername(username);
 
-        //then
-        assertThat(expected).isTrue();
+        //then - verify the output
+        ArgumentCaptor<User> userArgumentCaptor =
+                ArgumentCaptor.forClass(User.class);
+
+        verify(userRepository).save(userArgumentCaptor.capture());
+
+        User capturedUser = userArgumentCaptor.getValue();
+
+        assertThat(capturedUser.getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
@@ -60,7 +68,14 @@ class UserRepositoryTest {
         boolean expected = userRepository.existsByEmail(email);
 
         //then
-        assertThat(expected).isTrue();
+        ArgumentCaptor<User> userArgumentCaptor =
+                ArgumentCaptor.forClass(User.class);
+
+        verify(userRepository).save(userArgumentCaptor.capture());
+
+        User capturedUser = userArgumentCaptor.getValue();
+
+        assertThat(capturedUser.getEmail()).isEqualTo(user.getEmail());
     }
 
     @Test

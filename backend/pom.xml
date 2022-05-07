@@ -47,7 +47,7 @@
         </dependency>
         <!--</editor-fold>-->
 
-        <!--<editor-fold desc="Tests">-->
+        <!--<editor-fold desc="JUnit">-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
