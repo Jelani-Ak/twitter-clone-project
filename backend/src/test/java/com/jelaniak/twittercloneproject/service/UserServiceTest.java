@@ -10,12 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.verify;
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
@@ -40,25 +38,57 @@ class UserServiceTest {
 
     @Test
     @Order(1)
-    void getAllUsers() {
-        //when
+    void getAllUsers() throws Exception {
+        //given - precondition or setup
+        userService.createUser(new User());
+
+        //when - action or the behaviour that we are going test
         userService.getAllUsers();
 
-        //then
+        //then - verify the output
         assertThat(userRepository.findAll()).isNotNull();
+        assertThat(userRepository.findAll().isEmpty()).isFalse();
 
     }
 
     @Test
     @Order(2)
-    @Disabled
     void updateUser() throws Exception {
         //given - precondition or setup
+        User userOne = new User();
+        userOne.setUserId(new ObjectId());
+        userOne.setPassword("passwordOne");
+        userOne.setEmail("userOne@test.co.uk");
+        userOne.setDisplayName("User-1");
+        userOne.setUserHandle("@UserOne");
+        userOne.setBioLocation("North");
+        userOne.setBioExternalLink("https://www.user-one.co.uk");
+        userOne.setBioText("Howdy, I'm userOne");
+        userOne.setPictureAvatarUrl("https://www.fake-website-for-test/userOne-avatar.jpg");
+        userOne.setPictureBackgroundUrl("https://www.fake-website-for-test/userOne-background.jpg");
+        userRepository.save(userOne);
+
+        User userTwo = new User();
+        userTwo.setUserId(new ObjectId());
+        userTwo.setPassword("passwordTwo");
+        userTwo.setEmail("userTwo@test.co.uk");
+        userTwo.setDisplayName("User-2");
+        userTwo.setUserHandle("@userTwo");
+        userTwo.setBioLocation("South");
+        userTwo.setBioExternalLink("https://www.user-two.co.uk");
+        userTwo.setBioText("Howdy, I'm userTwo");
+        userTwo.setPictureAvatarUrl("https://www.fake-website-for-test/userTwo-avatar.jpg");
+        userTwo.setPictureBackgroundUrl("https://www.fake-website-for-test/userTwo-background.jpg");
+        userRepository.save(userTwo);
 
         //when - action or the behaviour that we are going test
+        userService.updateUser(userOne.getUserId(), userTwo);
 
         //then - verify the output
-
+        assertThat(userRepository.findByUserId(userOne.getUserId()).get())
+                .usingRecursiveComparison()
+                .ignoringFields("userId")
+                .isEqualTo(userRepository.findByUserId(userTwo.getUserId()).get());
     }
 
     @Test
@@ -96,11 +126,11 @@ class UserServiceTest {
         //given - precondition or setup
         User user = new User();
         user.setFollowing(Set.of(
-                new User("FollowOne"),
-                new User("FollowTwo"),
-                new User("FollowThree"),
-                new User("FollowFour"),
-                new User("FollowFive")
+                new User(),
+                new User(),
+                new User(),
+                new User(),
+                new User()
         ));
 
         userRepository.save(user);
@@ -119,6 +149,7 @@ class UserServiceTest {
         //TODO
         // - Create fake tweets
         // - Add them to a mock user
+        // - Assert that users set of tweets is populated
 
         //given - precondition or setup
 
@@ -173,24 +204,18 @@ class UserServiceTest {
     }
 
     @Test
-    @Disabled
     @Order(10)
     void findByUserId() {
         //given - precondition or setup
+        User user = new User();
+        userRepository.save(user);
+
+        ObjectId idToAdd = user.getUserId();
 
         //when - action or the behaviour that we are going test
+        ObjectId idInRepo = userRepository.findByUserId(idToAdd).get().getUserId();
 
         //then - verify the output
-    }
-
-    @Test
-    @Disabled
-    @Order(11)
-    void findByUsernameAndPassword() {
-        //given - precondition or setup
-
-        //when - action or the behaviour that we are going test
-
-        //then - verify the output
+        assertThat(idToAdd).isEqualTo(idInRepo);
     }
 }

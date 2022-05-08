@@ -58,12 +58,4 @@ public class User {
 
     private boolean follow;
     private boolean verified;
-
-    public User(String username) {
-
-    }
-
-    public User(String username, String password, String email) {
-
-    }
 }

@@ -66,7 +66,7 @@ public class UserController {
         Optional<User> tempUser = Optional.empty();
 
         if (tempUsername != null && tempPassword != null) {
-            tempUser = userService.findByUsernameAndPassword(tempUsername, tempPassword);
+            tempUser = userService.validateCredentials(tempUsername, tempPassword);
         }
 
         if (tempUser.isEmpty()) {

@@ -91,7 +91,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findByUsernameAndPassword(String username, String password) {
+    public Optional<User> validateCredentials(String username, String password) {
         return userRepository.findByUsernameAndPassword(username, password);
     }
 
