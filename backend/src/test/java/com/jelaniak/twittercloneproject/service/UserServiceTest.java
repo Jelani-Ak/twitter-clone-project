@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -64,8 +65,8 @@ class UserServiceTest {
         userOne.setBioLocation("North");
         userOne.setBioExternalLink("https://www.user-one.co.uk");
         userOne.setBioText("Howdy, I'm userOne");
-        userOne.setPictureAvatarUrl("https://www.fake-website-for-test/userOne-avatar.jpg");
-        userOne.setPictureBackgroundUrl("https://www.fake-website-for-test/userOne-background.jpg");
+        userOne.setPictureAvatarUrl("https://www.fake.co.uk/userOne-avatar.jpg");
+        userOne.setPictureBackgroundUrl("https://www.fake.co.uk/userOne-background.jpg");
         userRepository.save(userOne);
 
         User userTwo = new User();
@@ -77,18 +78,18 @@ class UserServiceTest {
         userTwo.setBioLocation("South");
         userTwo.setBioExternalLink("https://www.user-two.co.uk");
         userTwo.setBioText("Howdy, I'm userTwo");
-        userTwo.setPictureAvatarUrl("https://www.fake-website-for-test/userTwo-avatar.jpg");
-        userTwo.setPictureBackgroundUrl("https://www.fake-website-for-test/userTwo-background.jpg");
+        userTwo.setPictureAvatarUrl("https://www.fake.co.uk/userTwo-avatar.jpg");
+        userTwo.setPictureBackgroundUrl("https://www.fake.co.uk/userTwo-background.jpg");
         userRepository.save(userTwo);
 
         //when - action or the behaviour that we are going test
         userService.updateUser(userOne.getUserId(), userTwo);
 
         //then - verify the output
-        assertThat(userRepository.findByUserId(userOne.getUserId()).get())
+        assertThat(userRepository.findByUserId(userOne.getUserId()).orElse(null))
                 .usingRecursiveComparison()
                 .ignoringFields("userId")
-                .isEqualTo(userRepository.findByUserId(userTwo.getUserId()).get());
+                .isEqualTo(userRepository.findByUserId(userTwo.getUserId()).orElse(null));
     }
 
     @Test
@@ -213,7 +214,7 @@ class UserServiceTest {
         ObjectId idToAdd = user.getUserId();
 
         //when - action or the behaviour that we are going test
-        ObjectId idInRepo = userRepository.findByUserId(idToAdd).get().getUserId();
+        ObjectId idInRepo = Objects.requireNonNull(userRepository.findByUserId(idToAdd).orElse(null)).getUserId();
 
         //then - verify the output
         assertThat(idToAdd).isEqualTo(idInRepo);
