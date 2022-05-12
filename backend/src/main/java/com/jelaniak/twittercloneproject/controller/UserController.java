@@ -1,10 +1,10 @@
 package com.jelaniak.twittercloneproject.controller;
 
+import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,30 +13,27 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    @Autowired
     private final UserService userService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) throws Exception {
+    public User createUser(@RequestBody User user) throws UserAlreadyExistsException {
         return userService.createUser(user);
     }
 
     @PostMapping("/register/debug")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUserDebug(@RequestBody User user) throws Exception {
+    public User createUserDebug(@RequestBody User user) throws UserAlreadyExistsException {
         return userService.createUserDebug(user);
     }
 
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public User updateUser(
-            @PathVariable("id") ObjectId id,
-            @RequestBody User user) throws Exception {
+    public User updateUser(@PathVariable("id") ObjectId id, @RequestBody User user) {
         return userService.updateUser(id, user);
     }
 
@@ -48,7 +45,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User findUserById(@PathVariable ObjectId id) throws Exception {
+    public User findUserByUserId(@PathVariable ObjectId id) {
         return userService.findByUserId(id);
     }
 

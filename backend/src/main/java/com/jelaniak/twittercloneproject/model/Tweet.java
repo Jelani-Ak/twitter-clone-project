@@ -1,6 +1,8 @@
 package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,6 +24,7 @@ import java.util.List;
 public class Tweet {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId tweetId;
     private String tweetUrl;
 

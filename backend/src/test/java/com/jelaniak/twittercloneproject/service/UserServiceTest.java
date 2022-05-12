@@ -1,5 +1,6 @@
 package com.jelaniak.twittercloneproject.service;
 
+import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
@@ -54,17 +55,17 @@ class UserServiceTest {
 
     @Test
     @Order(2)
-    void updateUser() throws Exception {
+    void updateUser() {
         //given - precondition or setup
         User userOne = new User();
         userOne.setUserId(new ObjectId());
         userOne.setPassword("passwordOne");
         userOne.setEmail("userOne@test.co.uk");
         userOne.setDisplayName("User-1");
-        userOne.setUserHandle("@UserOne");
+        userOne.setUserHandleName("@UserOne");
         userOne.setBioLocation("North");
         userOne.setBioExternalLink("https://www.user-one.co.uk");
-        userOne.setBioText("Howdy, I'm userOne");
+        userOne.setBioAboutText("Howdy, I'm userOne");
         userOne.setPictureAvatarUrl("https://www.fake.co.uk/userOne-avatar.jpg");
         userOne.setPictureBackgroundUrl("https://www.fake.co.uk/userOne-background.jpg");
         userRepository.save(userOne);
@@ -74,10 +75,10 @@ class UserServiceTest {
         userTwo.setPassword("passwordTwo");
         userTwo.setEmail("userTwo@test.co.uk");
         userTwo.setDisplayName("User-2");
-        userTwo.setUserHandle("@userTwo");
+        userTwo.setUserHandleName("@userTwo");
         userTwo.setBioLocation("South");
         userTwo.setBioExternalLink("https://www.user-two.co.uk");
-        userTwo.setBioText("Howdy, I'm userTwo");
+        userTwo.setBioAboutText("Howdy, I'm userTwo");
         userTwo.setPictureAvatarUrl("https://www.fake.co.uk/userTwo-avatar.jpg");
         userTwo.setPictureBackgroundUrl("https://www.fake.co.uk/userTwo-background.jpg");
         userRepository.save(userTwo);
@@ -103,7 +104,7 @@ class UserServiceTest {
         userService.followUser(user);
 
         //then - verify the output
-        assertThat(user.isFollow()).isTrue();
+        assertThat(user.isFollowing()).isTrue();
     }
 
     @Test
@@ -111,14 +112,14 @@ class UserServiceTest {
     void unfollowUser() {
         //given - precondition or setup
         User user = new User();
-        user.setFollow(true);
+        user.setFollowing(true);
         userRepository.save(user);
 
         //when - action or the behaviour that we are going test
         userService.unfollowUser(user);
 
         //then - verify the output
-        assertThat(user.isFollow()).isFalse();
+        assertThat(user.isFollowing()).isFalse();
     }
 
     @Test
@@ -126,7 +127,7 @@ class UserServiceTest {
     void getFollowData() {
         //given - precondition or setup
         User user = new User();
-        user.setFollowing(Set.of(
+        user.setUsersYouFollow(Set.of(
                 new User(),
                 new User(),
                 new User(),
@@ -137,26 +138,32 @@ class UserServiceTest {
         userRepository.save(user);
 
         //when - action or the behaviour that we are going test
-        Set<User> followedUsers = userService.findByUserId(user.getUserId()).getFollowing();
+        Set<User> followedUsers = userService.findByUserId(user.getUserId()).getUsersYouFollow();
 
         //then - verify the output
         assertThat(followedUsers.isEmpty()).isFalse();
     }
 
     @Test
-    @Disabled
     @Order(6)
     void getTweetData() {
-        //TODO
-        // - Create fake tweets
-        // - Add them to a mock user
-        // - Assert that users set of tweets is populated
-
         //given - precondition or setup
+        User user = new User();
+        user.setTweets(List.of(
+                new Tweet(),
+                new Tweet(),
+                new Tweet(),
+                new Tweet(),
+                new Tweet()
+        ));
+
+        userRepository.save(user);
 
         //when - action or the behaviour that we are going test
+        List<Tweet> tweets = userService.findByUserId(user.getUserId()).getTweets();
 
         //then - verify the output
+        assertThat(tweets.isEmpty()).isFalse();
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class TweetService {
         tweet.setMedia(tweet.getMedia());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());
-        tweet.setCreatedDate(tweet.getCreatedDate());
+        tweet.setCreatedDate(LocalDateTime.now());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
         return tweetRepository.save(tweet);
@@ -53,6 +54,7 @@ public class TweetService {
         comment.setContent(comment.getContent());
         comment.setCommentCount(comment.getCommentCount());
         comment.setRetweetCount(comment.getRetweetCount());
+        comment.setCreatedDate(LocalDateTime.now());
         comment.setLikeCount(comment.getLikeCount());
 
         tweet.get().getComment().add(comment);

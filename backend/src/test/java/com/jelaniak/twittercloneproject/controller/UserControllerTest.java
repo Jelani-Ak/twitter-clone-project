@@ -1,50 +1,63 @@
 package com.jelaniak.twittercloneproject.controller;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import com.jelaniak.twittercloneproject.service.UserService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
+import org.bson.types.ObjectId;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@SpringBootTest
-@WebMvcTest(controllers = UserController.class)
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ContextConfiguration(classes = {UserController.class})
 class UserControllerTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    private static UserController userController;
 
     @Autowired
-    private UserController userController;
+    private static UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private static ObjectMapper mapper;
 
-    @InjectMocks
+    @MockBean
     private UserService userService;
 
-    private ObjectMapper objectMapper;
+    private User user, userDebug;
+
+
+    @BeforeAll
+    static void beforeAll() {
+        mapper = new ObjectMapper();
+        userRepository = mock(UserRepository.class);
+        userController = new UserController(new UserService(userRepository));
+    }
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        user = getUser();
+        userDebug = getUserDebug();
     }
 
     @AfterEach
@@ -52,48 +65,78 @@ class UserControllerTest {
         userRepository.deleteAll();
     }
 
+
     @Test
-    void createUser() throws Exception {
-        given(userService.createUser(any(User.class)))
-                .willAnswer((invocationOnMock) -> invocationOnMock.getArgument(0));
-
-        User user = new User();
-        user.setUsername("userOne");
-        user.setPassword("passwordOne");
-        user.setEmail("userOne@test.co.uk");
-        user.setDisplayName("User-1");
-
-        this.mockMvc.perform(post("/api/v1/user/register")
+    @Order(1)
+    void createUserAndCheckStatusCodeIsCreated() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = post("/api/v1/user/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(user)))
-                .andExpect(status().isCreated())
-                .andExpect((ResultMatcher) jsonPath("$.username", is(user.getUsername())))
-                .andExpect((ResultMatcher) jsonPath("$.password", is(user.getPassword())))
-                .andExpect((ResultMatcher) jsonPath("$.email", is(user.getEmail())))
-                .andExpect((ResultMatcher) jsonPath("$.displayName", is(user.getDisplayName())));
+                .content(mapper.writeValueAsString(user));
+
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(userController)
+                .build()
+                .perform(requestBuilder);
+
+        actualPerformResult.andExpect(status().isCreated());
     }
 
     @Test
-    void createUserDebug() {
+    @Order(2)
+    void createDuplicateUserAndThrowUserAlreadyExistsException() {
+        when(userRepository.existsByUsernameAndEmail(user.getUsername(), user.getEmail()))
+                .thenReturn(true);
+
+        UserAlreadyExistsException thrownMessage = assertThrows(
+                UserAlreadyExistsException.class,
+                () -> userController.createUser(user)
+        );
+
+        assertTrue(thrownMessage.getMessage().contains("""
+                """ + "Username "
+                + user.getUsername() + " and email "
+                + user.getEmail() + " already exists"
+        ));
     }
 
-    @Test
-    void updateUser() {
+    private User getUser() {
+        User user = new User();
+
+        user.setUserId(new ObjectId());
+        user.setUsername("UserOne");
+        user.setPassword("userone");
+        user.setEmail("UserOne@example.co.uk");
+        user.setDateOfCreation(LocalDateTime.of(1, 1, 1, 1, 1));
+        user.setFollowing(false);
+        user.setVerified(false);
+
+        return user;
     }
 
-    @Test
-    void deleteUser() {
-    }
+    private User getUserDebug() {
+        User user = new User();
 
-    @Test
-    void findUserById() {
-    }
+        user.setUserId(new ObjectId());
+        user.setUsername("UserTwo");
+        user.setPassword("usertwo");
+        user.setEmail("UserTwo@example.org");
+        user.setDisplayName("User 2");
+        user.setUserHandleName("@User-Two");
+        user.setBioAboutText("UserTwo Bio About Text");
+        user.setBioLocation("UserTwo Bio Location");
+        user.setBioExternalLink("UserTwo Bio External Link");
+        user.setDateOfCreation(LocalDateTime.of(2, 2, 2, 2, 2));
+        user.setPictureAvatarUrl("https://UserTwoAvatar.org/example");
+        user.setPictureBackgroundUrl("https://UserTwoBackground.org/example");
+        user.setUsersYouFollow(new HashSet<>());
+        user.setUsersFollowingYou(new HashSet<>());
+        user.setMutualFollowers(new HashSet<>());
+        user.setTweets(new ArrayList<>());
+        user.setTweetCount(user.getTweets().size());
+        user.setTweetQuoteCount(3);
+        user.setFollowing(false);
+        user.setVerified(false);
 
-    @Test
-    void getAllUsers() {
-    }
-
-    @Test
-    void loginUser() {
+        return user;
     }
 }
+

@@ -1,6 +1,8 @@
 package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,6 +22,7 @@ import java.time.LocalDateTime;
 public class Comment {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId commentId;
     private String commentUrl;
 

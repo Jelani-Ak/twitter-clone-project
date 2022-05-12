@@ -1,5 +1,7 @@
 package com.jelaniak.twittercloneproject.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Media {
 
     @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private String mediaId;
     private String filename;
     private String mediaUrl;
