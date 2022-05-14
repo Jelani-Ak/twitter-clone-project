@@ -30,7 +30,7 @@ public class Tweet {
 
     @DBRef
     private User user;
-
+    
     @DBRef
     private Media media;
 
@@ -40,7 +40,7 @@ public class Tweet {
 
     @CreatedDate
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdDate;
+    private LocalDateTime dateOfCreation;
 
     @DBRef
     private List<Comment> comment = new ArrayList<>();

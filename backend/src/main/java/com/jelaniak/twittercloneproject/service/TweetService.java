@@ -26,6 +26,7 @@ public class TweetService {
     }
 
     public Tweet createTweet(Tweet tweet) {
+
         tweet.setTweetId(new ObjectId());
         tweet.setUser(tweet.getUser());
         tweet.setTweetUrl(tweet.getTweetUrl());
@@ -33,13 +34,14 @@ public class TweetService {
         tweet.setMedia(tweet.getMedia());
         tweet.setCommentCount(tweet.getCommentCount());
         tweet.setRetweetCount(tweet.getRetweetCount());
-        tweet.setCreatedDate(LocalDateTime.now());
+        tweet.setDateOfCreation(LocalDateTime.now());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
+
         return tweetRepository.save(tweet);
     }
 
-    public Comment createTweetComment(ObjectId tweetId, Comment comment) throws Exception {
+    public Comment createComment(ObjectId tweetId, Comment comment) throws Exception {
         Optional<Tweet> tweet = tweetRepository.findById(tweetId);
 
         if (tweet.isEmpty()) {
@@ -49,12 +51,16 @@ public class TweetService {
         comment.setCommentId(new ObjectId());
         comment.setUser(comment.getUser());
         comment.setCommentUrl(comment.getCommentUrl());
-        comment.setTweet(comment.getTweet());
+
+        if (tweetRepository.findById(tweetId).isPresent()) {
+            comment.setTweet(tweetRepository.findById(tweetId).get());
+        }
+
         comment.setMedia(comment.getMedia());
         comment.setContent(comment.getContent());
         comment.setCommentCount(comment.getCommentCount());
         comment.setRetweetCount(comment.getRetweetCount());
-        comment.setCreatedDate(LocalDateTime.now());
+        comment.setDateOfCreation(LocalDateTime.now());
         comment.setLikeCount(comment.getLikeCount());
 
         tweet.get().getComment().add(comment);
@@ -69,6 +75,11 @@ public class TweetService {
     public Tweet findTweetById(ObjectId tweetId) throws Exception {
         return tweetRepository.findById(tweetId)
                 .orElseThrow(() -> new Exception("Tweet by Id: [" + tweetId + "] was not found."));
+    }
+
+    public Comment findCommentById(ObjectId commentId) throws Exception {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new Exception("Tweet by Id: [" + commentId + "] was not found."));
     }
 
     public void deleteTweet(ObjectId tweetId) {

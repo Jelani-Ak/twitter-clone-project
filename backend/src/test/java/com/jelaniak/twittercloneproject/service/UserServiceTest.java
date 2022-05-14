@@ -1,19 +1,24 @@
 package com.jelaniak.twittercloneproject.service;
 
+import com.jelaniak.twittercloneproject.exception.IdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
+import com.jelaniak.twittercloneproject.model.Comment;
+import com.jelaniak.twittercloneproject.model.Media;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.CommentRepository;
+import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -25,24 +30,38 @@ class UserServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    @InjectMocks
+    @Autowired
+    private TweetRepository tweetRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Mock
     private UserService userService;
+
+    @Mock
+    private TweetService tweetService;
 
     @BeforeEach
     void setUp() {
         userService = new UserService(userRepository);
+        tweetService = new TweetService(tweetRepository, commentRepository);
     }
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
+        if (!userRepository.findAll().isEmpty()) {
+            userRepository.deleteAll();
+        }
     }
 
     @Test
     @Order(1)
     void getAllUsers() throws Exception {
         //given - precondition or setup
-        userService.createUser(new User());
+        userService.createUser(getNewUser(1));
+        userService.createUser(getNewUser(2));
+        userService.createUser(getNewUser(3));
 
         //when - action or the behaviour that we are going test
         userService.getAllUsers();
@@ -55,42 +74,22 @@ class UserServiceTest {
 
     @Test
     @Order(2)
-    void updateUser() {
+    void updateUser() throws IdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
-        User userOne = new User();
-        userOne.setUserId(new ObjectId());
-        userOne.setPassword("passwordOne");
-        userOne.setEmail("userOne@test.co.uk");
-        userOne.setDisplayName("User-1");
-        userOne.setUserHandleName("@UserOne");
-        userOne.setBioLocation("North");
-        userOne.setBioExternalLink("https://www.user-one.co.uk");
-        userOne.setBioAboutText("Howdy, I'm userOne");
-        userOne.setPictureAvatarUrl("https://www.fake.co.uk/userOne-avatar.jpg");
-        userOne.setPictureBackgroundUrl("https://www.fake.co.uk/userOne-background.jpg");
-        userRepository.save(userOne);
+        User userOne = getNewUser(1);
+        userService.createUser(userOne);
 
-        User userTwo = new User();
-        userTwo.setUserId(new ObjectId());
-        userTwo.setPassword("passwordTwo");
-        userTwo.setEmail("userTwo@test.co.uk");
-        userTwo.setDisplayName("User-2");
-        userTwo.setUserHandleName("@userTwo");
-        userTwo.setBioLocation("South");
-        userTwo.setBioExternalLink("https://www.user-two.co.uk");
-        userTwo.setBioAboutText("Howdy, I'm userTwo");
-        userTwo.setPictureAvatarUrl("https://www.fake.co.uk/userTwo-avatar.jpg");
-        userTwo.setPictureBackgroundUrl("https://www.fake.co.uk/userTwo-background.jpg");
-        userRepository.save(userTwo);
+        User userTwo = getNewUser(2);
+        userService.createUser(userTwo);
 
         //when - action or the behaviour that we are going test
         userService.updateUser(userOne.getUserId(), userTwo);
 
         //then - verify the output
-        assertThat(userRepository.findByUserId(userOne.getUserId()).orElse(null))
+        assertThat(userService.findByUserId(userOne.getUserId()))
                 .usingRecursiveComparison()
-                .ignoringFields("userId")
-                .isEqualTo(userRepository.findByUserId(userTwo.getUserId()).orElse(null));
+                .ignoringFields("userId", "dateOfCreation")
+                .isEqualTo(userService.findByUserId(userTwo.getUserId()));
     }
 
     @Test
@@ -124,46 +123,59 @@ class UserServiceTest {
 
     @Test
     @Order(5)
-    void getFollowData() {
+    @Disabled
+    void getFollowData() throws IdNotFoundException {
         //given - precondition or setup
-        User user = new User();
-        user.setUsersYouFollow(Set.of(
-                new User(),
-                new User(),
-                new User(),
-                new User(),
-                new User()
-        ));
+        User user = getNewUser(1);
 
         userRepository.save(user);
 
+        user.setUsersYouFollow(Set.of(
+                getNewUser(2),
+                getNewUser(3),
+                getNewUser(4),
+                getNewUser(5),
+                getNewUser(6)
+        ));
+
         //when - action or the behaviour that we are going test
-        Set<User> followedUsers = userService.findByUserId(user.getUserId()).getUsersYouFollow();
+        int followedUsers = userService.findByUserId(user.getUserId()).getUsersYouFollow().size();
+        System.out.println(followedUsers);
 
         //then - verify the output
-        assertThat(followedUsers.isEmpty()).isFalse();
+        assertThat(followedUsers > 0).isTrue();
     }
 
     @Test
     @Order(6)
-    void getTweetData() {
+    @Disabled
+    void getTweetData() throws Exception {
         //given - precondition or setup
-        User user = new User();
+        User user = getNewUser(1);
+        userService.createUser(user);
+
+        Media media = getNewMedia(1);
+
+        Tweet tweet = getNewTweet(1, user, media);
+        tweetService.createTweet(tweet);
+
+        Comment comment = getNewComment(1, user, tweet, media);
+        tweetService.createComment(tweet.getTweetId(), comment);
+
         user.setTweets(List.of(
-                new Tweet(),
-                new Tweet(),
-                new Tweet(),
-                new Tweet(),
-                new Tweet()
+                tweetService.findTweetById(tweet.getTweetId())
         ));
 
-        userRepository.save(user);
+        tweet.setComment(List.of(
+                tweetService.findCommentById(comment.getCommentId())
+        ));
 
         //when - action or the behaviour that we are going test
         List<Tweet> tweets = userService.findByUserId(user.getUserId()).getTweets();
+        System.out.println(tweets);
 
         //then - verify the output
-        assertThat(tweets.isEmpty()).isFalse();
+        assertThat(tweets.size() > 0).isTrue();
     }
 
     @Test
@@ -205,7 +217,12 @@ class UserServiceTest {
         User userFour = new User();
 
         //when - action or the behaviour that we are going test
-        userRepository.saveAll(List.of(userOne, userTwo, userThree, userFour));
+        userService.createUsers(List.of(
+                userOne,
+                userTwo,
+                userThree,
+                userFour
+        ));
 
         //then - verify the output
         assertThat(userRepository.findAll().size() > 1).isTrue();
@@ -221,9 +238,80 @@ class UserServiceTest {
         ObjectId idToAdd = user.getUserId();
 
         //when - action or the behaviour that we are going test
-        ObjectId idInRepo = Objects.requireNonNull(userRepository.findByUserId(idToAdd).orElse(null)).getUserId();
+        ObjectId idInRepo = Objects.requireNonNull(userRepository.findById(idToAdd).orElse(null)).getUserId();
 
         //then - verify the output
         assertThat(idToAdd).isEqualTo(idInRepo);
+    }
+
+    private User getNewUser(int number) {
+        User user = new User();
+
+        user.setUserId(new ObjectId());
+        user.setUsername("User" + number);
+        user.setPassword("password" + number);
+        user.setEmail("User" + number + "@example.org");
+        user.setDisplayName("User " + number);
+        user.setUserHandleName("@User-" + number);
+        user.setBioAboutText("User" + number + " Bio About Text");
+        user.setBioLocation("User" + number + " Bio Location");
+        user.setBioExternalLink("User" + number + " Bio External Link");
+        user.setDateOfCreation(LocalDateTime.of(number, number, number, number, number));
+        user.setPictureAvatarUrl("https://User" + number + "Avatar.org/example");
+        user.setPictureBackgroundUrl("https://User" + number + "Background.org/example");
+        user.setUsersYouFollow(new HashSet<>());
+        user.setUsersFollowingYou(new HashSet<>());
+        user.setMutualFollowers(new HashSet<>());
+        user.setTweets(new ArrayList<>());
+        user.setTweetCount(user.getTweets().size());
+        user.setTweetQuoteCount(user.getTweetCount());
+        user.setFollowing(false);
+        user.setVerified(false);
+
+        return user;
+    }
+
+    private Tweet getNewTweet(int number, User user, Media media) {
+        Tweet tweet = new Tweet();
+
+        tweet.setTweetId(new ObjectId());
+        tweet.setTweetUrl("http://www.tweet" + number + ".co.uk/example");
+        tweet.setUser(user);
+        tweet.setMedia(media);
+        tweet.setContent("Content " + number);
+        tweet.setDateOfCreation(LocalDateTime.now());
+        tweet.setComment(new ArrayList<>());
+        tweet.setCommentCount(tweet.getComment().size());
+        tweet.setLikeCount(tweet.getLikeCount());
+        tweet.setTweetType(tweet.getTweetType());
+
+        return tweet;
+    }
+
+    private Comment getNewComment(int number, User user, Tweet tweet, Media media) {
+        Comment comment = new Comment();
+
+        comment.setCommentId(new ObjectId());
+        comment.setCommentUrl("http://www.commment" + number + ".co.uk/example");
+        comment.setUser(user);
+        comment.setTweet(tweet);
+        comment.setMedia(media);
+        comment.setContent("Content " + number);
+        comment.setDateOfCreation(LocalDateTime.now());
+        comment.setCommentCount(comment.getCommentCount());
+        comment.setRetweetCount(comment.getRetweetCount());
+        comment.setLikeCount(comment.getLikeCount());
+
+        return comment;
+    }
+
+    private Media getNewMedia(int number) {
+        Media media = new Media();
+
+        media.setMediaId(new ObjectId());
+        media.setFilename("Media " + number);
+        media.setMediaUrl("http://www.media" + number + ".co.uk/example");
+
+        return media;
     }
 }

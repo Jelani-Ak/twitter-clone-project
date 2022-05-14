@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +19,7 @@ public class Media {
 
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
-    private String mediaId;
+    private ObjectId mediaId;
     private String filename;
     private String mediaUrl;
 }

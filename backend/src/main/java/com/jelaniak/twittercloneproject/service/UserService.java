@@ -1,11 +1,14 @@
 package com.jelaniak.twittercloneproject.service;
 
+import com.jelaniak.twittercloneproject.exception.IdNotFoundException;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -23,24 +27,26 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByUserId(ObjectId userId) {
-        return userRepository.findByUserId(userId).orElseThrow();
+    public User findByUserId(ObjectId userId) throws IdNotFoundException {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IdNotFoundException("Id of " + userId + " was not found"));
     }
 
-    public User updateUser(ObjectId id, User user) {
-        User savedUser = findByUserId(id);
+    public User updateUser(ObjectId userId, User user) throws IdNotFoundException {
+        User existingUser = findByUserId(userId);
 
-        savedUser.setPassword(user.getPassword());
-        savedUser.setEmail(user.getEmail());
-        savedUser.setDisplayName(user.getDisplayName());
-        savedUser.setUserHandleName(user.getUserHandleName());
-        savedUser.setBioLocation(user.getBioLocation());
-        savedUser.setBioExternalLink(user.getBioExternalLink());
-        savedUser.setBioAboutText(user.getBioAboutText());
-        savedUser.setPictureAvatarUrl(user.getPictureAvatarUrl());
-        savedUser.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
+        existingUser.setUsername(user.getUsername());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setDisplayName(user.getDisplayName());
+        existingUser.setUserHandleName(user.getUserHandleName());
+        existingUser.setBioLocation(user.getBioLocation());
+        existingUser.setBioExternalLink(user.getBioExternalLink());
+        existingUser.setBioAboutText(user.getBioAboutText());
+        existingUser.setPictureAvatarUrl(user.getPictureAvatarUrl());
+        existingUser.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
 
-        return userRepository.save(savedUser);
+        return userRepository.save(existingUser);
     }
 
     public void followUser(User user) {
@@ -71,53 +77,19 @@ public class UserService {
         userRepository.deleteByUserId(userId);
     }
 
+    // Create a user defining all user credentials
     public User createUser(User user) throws UserAlreadyExistsException {
         String tempUsername = user.getUsername();
         String tempEmail = user.getEmail();
 
         //Check if username and email already exists
         if (existsByUsernameAndEmail(tempUsername, tempEmail)) {
-            throw new UserAlreadyExistsException(
-                    "Username " + tempUsername + " and email "
-                            + tempEmail + " already exists");
+            throw new UserAlreadyExistsException("""
+                    """ + "Username " + tempUsername + " and email "
+                    + tempEmail + " already exists");
         }
 
-        ObjectId objectId = ObjectId.get();
-        String objectIdStringValue = objectId.toHexString();
-        ObjectId restoredObjectId = new ObjectId(objectIdStringValue);
-
-        LocalDateTime timestamp = LocalDateTime.now();
-
-        user.setUserId(restoredObjectId);
-        user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
-        user.setEmail(user.getEmail());
-        user.setDateOfCreation(timestamp);
-        user.setFollowing(false);
-        user.setVerified(false);
-
-        return userRepository.save(user);
-    }
-
-    // Create a user defining all user credentials
-    public User createUserDebug(User user) throws UserAlreadyExistsException {
-        String tempUsername = user.getUsername();
-        String tempEmail = user.getEmail();
-
-        //Check if username and email already exists
-        if (existsByUsernameAndEmail(tempUsername, tempEmail)) {
-            throw new UserAlreadyExistsException(
-                    "Username " + tempUsername + " and email "
-                            + tempEmail + " already exists");
-        }
-
-        ObjectId objectId = ObjectId.get();
-        String objectIdStringValue = objectId.toHexString();
-        ObjectId restoredObjectId = new ObjectId(objectIdStringValue);
-
-        LocalDateTime timestamp = LocalDateTime.now();
-
-        user.setUserId(restoredObjectId);
+        user.setUserId(new ObjectId());
         user.setUsername(user.getUsername());
         user.setPassword(user.getPassword());
         user.setEmail(user.getEmail());
@@ -126,19 +98,23 @@ public class UserService {
         user.setBioLocation(user.getBioLocation());
         user.setBioExternalLink(user.getBioExternalLink());
         user.setBioAboutText(user.getBioAboutText());
-        user.setDateOfCreation(timestamp);
+        user.setDateOfCreation(LocalDateTime.now());
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
         user.setUsersYouFollow(user.getUsersYouFollow());
         user.setUsersFollowingYou(user.getUsersFollowingYou());
         user.setMutualFollowers(user.getMutualFollowers());
-        user.setTweets(user.getTweets());
+//        user.setTweets(user.getTweets());
         user.setTweetCount(user.getTweets().size());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
         user.setFollowing(false);
         user.setVerified(false);
 
         return userRepository.save(user);
+    }
+
+    public void createUsers(List<User> users) {
+        userRepository.saveAll(users);
     }
 
     public Optional<User> validateCredentials(String username, String password) {

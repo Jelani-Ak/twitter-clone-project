@@ -1,5 +1,6 @@
 package com.jelaniak.twittercloneproject.controller;
 
+import com.jelaniak.twittercloneproject.exception.IdNotFoundException;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
@@ -25,27 +26,23 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PostMapping("/register/debug")
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createUserDebug(@RequestBody User user) throws UserAlreadyExistsException {
-        return userService.createUserDebug(user);
-    }
-
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public User updateUser(@PathVariable("id") ObjectId id, @RequestBody User user) {
-        return userService.updateUser(id, user);
+    public void updateUser(
+            @PathVariable("id") ObjectId id,
+            @RequestBody User user) throws IdNotFoundException {
+        userService.updateUser(id, user);
     }
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUser(@PathVariable ObjectId id) {
+    public void deleteUserById(@PathVariable ObjectId id) {
         userService.deleteUser(id);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User findUserByUserId(@PathVariable ObjectId id) {
+    public User findByUserId(@PathVariable ObjectId id) throws IdNotFoundException {
         return userService.findByUserId(id);
     }
 

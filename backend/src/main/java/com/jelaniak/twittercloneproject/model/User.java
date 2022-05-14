@@ -6,14 +6,14 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,12 +23,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(value = "User")
 public class User {
+
 
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
@@ -55,9 +55,13 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
+    @DBRef
     private Set<User> usersYouFollow = new HashSet<>();
+    @DBRef
     private Set<User> usersFollowingYou = new HashSet<>();
+    @DBRef
     private Set<User> mutualFollowers = new HashSet<>();
+    @DBRef
     private List<Tweet> tweets = new ArrayList<>();
 
     private Integer tweetCount;
