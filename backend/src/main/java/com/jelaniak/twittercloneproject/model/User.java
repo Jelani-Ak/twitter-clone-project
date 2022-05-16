@@ -54,13 +54,9 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    @DBRef
     private Set<User> usersYouFollow = new HashSet<>();
-    @DBRef
     private Set<User> usersFollowingYou = new HashSet<>();
-    @DBRef
     private Set<User> mutualFollowers = new HashSet<>();
-    @DBRef
     private List<Tweet> tweets = new ArrayList<>();
 
     private Integer tweetCount;

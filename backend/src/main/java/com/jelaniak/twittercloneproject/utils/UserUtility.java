@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.utility;
+package com.jelaniak.twittercloneproject.utils;
 
 import com.jelaniak.twittercloneproject.model.User;
 import org.bson.types.ObjectId;

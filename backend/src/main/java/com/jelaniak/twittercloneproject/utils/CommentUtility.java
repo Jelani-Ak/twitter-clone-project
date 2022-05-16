@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.utility;
+package com.jelaniak.twittercloneproject.utils;
 
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Media;
