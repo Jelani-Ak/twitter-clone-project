@@ -47,7 +47,6 @@ public class User {
     private String bioExternalLink;
 
     @CreatedDate
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime dateOfCreation;

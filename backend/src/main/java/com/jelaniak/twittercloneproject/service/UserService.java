@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.IdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
@@ -8,10 +8,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -27,12 +25,12 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findByUserId(ObjectId userId) throws IdNotFoundException {
+    public User findByUserId(ObjectId userId) throws UserIdNotFoundException {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IdNotFoundException("Id of " + userId + " was not found"));
+                .orElseThrow(() -> new UserIdNotFoundException("Id of " + userId + " was not found"));
     }
 
-    public User updateUser(ObjectId userId, User user) throws IdNotFoundException {
+    public User updateUser(ObjectId userId, User user) throws UserIdNotFoundException {
         User existingUser = findByUserId(userId);
 
         existingUser.setUsername(user.getUsername());
@@ -49,12 +47,20 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
-    public void followUser(User user) {
-        user.setFollowing(true);
+    public User followUser(ObjectId userId) throws UserIdNotFoundException {
+        User existingUser = findByUserId(userId);
+
+        existingUser.setFollowing(true);
+
+        return userRepository.save(existingUser);
     }
 
-    public void unfollowUser(User user) {
-        user.setFollowing(false);
+    public User unfollowUser(ObjectId userId) throws UserIdNotFoundException {
+        User existingUser = findByUserId(userId);
+
+        existingUser.setFollowing(false);
+
+        return userRepository.save(existingUser);
     }
 
     public void getFollowData(User user) {
@@ -69,12 +75,18 @@ public class UserService {
         user.setTweetQuoteCount(user.getTweetQuoteCount());
     }
 
-    public void validateUser(User user) {
-        user.setVerified(true);
+    public User verifyUser(ObjectId userId) throws UserIdNotFoundException {
+        User existingUser = findByUserId(userId);
+
+        existingUser.setVerified(true);
+
+        return userRepository.save(existingUser);
     }
 
-    public void deleteUser(ObjectId userId) {
-        userRepository.deleteByUserId(userId);
+    public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
+        User existingUser = findByUserId(userId);
+
+        return userRepository.deleteByUserId(existingUser.getUserId());
     }
 
     // Create a user defining all user credentials
@@ -104,7 +116,7 @@ public class UserService {
         user.setUsersYouFollow(user.getUsersYouFollow());
         user.setUsersFollowingYou(user.getUsersFollowingYou());
         user.setMutualFollowers(user.getMutualFollowers());
-//        user.setTweets(user.getTweets());
+        user.setTweets(user.getTweets());
         user.setTweetCount(user.getTweets().size());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
         user.setFollowing(false);
@@ -117,13 +129,19 @@ public class UserService {
         userRepository.saveAll(users);
     }
 
-    public Optional<User> validateCredentials(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password);
+    public User validateCredentials(ObjectId userId) throws UserIdNotFoundException {
+        User existingUser = findByUserId(userId);
+
+        return userRepository.findByUsernameAndPassword(existingUser.getUsername(), existingUser.getPassword());
     }
 
     //<editor-fold desc="Helper Functions">
     private boolean existsByUsernameAndEmail(String tempUsername, String tempEmail) {
         return userRepository.existsByUsernameAndEmail(tempUsername, tempEmail);
+    }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
     }
     //</editor-fold>
 }

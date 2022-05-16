@@ -1,12 +1,14 @@
 package com.jelaniak.twittercloneproject.controller;
 
-import com.jelaniak.twittercloneproject.exception.IdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.BadCredentialsException;
+import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,55 +20,42 @@ import java.util.Optional;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) throws UserAlreadyExistsException {
-        return userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) throws UserAlreadyExistsException {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void updateUser(
+    public ResponseEntity<User> updateUser(
             @PathVariable("id") ObjectId id,
-            @RequestBody User user) throws IdNotFoundException {
-        userService.updateUser(id, user);
+            @RequestBody User user) throws UserIdNotFoundException {
+        return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUserById(@PathVariable ObjectId id) {
-        userService.deleteUser(id);
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserIdNotFoundException {
+        return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/get/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public User findByUserId(@PathVariable ObjectId id) throws IdNotFoundException {
-        return userService.findByUserId(id);
+    public ResponseEntity<User> findByUserId(@PathVariable ObjectId id) throws UserIdNotFoundException {
+        return new ResponseEntity<>(userService.findByUserId(id), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Optional<User> loginUser(@RequestBody User user) throws Exception {
-        String tempUsername = user.getUsername();
-        String tempPassword = user.getPassword();
-        Optional<User> tempUser = Optional.empty();
-
-        if (tempUsername != null && tempPassword != null) {
-            tempUser = userService.validateCredentials(tempUsername, tempPassword);
-        }
-
-        if (tempUser.isEmpty()) {
-            throw new Exception("Bad credentials");
-        }
-
-        return tempUser;
+    public ResponseEntity<User> loginUser(@RequestBody User user) throws UserIdNotFoundException {
+        return new ResponseEntity<>(userService.validateCredentials(user.getUserId()), HttpStatus.ACCEPTED);
     }
 }
