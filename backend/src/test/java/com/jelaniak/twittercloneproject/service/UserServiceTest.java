@@ -2,8 +2,6 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
-import com.jelaniak.twittercloneproject.model.Comment;
-import com.jelaniak.twittercloneproject.model.Media;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
@@ -23,8 +21,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.jelaniak.twittercloneproject.utils.CommentUtility.getNewComment;
-import static com.jelaniak.twittercloneproject.utils.MediaUtility.getNewMedia;
 import static com.jelaniak.twittercloneproject.utils.TweetUtility.getNewTweet;
 import static com.jelaniak.twittercloneproject.utils.UserUtility.getNewUser;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -37,16 +33,12 @@ class UserServiceTest {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TweetRepository tweetRepository;
-
     @Autowired
     private CommentRepository commentRepository;
-
     @Mock
     private UserService userService;
-
     @Mock
     private TweetService tweetService;
 
@@ -58,14 +50,14 @@ class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        if (!userRepository.findAll().isEmpty()) {
-            userRepository.deleteAll();
+        if (!userService.getAllUsers().isEmpty()) {
+            userService.deleteAllUsers();
         }
     }
 
     @Test
     @Order(1)
-    void getAllUsers() throws Exception {
+    void getAllUsersAndAssertNotNullAndNotEmpty() throws Exception {
         //given - precondition or setup
         userService.createUser(getNewUser(1));
         userService.createUser(getNewUser(2));
@@ -82,7 +74,7 @@ class UserServiceTest {
 
     @Test
     @Order(2)
-    void updateUser() throws UserIdNotFoundException, UserAlreadyExistsException {
+    void updateUserAndAssertUserInRepositoryMatches() throws UserIdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
         User userOne = getNewUser(1);
         userService.createUser(userOne);
@@ -119,9 +111,9 @@ class UserServiceTest {
     }
 
     @Test
-    void followUser() throws UserIdNotFoundException, UserAlreadyExistsException {
+    void followUserAndAssertFollowingIsTrue() throws UserIdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
-        User user = new User();
+        User user = getNewUser(1);
         userService.createUser(user);
 
         //when - action or the behaviour that we are going test
@@ -132,9 +124,9 @@ class UserServiceTest {
     }
 
     @Test
-    void unfollowUser() throws UserIdNotFoundException, UserAlreadyExistsException {
+    void unfollowUserAndAssertFollowingIsFalse() throws UserIdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
-        User user = new User();
+        User user = getNewUser(1);
         user.setFollowing(true);
         userService.createUser(user);
 
@@ -147,7 +139,7 @@ class UserServiceTest {
     }
 
     @Test
-    void getFollowData() throws UserIdNotFoundException, UserAlreadyExistsException {
+    void getFollowDataAndAssertUsersYouFollowHasMoreThanZero() throws UserIdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
         User userOne = getNewUser(1);
         User userTwo = getNewUser(2);
@@ -168,15 +160,13 @@ class UserServiceTest {
 
         userService.createUser(userOne);
 
-        System.out.println(userService.findByUserId(userOne.getUserId()).getUsersYouFollow());
-
         //when - action or the behaviour that we are going test
         //then - verify the output
         assertThat(userService.findByUserId(userOne.getUserId()).getUsersYouFollow().size() > 0).isTrue();
     }
 
     @Test
-    void getTweetData() throws Exception {
+    void getTweetDataAndAssertTweetsHasMoreThanZero() throws Exception {
         //given - precondition or setup
         User userOne = getNewUser(1);
 
@@ -204,32 +194,31 @@ class UserServiceTest {
 
         //when - action or the behaviour that we are going test
         //then - verify the output
-        assertThat(userService.findByUserId(userOne.getUserId()).getTweets().size() > 0).isTrue();
+        assertThat(userService.findByUserId(userOne.getUserId()).getTweets().size() > 1).isTrue();
+        assertThat(userService.findByUserId(userOne.getUserId()).getTweets().size() > 4).isTrue();
     }
 
     @Test
-    void validateUser() throws UserIdNotFoundException {
+    void validateUserAndAssertThatVerifiedIsTrue() throws UserIdNotFoundException, UserAlreadyExistsException {
         //given - precondition or setup
-        User user = new User();
-        userRepository.save(user);
+        User user = getNewUser(1);
+        userService.createUser(user);
 
         //when - action or the behaviour that we are going test
         userService.verifyUser(user.getUserId());
 
         //then - verify the output
-        if (userRepository.findById(user.getUserId()).isPresent()) {
-            assertThat(userRepository.findById(user.getUserId()).get().isVerified()).isTrue();
-        }
+        assertThat(userService.findByUserId(user.getUserId()).isVerified()).isTrue();
     }
 
     @Test
-    void deleteUser() {
+    void deleteUserAndAssertThatUsersInRepositoryIsZero() throws UserAlreadyExistsException, UserIdNotFoundException {
         //given - precondition or setup
-        User user = new User();
-        userRepository.save(user);
+        User user = getNewUser(1);
+        userService.createUser(user);
 
         //when - action or the behaviour that we are going test
-        userRepository.delete(user);
+        userService.deleteUser(user.getUserId());
 
         //then - verify the output
         assertThat(userRepository.findAll().size() == 0).isTrue();
@@ -237,36 +226,39 @@ class UserServiceTest {
     }
 
     @Test
-    void createUser() {
+    void createUsersAndAssertUsersInRepoIsGreaterThanOneAndGreaterThanFour() {
         //given - precondition or setup
-        User userOne = new User();
-        User userTwo = new User();
-        User userThree = new User();
-        User userFour = new User();
+        User userOne = getNewUser(1);
+        User userTwo = getNewUser(2);
+        User userThree = getNewUser(3);
+        User userFour = getNewUser(4);
+        User userFive = getNewUser(5);
 
         //when - action or the behaviour that we are going test
         userService.createUsers(List.of(
                 userOne,
                 userTwo,
                 userThree,
-                userFour
+                userFour,
+                userFive
         ));
 
         //then - verify the output
-        assertThat(userRepository.findAll().size() > 1).isTrue();
+        assertThat(userService.getAllUsers().size() > 1).isTrue();
+        assertThat(userService.getAllUsers().size() > 4).isTrue();
     }
 
     @Test
     @Order(10)
-    void findByUserId() {
+    void findByUserIdAndAssertUserIdInRepositoryMatches() throws UserAlreadyExistsException, UserIdNotFoundException {
         //given - precondition or setup
-        User user = new User();
-        userRepository.save(user);
+        User user = getNewUser(1);
+        userService.createUser(user);
 
         ObjectId idToAdd = user.getUserId();
 
         //when - action or the behaviour that we are going test
-        ObjectId idInRepo = Objects.requireNonNull(userRepository.findById(idToAdd).orElse(null)).getUserId();
+        ObjectId idInRepo = Objects.requireNonNull(userService.findByUserId(idToAdd)).getUserId();
 
         //then - verify the output
         assertThat(idToAdd).isEqualTo(idInRepo);

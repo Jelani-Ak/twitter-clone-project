@@ -1,25 +1,23 @@
 package com.jelaniak.twittercloneproject.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +26,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Document(value = "User")
 public class User {
-
 
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
@@ -40,7 +37,7 @@ public class User {
     @Email
     @NotBlank
     private String email;
-    private String displayName;
+    private String displayName; // (ExampleName)
     private String userHandleName; // (@ExampleName)
     private String bioAboutText;
     private String bioLocation;
@@ -54,9 +51,9 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    private Set<User> usersYouFollow = new HashSet<>();
-    private Set<User> usersFollowingYou = new HashSet<>();
-    private Set<User> mutualFollowers = new HashSet<>();
+    private Set<User> usersYouFollow = new LinkedHashSet<>();
+    private Set<User> usersFollowingYou = new LinkedHashSet<>();
+    private Set<User> mutualFollowers = new LinkedHashSet<>();
     private List<Tweet> tweets = new ArrayList<>();
 
     private Integer tweetCount;
@@ -64,4 +61,8 @@ public class User {
 
     private boolean following;
     private boolean verified;
+
+    public String encrypt(String password) {
+        return "";
+    }
 }

@@ -106,7 +106,7 @@ public class UserService {
         user.setPassword(user.getPassword());
         user.setEmail(user.getEmail());
         user.setDisplayName(user.getDisplayName());
-        user.setUserHandleName(user.getUserHandleName());
+        user.setUserHandleName("@" + user.getUserHandleName());
         user.setBioLocation(user.getBioLocation());
         user.setBioExternalLink(user.getBioExternalLink());
         user.setBioAboutText(user.getBioAboutText());
@@ -140,7 +140,7 @@ public class UserService {
         return userRepository.existsByUsernameAndEmail(tempUsername, tempEmail);
     }
 
-    public void deleteAll() {
+    public void deleteAllUsers() {
         userRepository.deleteAll();
     }
     //</editor-fold>
