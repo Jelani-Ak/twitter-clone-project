@@ -13,4 +13,6 @@ img {
 .inner-tweet-container {
   padding: 15px;
   background: #f5f5f5;
+  word-wrap: break-word;
+  box-sizing: border-box;
 }

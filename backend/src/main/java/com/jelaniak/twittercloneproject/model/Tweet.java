@@ -1,9 +1,10 @@
 package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,19 +16,21 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(value = "Tweet")
 public class Tweet {
 
     @Id
-    private String tweetId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId tweetId;
     private String tweetUrl;
 
     @DBRef
     private User user;
-
+    
     @DBRef
     private Media media;
 
@@ -37,7 +40,7 @@ public class Tweet {
 
     @CreatedDate
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdDate;
+    private LocalDateTime dateOfCreation;
 
     @DBRef
     private List<Comment> comment = new ArrayList<>();

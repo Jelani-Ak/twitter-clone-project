@@ -1,9 +1,10 @@
 package com.jelaniak.twittercloneproject.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -13,14 +14,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(value = "Comment")
 public class Comment {
 
     @Id
-    private String commentId;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId commentId;
     private String commentUrl;
 
     @DBRef
@@ -38,7 +41,7 @@ public class Comment {
 
     @CreatedDate
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime createdDate;
+    private LocalDateTime dateOfCreation;
 
     private Integer commentCount;
     private Integer retweetCount;

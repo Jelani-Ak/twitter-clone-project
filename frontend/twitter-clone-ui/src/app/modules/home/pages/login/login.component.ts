@@ -1,4 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {RegistrationService} from "../../../../core/services/registration/registration.service";
+import {User} from "../../../../shared/models/user/user";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-login',
@@ -8,28 +12,27 @@ import {Component, OnInit} from '@angular/core';
 
 export class LoginComponent implements OnInit {
 
-  username!: string;
-  password!: string;
-  errorMessage = "Invalid Credentials";
-  successMessage!: String;
-  invalidLogin = false;
-  loginSuccess = false;
+  user = new User();
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private snackbar: MatSnackBar,
+    private registrationService: RegistrationService
+  ) {
   }
 
   ngOnInit(): void {
   }
 
-  handleLogin() {
-    // this.authService.login().subscribe((result) => {
-    //   this.invalidLogin = false;
-    //   this.loginSuccess = true;
-    //   this.successMessage = "Login Succesful";
-    //   //Redirect to main page
-    // }, () => {
-    //   this.invalidLogin = true;
-    //   this.loginSuccess = false;
-    // });
+  loginUser() {
+    this.registrationService.logUserInFromRemote(this.user).subscribe(
+      data => {
+        console.log("Login Successful");
+        this.snackbar.open("Login Successful", undefined, {duration: 2500})
+        setTimeout(() => {
+          this.router.navigateByUrl("/home");
+        }, 2000);
+      }
+    );
   }
 }
