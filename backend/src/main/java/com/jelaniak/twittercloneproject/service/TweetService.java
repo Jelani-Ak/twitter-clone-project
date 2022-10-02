@@ -5,6 +5,7 @@ import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
 import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,16 +15,11 @@ import java.util.Optional;
 @Service
 public class TweetService {
 
-    private final TweetRepository tweetRepository;
-    private final CommentRepository commentRepository;
+    @Autowired
+    private TweetRepository tweetRepository;
 
-    public TweetService(
-            TweetRepository tweetRepository,
-            CommentRepository commentRepository
-    ) {
-        this.tweetRepository = tweetRepository;
-        this.commentRepository = commentRepository;
-    }
+    @Autowired
+    private CommentRepository commentRepository;
 
     public Tweet createTweet(Tweet tweet) {
 

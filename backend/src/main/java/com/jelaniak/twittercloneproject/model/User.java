@@ -16,9 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -51,10 +49,10 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    private Set<User> usersYouFollow = new LinkedHashSet<>();
-    private Set<User> usersFollowingYou = new LinkedHashSet<>();
-    private Set<User> mutualFollowers = new LinkedHashSet<>();
-    private List<Tweet> tweets = new ArrayList<>();
+    private Set<User> usersYouFollow = new HashSet<>();
+    private Set<User> usersFollowingYou = new HashSet<>();
+    private Set<User> mutualFollowers = new HashSet<>();
+    private Set<Tweet> tweets = new HashSet<>();
 
     private Integer tweetCount;
     private Integer tweetQuoteCount;

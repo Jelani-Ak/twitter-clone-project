@@ -1,112 +1,147 @@
-<div class="tweet-container" id="title-container">
-  <p id="page-title">Registration</p>
-</div>
+<div>
+  <div class="tweet-container" id="title-container">
+    <p id="page-title">Registration</p>
+  </div>
 
-<div class="form-container">
-  <form #registerForm="ngForm" (ngSubmit)="registerUser()">
+  <div class="form-container">
+    <form #registerForm="ngForm" (ngSubmit)="registerUser()">
+      <!--<editor-fold desc="Username">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Username</mat-label>
+        <input
+          #username="ngModel"
+          [(ngModel)]="user.username"
+          autocomplete="off"
+          id="username"
+          matInput
+          name="username"
+          required
+          type="text"
+        />
+        <mat-error
+          *ngIf="username.errors && username.invalid && username.touched"
+        >
+          Username is required
+        </mat-error>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Username">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Username</mat-label>
-      <input #username="ngModel"
-             [(ngModel)]="user.username"
-             autocomplete="off"
-             id="username"
-             matInput
-             name="username"
-             required
-             type="text">
-      <mat-error *ngIf="username.errors && (username.invalid && username.touched)">
-        Username is required
-      </mat-error>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <br />
 
-    <br/>
+      <!--<editor-fold desc="Password">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Password</mat-label>
+        <input
+          #password="ngModel"
+          [(ngModel)]="user.password"
+          autocomplete="off"
+          id="password"
+          matInput
+          name="password"
+          required
+          type="password"
+        />
+        <mat-error
+          *ngIf="password.errors && password.invalid && password.touched"
+        >
+          Password is required
+        </mat-error>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Password">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Password</mat-label>
-      <input #password="ngModel"
-             [(ngModel)]="user.password"
-             autocomplete="off"
-             id="password"
-             matInput
-             name="password"
-             required
-             type="password">
-      <mat-error *ngIf="password.errors && (password.invalid && password.touched)">
-        Password is required
-      </mat-error>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <br />
 
-    <br/>
+      <!--<editor-fold desc="Confirm Password">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          #confirmPassword="ngModel"
+          (ngModel)="(user.password)"
+          autocomplete="off"
+          id="confirmPassword"
+          matInput
+          name="confirmPassword"
+          required
+          type="password"
+        />
+        <mat-hint
+          style="color: green"
+          *ngIf="
+            confirmPassword.value === password.value && confirmPassword.touched
+          "
+        >
+          Passwords Match
+        </mat-hint>
+        <mat-hint
+          style="color: red"
+          *ngIf="
+            confirmPassword.value !== password.value && confirmPassword.touched
+          "
+        >
+          Passwords must match
+        </mat-hint>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Confirm Password">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Confirm Password</mat-label>
-      <input #confirmPassword="ngModel"
-             (ngModel)="user.password"
-             autocomplete="off"
-             id="confirmPassword"
-             matInput
-             name="confirmPassword"
-             required
-             type="password">
-      <mat-hint style="color: green" *ngIf="(confirmPassword.value === password.value) && confirmPassword.touched">
-        Emails Match
-      </mat-hint>
-      <mat-hint style="color: red" *ngIf="(confirmPassword.value !== password.value) && confirmPassword.touched">
-        Emails must match
-      </mat-hint>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <br />
 
-    <br/>
+      <!--<editor-fold desc="Email">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Email</mat-label>
+        <input
+          #email="ngModel"
+          [(ngModel)]="user.email"
+          autocomplete="off"
+          id="email"
+          matInput
+          name="email"
+          required
+          type="email"
+        />
+        <mat-error *ngIf="email.errors && email.invalid && email.touched">
+          Email is required
+        </mat-error>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Email">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Email</mat-label>
-      <input #email="ngModel"
-             [(ngModel)]="user.email"
-             autocomplete="off"
-             id="email"
-             matInput
-             name="email"
-             required
-             type="email">
-      <mat-error *ngIf="email.errors && (email.invalid && email.touched)">
-        Email is required
-      </mat-error>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <br />
 
-    <br/>
+      <!--<editor-fold desc="Confirm Email">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Confirm Email</mat-label>
+        <input
+          #confirmEmail="ngModel"
+          (ngModel)="(user.email)"
+          autocomplete="off"
+          id="confirmEmail"
+          matInput
+          name="confirmEmail"
+          required
+          type="email"
+        />
+        <mat-hint
+          style="color: green"
+          *ngIf="confirmEmail.value === email.value && confirmEmail.touched"
+        >
+          Emails Match
+        </mat-hint>
+        <mat-hint
+          style="color: red"
+          *ngIf="confirmEmail.value !== email.value && confirmEmail.touched"
+        >
+          Emails must match
+        </mat-hint>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <!--<editor-fold desc="Confirm Email">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Confirm Email</mat-label>
-      <input #confirmEmail="ngModel"
-             (ngModel)="user.email"
-             autocomplete="off"
-             id="confirmEmail"
-             matInput
-             name="confirmEmail"
-             required
-             type="email">
-      <mat-hint style="color: green" *ngIf="(confirmEmail.value === email.value) && confirmEmail.touched">
-        Emails Match
-      </mat-hint>
-      <mat-hint style="color: red" *ngIf="(confirmEmail.value !== email.value) && confirmEmail.touched">
-        Emails must match
-      </mat-hint>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <br />
 
-    <br/>
-
-    <button class="login-button" mat-button type="submit">Register</button>
-    <small [routerLink]="['/login']">Already have an account? Login here</small>
-  </form>
+      <div class="register-container">
+        <button class="register-button" mat-button type="submit">Register</button>
+        <small [routerLink]="['/login']">
+          Already have an account? Login here
+        </small>
+      </div>
+    </form>
+  </div>
 </div>

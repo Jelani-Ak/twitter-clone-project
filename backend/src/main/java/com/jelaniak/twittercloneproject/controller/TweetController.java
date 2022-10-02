@@ -15,8 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tweet")
 public class TweetController {
+
     @Autowired
-    private final TweetService tweetService;
+    private TweetService tweetService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)

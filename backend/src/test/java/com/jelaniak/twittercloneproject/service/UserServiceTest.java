@@ -42,12 +42,6 @@ class UserServiceTest {
     @Mock
     private TweetService tweetService;
 
-    @BeforeEach
-    void setUp() {
-        userService = new UserService(userRepository);
-        tweetService = new TweetService(tweetRepository, commentRepository);
-    }
-
     @AfterEach
     void tearDown() {
         if (!userService.getAllUsers().isEmpty()) {
@@ -69,7 +63,6 @@ class UserServiceTest {
         //then - verify the output
         assertThat(userService.getAllUsers()).isNotNull();
         assertThat(userService.getAllUsers().isEmpty()).isFalse();
-
     }
 
     @Test

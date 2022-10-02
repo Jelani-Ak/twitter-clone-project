@@ -1,23 +1,21 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {User} from "../../../shared/models/user/user";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../../../shared/models/user/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegistrationService {
+  private baseurl: String = 'http://localhost:8080/api/v1/user';
 
-  private baseurl: String = "http://localhost:8080/api/v1/register";
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
+  public logUserInFromRemote(user: User): Observable<User> {
+    return this.http.post<User>(this.baseurl + '/login', user);
   }
 
-  public logUserInFromRemote(user: User): Observable<any> {
-    return this.http.post<any>(this.baseurl + "/login", user)
-  }
-
-  public registerUserFromRemote(user: User): Observable<any> {
-    return this.http.post<any>(this.baseurl + "/user", user);
+  public registerUserFromRemote(user: User): Observable<User> {
+    return this.http.post<User>(this.baseurl + '/register/create', user);
   }
 }

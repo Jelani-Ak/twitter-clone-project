@@ -1,48 +1,62 @@
-<div class="tweet-container" id="title-container">
-  <p id="page-title">Login</p>
-</div>
+<div>
+  <div class="tweet-container" id="title-container">
+    <p id="page-title">Login</p>
+  </div>
 
-<div class="form-container">
-  <form #loginform="ngForm" (ngSubmit)="loginUser()">
-    <!--<editor-fold desc="Username">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Username</mat-label>
-      <input #username="ngModel"
-             [(ngModel)]="user.username"
-             [class.is-invalid]="username.invalid && username.touched"
-             id="username"
-             matInput
-             name="username"
-             required
-             type="text">
-      <mat-error *ngIf="username.errors && (username.invalid && username.touched)">
-        Username is required
-      </mat-error>
-    </mat-form-field>
-    <!--</editor-fold>-->
+  <div class="form-container">
+    <form #loginform="ngForm" (ngSubmit)="loginUser()">
+      <!--<editor-fold desc="Username">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Username</mat-label>
+        <input
+          #username="ngModel"
+          [(ngModel)]="user.username"
+          [class.is-invalid]="username.invalid && username.touched"
+          id="username"
+          matInput
+          name="username"
+          required
+          type="text"
+        />
+        <mat-error
+          *ngIf="username.errors && username.invalid && username.touched"
+        >
+          Username is required
+        </mat-error>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <br/>
+      <br />
 
-    <!--<editor-fold desc="Password">-->
-    <mat-form-field appearance="fill" class="user-management-form">
-      <mat-label>Password</mat-label>
-      <input #password="ngModel"
-             [(ngModel)]="user.password"
-             [class.is-invalid]="password.invalid && password.touched"
-             id="password"
-             matInput
-             name="password"
-             required
-             type="password">
-      <mat-error *ngIf="password.errors && (password.invalid && password.touched)">
-        Password is required
-      </mat-error>
-    </mat-form-field>
-    <!--</editor-fold>-->
+      <!--<editor-fold desc="Password">-->
+      <mat-form-field appearance="fill" class="user-management-form">
+        <mat-label>Password</mat-label>
+        <input
+          #password="ngModel"
+          [(ngModel)]="user.password"
+          [class.is-invalid]="password.invalid && password.touched"
+          id="password"
+          matInput
+          name="password"
+          required
+          type="password"
+        />
+        <mat-error
+          *ngIf="password.errors && password.invalid && password.touched"
+        >
+          Password is required
+        </mat-error>
+      </mat-form-field>
+      <!--</editor-fold>-->
 
-    <br/>
+      <br />
 
-    <button class="login-button" mat-button type="submit">Login</button>
-    <small [routerLink]="['/register']">Don't have an account? Register here</small>
-  </form>
+      <div class="login-container">
+        <button class="login-button" mat-button type="submit">Login</button>
+        <small [routerLink]="['/register']">
+          Don't have an account? Register here
+        </small>
+      </div>
+    </form>
+  </div>
 </div>

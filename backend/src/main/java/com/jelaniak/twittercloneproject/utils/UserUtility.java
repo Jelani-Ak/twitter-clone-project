@@ -34,7 +34,7 @@ public class UserUtility {
         user.setUsersYouFollow(new HashSet<>());
         user.setUsersFollowingYou(new HashSet<>());
         user.setMutualFollowers(new HashSet<>());
-        user.setTweets(new ArrayList<>());
+        user.setTweets(new HashSet<>());
         user.setTweetCount(user.getTweets().size());
         user.setTweetQuoteCount(number);
         user.setFollowing(false);

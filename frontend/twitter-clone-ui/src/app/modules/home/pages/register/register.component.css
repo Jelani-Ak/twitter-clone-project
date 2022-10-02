@@ -1,6 +1,6 @@
 #title-container {
   color: white;
-  background: #673AB7;
+  background: #673ab7;
   padding: 18px;
 }
 
@@ -13,14 +13,20 @@
   margin-bottom: 5px;
 }
 
-.login-button {
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.register-button {
   color: white;
-  background: #673AB7;
+  background: #673ab7;
   border-radius: 0;
   transition-duration: 0.25s;
 }
 
-.login-button:hover {
+.register-button:hover {
   color: black;
   background-color: white;
   transition-duration: 0.25s;

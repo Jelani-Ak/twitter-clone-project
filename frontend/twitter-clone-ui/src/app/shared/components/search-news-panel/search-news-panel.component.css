@@ -6,11 +6,12 @@
   /*border-radius: 15px;*/
 }
 
+.search-news-panel-container {
+
+}
+
 .search-form {
   width: 100%;
-  margin: 0;
-  padding: 0 10px;
-  box-sizing: border-box;
 }
 
 #search-form-input {
@@ -23,6 +24,6 @@
   border-color: #673AB7;
   border-style: solid;
   padding: 10px;
-  margin: 0 10px 10px 10px;
+  margin-bottom: 10px;
   height: 250px;
 }

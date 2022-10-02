@@ -22,40 +22,47 @@ public class UserController {
 
     private UserService userService;
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(
+            value = "/register/create",
+            method = RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody User user) throws UserAlreadyExistsException {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
     }
 
-    @PutMapping("/update/{id}")
+    @RequestMapping(
+            value = "/update/{id}",
+            method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(
             @PathVariable("id") ObjectId id,
             @RequestBody User user) throws UserIdNotFoundException {
         return new ResponseEntity<>(userService.updateUser(id, user), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(
+            value = "/delete/{id}",
+            method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserIdNotFoundException {
         return new ResponseEntity<>(userService.deleteUser(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(
+            value = "/get/{id}",
+            method = RequestMethod.GET)
     public ResponseEntity<User> findByUserId(@PathVariable ObjectId id) throws UserIdNotFoundException {
         return new ResponseEntity<>(userService.findByUserId(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get/all")
-    @ResponseStatus(HttpStatus.OK)
+    @RequestMapping(
+            value = "/get/all",
+            method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<User> loginUser(@RequestBody User user) throws UserIdNotFoundException {
-        return new ResponseEntity<>(userService.validateCredentials(user.getUserId()), HttpStatus.ACCEPTED);
+    @RequestMapping(
+            value = "/login",
+            method = RequestMethod.POST)
+    public ResponseEntity<User> loginUser(@RequestBody User user) throws BadCredentialsException {
+        return new ResponseEntity<>(userService.loginUser(user), HttpStatus.ACCEPTED);
     }
 }

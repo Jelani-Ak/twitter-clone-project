@@ -1,45 +1,72 @@
 <div class="tweet-container" *ngFor="let tweet of tweets">
   <div class="profile-image-container" fxFlex="15%">
-    <img
-      src="https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg"
-    >
+    <img src="{{ placeholderImage }}" />
   </div>
   <div class="inner-tweet-container" fxFlex="85%">
     <div id="details" style="display: flex">
       <!-- Username + UserHandle + Date -->
       <p id="username" style="margin-right: 10px">Username</p>
       <p id="handle" style="margin-right: 10px">@Username</p>
-      <p id="date" style="text-align: right">{{tweet.createdDate}}</p>
+      <p id="date" style="text-align: right">{{ tweet.createdDate }}</p>
     </div>
 
-    <br/>
+    <br />
 
-    <div id="Content">
+    <span class="tweet-media">
+      <img src="{{ placeholderImage }}" />
+      <!-- <img src="{{tweet.media}}"> -->
+      <!-- <video src="{{tweet.media}}"> -->
+    </span>
+
+    <br />
+
+    <div id="content">
       <p style="text-align: justify">
-        {{tweet.content}}
+        {{ tweet.content }}
       </p>
+      
+      <br />
 
-      <br/>
+      <!-- Placeholder, delete later -->
+      <p style="text-align: justify">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur
+        iusto, suscipit. Asperiores consequatur et ex illo labore laboriosam
+        mollitia obcaecati optio pariatur possimus quam, quod recusandae soluta
+        sunt suscipit tempore veniam veritatis voluptatem! Ad aperiam architecto
+        beatae distinctio dolorum exercitationem fuga fugiat id incidunt ipsam
+        ipsum laboriosam laudantium maiores nam nihil quis repellendus
+        reprehenderit saepe sapiente, sint sunt tenetur velit veritatis vitae
+        voluptatem? Aliquid laborum libero, magnam modi mollitia perspiciatis
+        quam quas quidem recusandae voluptate.
+      </p>      
+    </div>
 
-      <p style="text-align: justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur iusto,
-        suscipit. Asperiores consequatur
-        et ex illo labore laboriosam mollitia obcaecati optio pariatur possimus quam, quod recusandae soluta sunt
-        suscipit tempore veniam veritatis voluptatem! Ad aperiam architecto beatae distinctio dolorum exercitationem
-        fuga fugiat id incidunt ipsam ipsum laboriosam laudantium maiores nam nihil quis repellendus reprehenderit saepe
-        sapiente, sint sunt tenetur velit veritatis vitae voluptatem? Aliquid laborum libero, magnam modi mollitia
-        perspiciatis quam quas quidem recusandae voluptate.</p>
+    <br />
 
-      <span>
-        <!-- <img src="{{tweet.media}}"> -->
-        <!-- <video src="{{tweet.media}}"> -->
-      </span>
-
-      <span>
-        <!-- Reply Count -->
+    <div class="metadata-container">
+      <span class="metadata">
+        <!-- Comment Count -->
+        <span class="metadata-text">
+          <mat-icon class="tweet-material-icon">chat_bubble</mat-icon>
+          {{ tweet.commentCount }}
+        </span>
         <!-- Retweet Count -->
+        <span class="metadata-text">
+          <mat-icon class="tweet-material-icon">loop</mat-icon>
+          {{ tweet.retweetCount }}
+        </span>
         <!-- Like Count -->
+        <span class="metadata-text">
+          <mat-icon class="tweet-material-icon">thumb_up_alt</mat-icon>
+          {{ tweet.likeCount }}
+        </span>
         <!-- Share -->
+        <span class="metadata-text">
+          <mat-icon class="tweet-material-icon">share</mat-icon>
+        </span>
       </span>
     </div>
+    
+    <app-tweet-management-buttons [tweet]="tweet"></app-tweet-management-buttons>
   </div>
 </div>
