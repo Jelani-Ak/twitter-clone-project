@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+// import { NgxFileUploadCoreModule } from '@ngx-file-upload/core';
+// import { NgxFileUploadUiModule } from '@ngx-file-upload/ui';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
@@ -60,6 +62,7 @@ import { TweetManagementButtonsComponent } from './shared/components/tweet-manag
     TweetManagementButtonsComponent,
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -75,6 +78,8 @@ import { TweetManagementButtonsComponent } from './shared/components/tweet-manag
     ReactiveFormsModule,
     MatTableModule,
     MatSnackBarModule,
+    // NgxFileUploadCoreModule,
+    // NgxFileUploadUiModule,
   ],
   providers: [UserService, TweetService],
   bootstrap: [AppComponent],
