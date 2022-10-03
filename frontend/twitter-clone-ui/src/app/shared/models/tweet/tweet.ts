@@ -8,7 +8,7 @@ export class Tweet {
   media?: Media;
   content!: string;
   createdDate!: string;
-  comment!: Set<Comment>;
+  comments!: Set<Comment>;
   commentCount!: number;
   retweetCount!: number;
   likeCount!: number;

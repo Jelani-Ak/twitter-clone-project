@@ -21,9 +21,7 @@ export class RegisterComponent {
   registerUser() {
     this.authenticationService
       .registerUserFromRemote(this.user)
-      .subscribe((data) => {
-        console.log(data);
-        console.log(this.user);
+      .subscribe(() => {
         console.log('Registration Successful');
         this.snackbar.open('Registration Successful', undefined, {
           duration: 2500,

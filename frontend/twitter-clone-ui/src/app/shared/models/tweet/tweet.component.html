@@ -1,13 +1,13 @@
-<div class="tweet-container" *ngFor="let tweet of tweets">
+<div class="tweet-container" *ngFor="let tweet of tweetService.tweets">
   <div class="profile-image-container" fxFlex="15%">
     <img src="{{ placeholderImage }}" />
   </div>
   <div class="inner-tweet-container" fxFlex="85%">
-    <div id="details" style="display: flex">
+    <div class="details" style="display: flex">
       <!-- Username + UserHandle + Date -->
-      <p id="username" style="margin-right: 10px">Username</p>
-      <p id="handle" style="margin-right: 10px">@Username</p>
-      <p id="date" style="text-align: right">{{ tweet.createdDate }}</p>
+      <p class="username" style="margin-right: 10px">Username</p>
+      <p class="handle" style="margin-right: 10px">@Username</p>
+      <p class="date" style="text-align: right">{{ tweet.createdDate }}</p>
     </div>
 
     <br />
@@ -20,7 +20,7 @@
 
     <br />
 
-    <div id="content">
+    <div class="content">
       <p style="text-align: justify">
         {{ tweet.content }}
       </p>
@@ -67,6 +67,14 @@
       </span>
     </div>
     
-    <app-tweet-management-buttons [tweet]="tweet"></app-tweet-management-buttons>
+    <div class="tweet-management-buttons-container">
+      <div class="buttons">
+        <button class="button" mat-button (click)="deleteTweet(tweet)">Delete</button>
+        <span class="spacer"></span>
+        <button class="button" mat-button>Add Comment</button>
+      </div>
+    </div>
+
+    <!-- <app-tweet-management-buttons [tweet]="tweet"></app-tweet-management-buttons> -->
   </div>
 </div>

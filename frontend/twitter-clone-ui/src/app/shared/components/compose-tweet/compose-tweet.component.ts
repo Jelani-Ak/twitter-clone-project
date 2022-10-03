@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Tweet } from '../../models/tweet/tweet';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './compose-tweet.component.html',
   styleUrls: ['./compose-tweet.component.css'],
 })
-export class ComposeTweetComponent implements OnInit {
+export class ComposeTweetComponent {
   tweet = new Tweet();
 
   content!: string;
@@ -16,19 +16,13 @@ export class ComposeTweetComponent implements OnInit {
 
   constructor(
     private snackbar: MatSnackBar,
-    private tweetService: TweetService
+    public tweetService: TweetService
   ) {}
 
-  ngOnInit(): void {}
-
-  addTweet() {
-    this.tweetService
-    .composeTweet(this.tweet)
-    .subscribe((data) => {
-      console.log(data);
-      console.log(this.tweet);
-      console.log(this.content);
-      this.snackbar.open('Tweet Created Successfully', undefined, {
+  createTweet() {
+    this.tweetService.createTweetFromRemote(this.tweet).subscribe((data) => {
+      this.tweetService.tweets.push(data);
+      this.snackbar.open('Tweet Created Successfully', 'Ok', {
         duration: 2500,
       });
     });

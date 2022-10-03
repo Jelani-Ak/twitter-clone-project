@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { Tweet } from './tweet';
 
@@ -7,22 +8,25 @@ import { Tweet } from './tweet';
   templateUrl: './tweet.component.html',
   styleUrls: ['./tweet.component.css'],
 })
-export class TweetComponent implements OnInit {
-  tweets: Tweet[] = [];
-
+export class TweetComponent {
   // TODO: Delete later
   placeholderImage =
     'https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg';
 
-  constructor(private tweetService: TweetService) {}
+  constructor(
+    public tweetService: TweetService,
+    private snackbar: MatSnackBar
+  ) {}
 
-  ngOnInit(): void {
-    this.getTweets();
-  }
+  deleteTweet(tweet: Tweet) {
+    this.tweetService.tweets = this.tweetService.tweets.filter(
+      (tweetIndex) => tweetIndex != tweet
+    );
 
-  getTweets() {
-    this.tweetService.getAllTweets().subscribe((tweets) => {
-      this.tweets = tweets;
+    this.tweetService.deleteTweetFromRemote(tweet.tweetId).subscribe(() => {
+      this.snackbar.open('Tweet Deleted', 'Ok', {
+        duration: 2500,
+      });
     });
   }
 }

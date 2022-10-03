@@ -1,12 +1,14 @@
 package com.jelaniak.twittercloneproject.utils;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+
+import org.bson.types.ObjectId;
+
+import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Media;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
-import org.bson.types.ObjectId;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class TweetUtility {
     public static Tweet getNewTweet(int number, User user, Media media) {
@@ -18,8 +20,8 @@ public class TweetUtility {
         tweet.setMedia(media);
         tweet.setContent("Content " + number);
         tweet.setDateOfCreation(LocalDateTime.now());
-        tweet.setComment(new ArrayList<>());
-        tweet.setCommentCount(tweet.getComment().size());
+        tweet.setComments(new HashSet<Comment>());
+        tweet.setCommentCount(tweet.getComments().size());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
 

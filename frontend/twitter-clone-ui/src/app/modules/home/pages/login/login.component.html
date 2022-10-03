@@ -1,11 +1,10 @@
-<div class="login-container">
-  <div id="title-container">
-    <p id="page-title">Login</p>
+<div class="login-page-container">
+  <div class="title-container">
+    <p class="page-title">Login</p>
   </div>
 
   <div class="form-container">
     <form #loginform="ngForm" (ngSubmit)="loginUser()">
-      <!--<editor-fold desc="Username">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Username</mat-label>
         <input
@@ -24,11 +23,9 @@
           Username is required
         </mat-error>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <!--<editor-fold desc="Password">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Password</mat-label>
         <input
@@ -47,11 +44,10 @@
           Password is required
         </mat-error>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <div class="login-container">
+      <div class="login-button-container">
         <button class="login-button" mat-button type="submit">Login</button>
         <small [routerLink]="['/register']">
           Don't have an account? Register here

@@ -26,3 +26,10 @@ p {
 .timeline-container {
   padding: 0 10px;
 }
+
+.title-container {
+  color: white;
+  background: #673ab7;
+  padding: 18px;
+  margin-bottom: 10px;
+}

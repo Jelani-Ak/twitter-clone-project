@@ -1,11 +1,10 @@
-<div>
-  <div class="tweet-container" id="title-container">
-    <p id="page-title">Registration</p>
+<div class="register-page-container">
+  <div class="title-container">
+    <p class="page-title">Registration</p>
   </div>
 
   <div class="form-container">
     <form #registerForm="ngForm" (ngSubmit)="registerUser()">
-      <!--<editor-fold desc="Username">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Username</mat-label>
         <input
@@ -24,11 +23,9 @@
           Username is required
         </mat-error>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <!--<editor-fold desc="Password">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Password</mat-label>
         <input
@@ -47,11 +44,9 @@
           Password is required
         </mat-error>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <!--<editor-fold desc="Confirm Password">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Confirm Password</mat-label>
         <input
@@ -81,11 +76,9 @@
           Passwords must match
         </mat-hint>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <!--<editor-fold desc="Email">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Email</mat-label>
         <input
@@ -102,11 +95,9 @@
           Email is required
         </mat-error>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 
-      <!--<editor-fold desc="Confirm Email">-->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Confirm Email</mat-label>
         <input
@@ -132,7 +123,6 @@
           Emails must match
         </mat-hint>
       </mat-form-field>
-      <!--</editor-fold>-->
 
       <br />
 

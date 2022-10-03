@@ -8,26 +8,26 @@ import { Tweet } from '../../models/tweet/tweet';
   templateUrl: './tweet-management-buttons.component.html',
   styleUrls: ['./tweet-management-buttons.component.css'],
 })
-export class TweetManagementButtonsComponent implements OnInit {
-  @Input() public tweet: Tweet | undefined;
+export class TweetManagementButtonsComponent {
+  @Input() public tweet!: Tweet;
 
   constructor(
     private snackbar: MatSnackBar,
     private tweetService: TweetService
   ) {}
 
-  ngOnInit(): void {}
-
   deleteTweet() {
     this.tweetService
-    .deleteTweet(this.tweet?.tweetId)
-    .subscribe((data) => {
-      console.log(data)
-      console.log(this.tweet);
-      console.log('Tweet Deleted');
-      this.snackbar.open('Tweet Deleted', undefined, {
-        duration: 2500,
+      .deleteTweetFromRemote(this.tweet!.tweetId)
+      .subscribe(() => {
+        this.snackbar.open('Tweet Deleted', undefined, {
+          duration: 2500,
+        });
       });
-    });
+  }
+
+  addComment() {
+    // TODO: Write logic to create a comment
+    console.log('Add comment not implemented yet');
   }
 }

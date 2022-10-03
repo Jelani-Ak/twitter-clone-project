@@ -1,11 +1,11 @@
 package com.jelaniak.twittercloneproject.utils;
 
-import com.jelaniak.twittercloneproject.model.User;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+
 import org.bson.types.ObjectId;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
+import com.jelaniak.twittercloneproject.model.User;
 
 public class UserUtility {
     /**

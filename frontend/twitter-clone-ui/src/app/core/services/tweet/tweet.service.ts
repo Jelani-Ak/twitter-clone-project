@@ -7,9 +7,23 @@ import { Tweet } from '../../../shared/models/tweet/tweet';
   providedIn: 'root',
 })
 export class TweetService {
+  public tweets: Tweet[] = [];
+
   private baseUrl = 'http://localhost:8080/api/v1/tweet/';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.setup();
+  }
+
+  setup(): void {
+    this.loadTweets();
+  }
+
+  loadTweets() {
+    this.getAllTweets().subscribe((tweets) => {
+      this.tweets = tweets;
+    });
+  }
 
   getAllTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.baseUrl + 'all');
@@ -19,11 +33,11 @@ export class TweetService {
     return this.http.get<Tweet>(this.baseUrl + tweetId);
   }
 
-  composeTweet(tweet: Tweet): Observable<Tweet> {
+  createTweetFromRemote(tweet: Tweet): Observable<Tweet> {
     return this.http.post<Tweet>(this.baseUrl + 'create', tweet);
   }
 
-  deleteTweet(tweetId: any): Observable<Tweet> {
+  deleteTweetFromRemote(tweetId: any): Observable<Tweet> {
     return this.http.delete<Tweet>(this.baseUrl + 'delete/' + tweetId);
   }
 }
