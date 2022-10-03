@@ -1,6 +1,6 @@
 <mat-dialog-content>
   <form #registerForm="ngForm" (ngSubmit)="createTweet()">    
-    <mat-form-field appearance="fill" class="compose-tweet-form">
+    <mat-form-field  appearance="fill" class="compose-tweet-form">
       <mat-label>Compose Tweet</mat-label>
       <textarea
         #input
@@ -22,8 +22,15 @@
 
     <div class="button-row-container">
       <button class="tweet-button add-media-button" mat-button type="button">Add media</button>
-      <button *ngIf="fileSelected" class="tweet-button remove-media-button" mat-button type="button">Remove</button>
-      <span *ngIf="fileSelected" style="margin-right: 10px">filename-example-placeholder.txt</span>
+      <!-- <span *ngIf="fileSelected" style="margin-right: 10px">filename-example-placeholder.txt</span> -->
+      
+      
+      <div [formGroup]="fileSelectForm">
+        <mat-label>Basic fill input</mat-label>
+        <ngx-mat-file-input formControlName="fileSelectForm" placeholder="Basic fill placeholder" ></ngx-mat-file-input>
+        <mat-icon matSuffix>folder</mat-icon>
+      </div>
+      
       <button
         [disabled]="!tweet.content"
         class="tweet-button compose-tweet-button"
@@ -32,5 +39,7 @@
         Create
       </button>
     </div>
+    
+      
   </form>
 </mat-dialog-content>
