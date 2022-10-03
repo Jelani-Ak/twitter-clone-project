@@ -1,14 +1,14 @@
-import {Media} from "../media/media";
-import {Comment} from "../comment/comment";
+import { Media } from '../media/media';
+import { Comment } from '../comment/comment';
 
-export class Tweet extends Media {
+export class Tweet {
   tweetId?: number;
   tweetUrl!: string;
   username!: string;
   media?: Media;
   content!: string;
   createdDate!: string;
-  comment!: Set<Comment>
+  comment!: Set<Comment>;
   commentCount!: number;
   retweetCount!: number;
   likeCount!: number;
@@ -19,5 +19,5 @@ enum TweetType {
   TWEET,
   RETWEET,
   MEDIA,
-  LIKED
+  LIKED,
 }

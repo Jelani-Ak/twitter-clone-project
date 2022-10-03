@@ -22,6 +22,11 @@ textarea {
   height: 90px;
 }
 
+.hint {
+  display: flex;
+  align-items: flex-end;
+}
+
 .tweet-button {
   color: white;
   background: #673ab7;

@@ -18,7 +18,9 @@
           type="text">
         </textarea>
         <!-- Maximum character limit -->
-        <mat-hint align="end">{{input.value.length || 0}}/280</mat-hint>
+        <div class="hint">
+          <mat-hint>{{ input.value.length || 0 }}/280</mat-hint>
+        </div>
       </mat-form-field>
     </div>
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { Tweet } from './tweet';
 
@@ -9,6 +9,8 @@ import { Tweet } from './tweet';
 })
 export class TweetComponent implements OnInit {
   tweets: Tweet[] = [];
+
+  // TODO: Delete later
   placeholderImage =
     'https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg';
 

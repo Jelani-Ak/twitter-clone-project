@@ -24,6 +24,4 @@ export class User {
 
   follow?: boolean;
   enabled?: boolean;
-
-  constructor() {}
 }

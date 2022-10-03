@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../../shared/models/user/user';
-import { RegistrationService } from '../../../../core/services/registration/registration.service';
+import { AuthenticationService } from '../../../../core/services/authentication/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -9,19 +9,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   user = new User();
 
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
-    private registrationService: RegistrationService
+    private authenticationService: AuthenticationService
   ) {}
 
-  ngOnInit(): void {}
-
   registerUser() {
-    this.registrationService
+    this.authenticationService
       .registerUserFromRemote(this.user)
       .subscribe((data) => {
         console.log(data);

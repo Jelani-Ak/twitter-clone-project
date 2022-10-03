@@ -11,10 +11,10 @@ export class UserComponent implements OnInit {
   users: User[] = [];
   columnsToDisplay = ['userId', 'username', 'password', 'email'];
   columnNames = {
-    "userId": "User ID",
-    "username": "Username",
-    "password": "Password",
-    "email": "E-mail"
+    userId: 'User ID',
+    username: 'Username',
+    password: 'Password',
+    email: 'E-mail',
   };
 
   constructor(private userService: UserService) {}
@@ -29,7 +29,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  rowInformation(column: string | number, row: { [x: string]: any; }) {
+  rowInformation(column: string | number, row: { [x: string]: any }) {
     return row[column];
   }
 
