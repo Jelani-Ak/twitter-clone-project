@@ -39,13 +39,19 @@ textarea {
   transition-duration: 0.25s;
 }
 
-.button-row {
-  margin-top: 10px;
+.button-row-container {
+  display: grid;
+  background-color: #eee;
+  grid-template-columns: min-content auto min-content;
 }
 
-.remove-media-button,
-.add-media-button {
-  margin-right: 10px;
+.file-select-container {
+  width: 100%;
+  display: flex;
+  padding: 10px 0;
+  margin-left: 10px;
+  text-align: center;
+  align-items: center;
 }
 
 .compose-tweet-button {
@@ -55,4 +61,21 @@ textarea {
 .compose-tweet-button:disabled {
   color: #8677ac;
   background: #b5a1e7;
+}
+
+input[type="file"] {
+  display: none;
+  pointer-events:auto; 
+}
+.custom-file-upload {
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  position: absolute;
+  padding: 20px 50px;
+  display: inline-block;
+  box-sizing: content-box;
+  background-color: rgba(0, 0, 0, 0);
+  
+  /* background-color: aqua; */
 }

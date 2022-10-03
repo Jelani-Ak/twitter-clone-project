@@ -104,5 +104,7 @@
       }
     }
   },
-  "defaultProject": "twitter-clone-ui"
+  "cli": {
+    "analytics": false
+  }
 }
