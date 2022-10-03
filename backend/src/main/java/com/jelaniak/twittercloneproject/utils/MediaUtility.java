@@ -1,7 +1,8 @@
 package com.jelaniak.twittercloneproject.utils;
 
-import com.jelaniak.twittercloneproject.model.Media;
 import org.bson.types.ObjectId;
+
+import com.jelaniak.twittercloneproject.model.Media;
 
 public class MediaUtility {
     public static Media getNewMedia(int number) {

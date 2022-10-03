@@ -1,8 +1,8 @@
-.example-spacer {
+.spacer {
   flex: 1 1 auto;
 }
 
-#header {
+.header {
   background: rgb(103, 58, 183);
   background: linear-gradient(
     90deg,

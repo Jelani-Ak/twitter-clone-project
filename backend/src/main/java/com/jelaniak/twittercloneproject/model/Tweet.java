@@ -1,20 +1,26 @@
 package com.jelaniak.twittercloneproject.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.*;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -43,7 +49,7 @@ public class Tweet {
     private LocalDateTime dateOfCreation;
 
     @DBRef
-    private List<Comment> comment = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
 
     private Integer commentCount;
     private Integer retweetCount;

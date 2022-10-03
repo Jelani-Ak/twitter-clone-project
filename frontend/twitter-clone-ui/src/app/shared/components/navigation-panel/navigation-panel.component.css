@@ -1,15 +1,9 @@
-/*.inner-container {*/
-/*  border-width: 1px;*/
-/*  border-style: solid;*/
-/*  border-color: darkorange;*/
-/*}*/
+/* .inner-container {
+  border-width: 1px;
+  border-style: solid;
+  border-color: darkorange;
+} */
 
-* {
-  justify-content: center;
-}
-
-.aligned-with-icon {
-  font-size: 25px;
-  display: flex;
-  position: relative;
+.inner-container {
+  display: grid;
 }

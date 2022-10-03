@@ -22,6 +22,11 @@ textarea {
   height: 90px;
 }
 
+.hint {
+  display: flex;
+  align-items: flex-end;
+}
+
 .tweet-button {
   color: white;
   background: #673ab7;
@@ -34,20 +39,20 @@ textarea {
   transition-duration: 0.25s;
 }
 
-#button-row {
+.button-row {
   margin-top: 10px;
 }
 
-#remove-media-button,
-#add-media-button {
+.remove-media-button,
+.add-media-button {
   margin-right: 10px;
 }
 
-#compose-tweet-button {
+.compose-tweet-button {
   float: right;
 }
 
-#compose-tweet-button:disabled {
+.compose-tweet-button:disabled {
   color: #8677ac;
   background: #b5a1e7;
 }

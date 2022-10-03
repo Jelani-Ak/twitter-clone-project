@@ -1,14 +1,22 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
-import com.jelaniak.twittercloneproject.model.Tweet;
-import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.CommentRepository;
-import com.jelaniak.twittercloneproject.repository.TweetRepository;
-import com.jelaniak.twittercloneproject.repository.UserRepository;
+import static com.jelaniak.twittercloneproject.utils.TweetUtility.getNewTweet;
+import static com.jelaniak.twittercloneproject.utils.UserUtility.getNewUser;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
@@ -16,15 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-
-import static com.jelaniak.twittercloneproject.utils.TweetUtility.getNewTweet;
-import static com.jelaniak.twittercloneproject.utils.UserUtility.getNewUser;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
+import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.UserRepository;
 
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
@@ -32,21 +36,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
 
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TweetRepository tweetRepository;
-    @Autowired
-    private CommentRepository commentRepository;
+    private UserRepository userRepository;    
     @Mock
     private UserService userService;
     @Mock
     private TweetService tweetService;
-
-    @BeforeEach
-    void setUp() {
-        userService = new UserService(userRepository);
-        tweetService = new TweetService(tweetRepository, commentRepository);
-    }
 
     @AfterEach
     void tearDown() {
@@ -69,7 +63,6 @@ class UserServiceTest {
         //then - verify the output
         assertThat(userService.getAllUsers()).isNotNull();
         assertThat(userService.getAllUsers().isEmpty()).isFalse();
-
     }
 
     @Test

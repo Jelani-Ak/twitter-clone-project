@@ -1,38 +1,33 @@
 <mat-dialog-content>
-  <form method="post">
-    <div>
-      <mat-form-field appearance="fill">
-        <!-- Form Heading -->
-        <mat-label>Compose Tweet</mat-label>
-        <!-- Text area -->
-        <textarea
-          #input
-          [(ngModel)]="tweet.content"
-          [ngModelOptions]="{standalone: true}"
-          class="mat-form-field-textarea"
-          id="content"
-          matInput
-          maxlength="280"
-          name="content"
-          placeholder="What's happening"
-          type="text">
-        </textarea>
-        <!-- Maximum character limit -->
-        <mat-hint align="end">{{input.value?.length || 0}}/280</mat-hint>
-      </mat-form-field>
-    </div>
+  <form #registerForm="ngForm" (ngSubmit)="createTweet()">    
+    <mat-form-field appearance="fill" class="compose-tweet-form">
+      <mat-label>Compose Tweet</mat-label>
+      <textarea
+        #input
+        #content="ngModel"
+        [(ngModel)]="tweet.content"
+        class="mat-form-field-textarea"
+        id="content"
+        matInput
+        maxlength="280"
+        name="content"
+        placeholder="What's happening"
+        type="text">
+      </textarea>
 
-    <div id="button-row">
-      <button class="tweet-button" id="add-media-button" mat-button type="button">Add media</button>
-      <button *ngIf="fileSelected" class="tweet-button" id="remove-media-button" mat-button type="button">Remove</button>
+      <div class="hint">
+        <mat-hint>{{ input.value.length || 0 }}/280</mat-hint>
+      </div>
+    </mat-form-field>
+
+    <div class="button-row-container">
+      <button class="tweet-button add-media-button" mat-button type="button">Add media</button>
+      <button *ngIf="fileSelected" class="tweet-button remove-media-button" mat-button type="button">Remove</button>
       <span *ngIf="fileSelected" style="margin-right: 10px">filename-example-placeholder.txt</span>
       <button
-        (click)="addTweet()"
         [disabled]="!tweet.content"
-        class="tweet-button"
-        id="compose-tweet-button"
+        class="tweet-button compose-tweet-button"
         mat-button
-        mat-dialog-close
         type="submit">
         Create
       </button>

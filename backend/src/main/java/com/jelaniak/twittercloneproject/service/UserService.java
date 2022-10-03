@@ -1,25 +1,25 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
-import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
-import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.UserRepository;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.jelaniak.twittercloneproject.exception.BadCredentialsException;
+import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
+import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.model.Tweet;
+import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.UserRepository;
 
 @Service
 public class UserService {
 
     @Autowired
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserRepository userRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -113,12 +113,12 @@ public class UserService {
         user.setDateOfCreation(LocalDateTime.now());
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
-        user.setUsersYouFollow(user.getUsersYouFollow());
-        user.setUsersFollowingYou(user.getUsersFollowingYou());
-        user.setMutualFollowers(user.getMutualFollowers());
-        user.setTweets(user.getTweets());
-        user.setTweetCount(user.getTweets().size());
-        user.setTweetQuoteCount(user.getTweetQuoteCount());
+        user.setUsersYouFollow(new HashSet<User>());
+        user.setUsersFollowingYou(new HashSet<User>());
+        user.setMutualFollowers(new HashSet<User>());
+        user.setTweets(new HashSet<Tweet>());
+        user.setTweetCount(0);
+        user.setTweetQuoteCount(0);
         user.setFollowing(false);
         user.setVerified(false);
 
@@ -127,6 +127,26 @@ public class UserService {
 
     public void createUsers(List<User> users) {
         userRepository.saveAll(users);
+    }
+
+    public User loginUser(User user) throws BadCredentialsException {
+        User tempUser;
+
+        String tempEmail = user.getEmail();
+        String tempUsername = user.getUsername();
+        String tempPassword = user.getPassword();
+
+        if (tempEmail != null && tempPassword != null) {
+            tempUser = userRepository.findByEmailAndPassword(tempEmail, tempPassword);
+            return tempUser;
+        }
+
+        if (tempUsername != null && tempPassword != null) {
+            tempUser = userRepository.findByUsernameAndPassword(tempUsername, tempPassword);
+            return tempUser;
+        }
+
+        throw new BadCredentialsException("Bad credentials");
     }
 
     public User validateCredentials(ObjectId userId) throws UserIdNotFoundException {

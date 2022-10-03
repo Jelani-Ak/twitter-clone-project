@@ -1,11 +1,11 @@
 package com.jelaniak.twittercloneproject.utils;
 
-import com.jelaniak.twittercloneproject.model.User;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+
 import org.bson.types.ObjectId;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
+import com.jelaniak.twittercloneproject.model.User;
 
 public class UserUtility {
     /**
@@ -34,7 +34,7 @@ public class UserUtility {
         user.setUsersYouFollow(new HashSet<>());
         user.setUsersFollowingYou(new HashSet<>());
         user.setMutualFollowers(new HashSet<>());
-        user.setTweets(new ArrayList<>());
+        user.setTweets(new HashSet<>());
         user.setTweetCount(user.getTweets().size());
         user.setTweetQuoteCount(number);
         user.setFollowing(false);

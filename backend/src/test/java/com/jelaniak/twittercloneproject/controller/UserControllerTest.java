@@ -34,19 +34,16 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static ObjectMapper mapper;
-    private static UserController userController;
-    private static UserRepository userRepository;
+    private ObjectMapper mapper = new ObjectMapper();;
+
+    @Autowired
+    private UserController userController;
+
+    @Autowired
+    private UserRepository userRepository = mock(UserRepository.class);
 
     @MockBean
     private UserService userService;
-
-    @BeforeAll
-    static void beforeAll() {
-        mapper = new ObjectMapper();
-        userRepository = mock(UserRepository.class);
-        userController = new UserController(new UserService(userRepository));
-    }
 
     @AfterEach
     void tearDown() {

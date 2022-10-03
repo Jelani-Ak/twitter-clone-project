@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 @SpringBootApplication
 public class TwitterCloneProjectApplication {
     public static void main(String[] args) {
+//        System.setProperty("server.servlet.context-path", "/home");
         SpringApplication.run(TwitterCloneProjectApplication.class, args);
     }
 }

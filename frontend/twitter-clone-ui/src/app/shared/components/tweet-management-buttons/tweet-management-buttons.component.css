@@ -1,14 +1,15 @@
+.buttons {
+  display: flex;
+}
+
 .button {
-  background: #673AB7;
+  background: #673ab7;
   color: white;
   border: none;
-  margin-bottom: 10px;
-  padding: 10px 0;
   border-radius: 0;
   cursor: pointer;
   text-decoration: none;
   text-align: left;
-  width: 100%;
   font-size: 15px;
   transition-duration: 0.25s;
 }
@@ -22,18 +23,11 @@
 }
 
 .button:hover {
-  background: white;
+  background: #DDD;
   color: black;
   transition-duration: 0.25s;
 }
 
-.icon-display {
-  padding-left: 10px;
-  padding-right: 17px;
-  padding-bottom: 4px;
-  vertical-align: middle;
-  margin-left: 30px;
-  transform: scale(1.5);
+.spacer {
+  flex: 1 1 auto;
 }
-
-

@@ -1,4 +1,4 @@
-import {Tweet} from "../tweet/tweet";
+import { Tweet } from '../tweet/tweet';
 
 export class User {
   userId!: number;
@@ -14,17 +14,14 @@ export class User {
   pictureAvatarUrl?: string;
   pictureBackgroundUrl?: string;
 
-  following?:Array<User>;
-  followers?:Array<User>;
-  followersMutual?:Array<User>;
-  tweets?:Array<Tweet>;
+  following?: Set<User>;
+  followers?: Set<User>;
+  followersMutual?: Set<User>;
+  tweets?: Set<Tweet>;
 
   tweetCount?: number;
   tweetQuoteCount?: number;
 
   follow?: boolean;
   enabled?: boolean;
-
-  constructor() {
-  }
 }
