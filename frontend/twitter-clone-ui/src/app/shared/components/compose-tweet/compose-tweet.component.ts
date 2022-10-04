@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Tweet } from '../../models/tweet/tweet';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { FileUploadService } from 'src/app/core/services/file-upload/file-upload.service';
 
 @Component({
   selector: 'app-compose-tweet',
@@ -12,13 +12,12 @@ import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 export class ComposeTweetComponent {
   tweet = new Tweet();
 
-  filename!: string;
-
   content!: string;
 
   constructor(
     private snackbar: MatSnackBar,
-    public tweetService: TweetService
+    public tweetService: TweetService,
+    public fileUploadService: FileUploadService
   ) {}
 
   createTweet() {
@@ -30,7 +29,11 @@ export class ComposeTweetComponent {
     });
   }
 
-  selectMedia() {
-    
+  upload(event: Event) {
+    this.fileUploadService.upload(event);
+  }
+
+  cancel(input: any) {
+    input.value = null;
   }
 }

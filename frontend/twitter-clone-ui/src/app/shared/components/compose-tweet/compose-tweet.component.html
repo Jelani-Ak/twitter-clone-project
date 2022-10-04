@@ -1,4 +1,4 @@
-<form #registerForm="ngForm" (ngSubmit)="createTweet()">    
+<form #registerForm="ngForm" (ngSubmit)="createTweet()">
   <mat-form-field appearance="fill" class="compose-tweet-form">
     <mat-label>Compose Tweet</mat-label>
     <textarea
@@ -11,7 +11,8 @@
       maxlength="280"
       name="content"
       placeholder="What's happening"
-      type="text">
+      type="text"
+    >
     </textarea>
 
     <div class="hint">
@@ -23,19 +24,23 @@
       Add media
       <label for="file-upload" class="custom-file-upload"></label>
     </button>
-    <input id="file-upload" type="file"/>
+    <input id="file-upload" #FileName (change)="upload($event)" type="file" />
 
     <div class="filename">
-      test
+      {{ FileName.value.replace("C:\\fakepath\\", "") }}
     </div>
-    
+
+    <mat-icon *ngIf="FileName.value" class="remove-file" (click)="cancel(FileName)">
+      cancel
+    </mat-icon>
+
     <button
       [disabled]="!tweet.content"
       class="tweet-button compose-tweet-button"
       mat-button
-      type="submit">
+      type="submit"
+    >
       Create
     </button>
-  </div>    
+  </div>
 </form>
-
