@@ -42,6 +42,7 @@ textarea {
 .button-row-container {
   height: 40px;
   display: grid;
+  margin-top: -9px;
   background-color: #eee;
   grid-template-columns: min-content auto min-content min-content;
 }

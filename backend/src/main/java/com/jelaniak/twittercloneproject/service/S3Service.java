@@ -15,19 +15,19 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class S3Service implements FileService {
+public class S3Service {
+    private String key;
 
     public static final String BUCKET_NAME = "twitter-clone-tut";
     private final AmazonS3Client awsS3Client;
 
-    @Override
     public String uploadMedia(MultipartFile file) {
 
         //Prepare a Key
         var filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
         //Create a unique value
-        var key = UUID.randomUUID() + "." + filenameExtension;
+        key = UUID.randomUUID() + "." + filenameExtension;
 
         //Create object metadata
         var metadata = new ObjectMetadata();
@@ -47,7 +47,11 @@ public class S3Service implements FileService {
         return awsS3Client.getResourceUrl(BUCKET_NAME, key);
     }
 
-    public void deleteMedia(String key) {
-        awsS3Client.deleteObject(BUCKET_NAME, key);
+    public void deleteS3Media(String s3MediaKey) {
+        awsS3Client.deleteObject(BUCKET_NAME, s3MediaKey);
+    }
+
+    public String getKey() {
+        return key;
     }
 }

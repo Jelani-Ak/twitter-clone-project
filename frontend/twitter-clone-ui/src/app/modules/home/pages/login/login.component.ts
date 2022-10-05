@@ -22,7 +22,6 @@ export class LoginComponent {
     this.authenticationService
     .logUserInFromRemote(this.user)
     .subscribe(() => {
-      console.log(this.user);
       console.log('Login Successful');
       this.snackbar.open('Login Successful', undefined, { duration: 2500 });
       setTimeout(() => {

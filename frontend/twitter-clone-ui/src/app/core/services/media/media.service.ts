@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Media } from 'src/app/shared/models/media/media';
 
@@ -7,7 +7,7 @@ import { Media } from 'src/app/shared/models/media/media';
   providedIn: 'root',
 })
 export class MediaService {
-  private baseURL = 'http://localhost:8080/api/v1/media';
+  private baseURL = 'http://localhost:8080/api/v1/media/';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -15,18 +15,18 @@ export class MediaService {
     const formData = new FormData();
     formData.append('file', file, file.name);
 
-    return this.httpClient.post<Media>(this.baseURL + '/upload', formData);
+    return this.httpClient.post<Media>(this.baseURL + 'upload', formData);
   }
 
-  deleteMedia(mediaId: String): Observable<Media> {
-    return this.httpClient.delete<Media>(this.baseURL + '/delete/' + mediaId);
+  getMedia(mediaId: string): Observable<Media> {
+    return this.httpClient.get<Media>(this.baseURL + 'get/' + mediaId);
   }
 
-  getMedia(mediaId: String): Observable<Media> {
-    return this.httpClient.get<Media>(this.baseURL + '/get/' + mediaId);
+  deleteMediaFromRemote(mediaId: string): Observable<Media> {
+    return this.httpClient.delete<Media>(this.baseURL + 'delete/' + mediaId);
   }
 
-  cancel() {
-    throw new Error('Method not implemented.');
+  deleteS3Media(s3MediaId: string): Observable<Media> {
+    return this.httpClient.delete<Media>(this.baseURL + 'delete/s3/' + s3MediaId);
   }
 }

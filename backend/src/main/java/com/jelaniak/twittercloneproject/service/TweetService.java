@@ -13,6 +13,7 @@ import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.repository.CommentRepository;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TweetService {
@@ -24,8 +25,7 @@ public class TweetService {
     private CommentRepository commentRepository;
 
     public Tweet createTweet(Tweet tweet) {
-
-        tweet.setTweetId(new ObjectId());
+        tweet.setTweetId(tweet.getTweetId());
         tweet.setTweetUrl(tweet.getTweetUrl());
         tweet.setUser(tweet.getUser());
         tweet.setMedia(tweet.getMedia());
@@ -47,7 +47,7 @@ public class TweetService {
             throw new Exception("Tweet not found");
         }
 
-        comment.setCommentId(new ObjectId());
+        comment.setCommentId(comment.getCommentId());
         comment.setUser(comment.getUser());
         comment.setCommentUrl(comment.getCommentUrl());
 
@@ -81,7 +81,8 @@ public class TweetService {
                 .orElseThrow(() -> new Exception("Tweet by Id: [" + commentId + "] was not found."));
     }
 
+    @Transactional
     public void deleteTweet(ObjectId tweetId) {
-        tweetRepository.deleteById(tweetId);
+        tweetRepository.deleteByTweetId(tweetId);
     }
 }

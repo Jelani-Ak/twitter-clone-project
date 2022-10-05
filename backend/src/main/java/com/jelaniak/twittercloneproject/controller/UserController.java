@@ -19,8 +19,6 @@ import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
 
-import lombok.AllArgsConstructor;
-
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/user")

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import com.jelaniak.twittercloneproject.exception.BadCredentialsException;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
-import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -83,6 +83,7 @@ public class UserService {
         return userRepository.save(existingUser);
     }
 
+    @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
         User existingUser = findByUserId(userId);
 
@@ -101,7 +102,7 @@ public class UserService {
                     + tempEmail + " already exists");
         }
 
-        user.setUserId(new ObjectId());
+        user.setUserId(user.getUserId());
         user.setUsername(user.getUsername());
         user.setPassword(user.getPassword());
         user.setEmail(user.getEmail());
@@ -160,6 +161,7 @@ public class UserService {
         return userRepository.existsByUsernameAndEmail(tempUsername, tempEmail);
     }
 
+    @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }

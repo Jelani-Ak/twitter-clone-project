@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tweet } from '../../../shared/models/tweet/tweet';
+import { Tweet } from 'src/app/shared/models/tweet/tweet';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,7 @@ export class TweetService {
     return this.http.get<Tweet[]>(this.baseUrl + 'all');
   }
 
-  getTweet(tweetId: number): Observable<Tweet> {
+  getTweet(tweetId: string): Observable<Tweet> {
     return this.http.get<Tweet>(this.baseUrl + tweetId);
   }
 
@@ -37,7 +37,7 @@ export class TweetService {
     return this.http.post<Tweet>(this.baseUrl + 'create', tweet);
   }
 
-  deleteTweetFromRemote(tweetId: any): Observable<Tweet> {
+  deleteTweetFromRemote(tweetId: string): Observable<Tweet> {
     return this.http.delete<Tweet>(this.baseUrl + 'delete/' + tweetId);
   }
 }

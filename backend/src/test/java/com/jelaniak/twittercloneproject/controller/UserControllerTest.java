@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Disabled
 @WebMvcTest(UserController.class)
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

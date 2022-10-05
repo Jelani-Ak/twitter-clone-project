@@ -4,18 +4,16 @@
   </div>
   <div class="inner-tweet-container" fxFlex="85%">
     <div class="details" style="display: flex">
-      <!-- Username + UserHandle + Date -->
       <p class="username" style="margin-right: 10px">Username</p>
       <p class="handle" style="margin-right: 10px">@Username</p>
       <p class="date" style="text-align: right">{{ tweet.createdDate }}</p>
     </div>
 
-    <br />
+    <br *ngIf="tweet.media" />
 
     <span class="tweet-media">
-      <img src="{{ placeholderImage }}" />
-      <!-- <img src="{{tweet.media}}"> -->
-      <!-- <video src="{{tweet.media}}"> -->
+      <img *ngIf="isImage(tweet.media!.mediaType)" src="{{ tweet.media?.mediaUrl }}" />
+      <!-- <video src="{{ tweet.media?.mediaUrl }}"> -->
     </span>
 
     <br />
@@ -25,9 +23,8 @@
         {{ tweet.content }}
       </p>
       
-      <br />
-
       <!-- Placeholder, delete later -->
+      <br />
       <p style="text-align: justify">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur
         iusto, suscipit. Asperiores consequatur et ex illo labore laboriosam

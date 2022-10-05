@@ -11,12 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
@@ -30,6 +25,7 @@ import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 
+@Disabled
 @DataMongoTest
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

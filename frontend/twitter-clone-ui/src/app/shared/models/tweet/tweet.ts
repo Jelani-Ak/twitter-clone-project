@@ -2,7 +2,7 @@ import { Media } from '../media/media';
 import { Comment } from '../comment/comment';
 
 export class Tweet {
-  tweetId?: number;
+  tweetId!: string;
   tweetUrl!: string;
   username!: string;
   media?: Media;

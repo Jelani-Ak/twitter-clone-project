@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MediaService } from 'src/app/core/services/media/media.service';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { Tweet } from './tweet';
 
@@ -15,7 +16,8 @@ export class TweetComponent {
 
   constructor(
     public tweetService: TweetService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private mediaService: MediaService
   ) {}
 
   deleteTweet(tweet: Tweet) {
@@ -23,10 +25,37 @@ export class TweetComponent {
       (tweetIndex) => tweetIndex != tweet
     );
 
-    this.tweetService.deleteTweetFromRemote(tweet.tweetId).subscribe(() => {
-      this.snackbar.open('Tweet Deleted', 'Ok', {
-        duration: 2500,
-      });
+    if (tweet.media) {
+      this.deleteTweetAndMediaFromRemote(
+        tweet.tweetId,
+        tweet.media.mediaId,
+        tweet.media.mediaKey
+      );
+      return;
+    }
+
+    this.deleteTweetFromRemote(tweet.tweetId);
+  }
+
+  isImage(tweetMediaType: string) {
+    return tweetMediaType == 'image/png' || 'image/jpg';
+  }
+
+  private deleteTweetFromRemote(tweetId: string) {
+    this.tweetService.deleteTweetFromRemote(tweetId).subscribe();
+
+    this.snackbar.open('Tweet Deleted Successfully', 'Ok', {
+      duration: 2500,
     });
+  }
+
+  private deleteTweetAndMediaFromRemote(
+    tweetId: string,
+    mediaId: string,
+    mediaKey: string
+  ) {
+    this.deleteTweetFromRemote(tweetId);
+    this.mediaService.deleteMediaFromRemote(mediaId).subscribe();
+    this.mediaService.deleteS3Media(mediaKey).subscribe();
   }
 }

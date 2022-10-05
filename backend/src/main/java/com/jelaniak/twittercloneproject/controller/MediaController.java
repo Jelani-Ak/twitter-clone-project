@@ -2,6 +2,7 @@ package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.Media;
 import com.jelaniak.twittercloneproject.service.MediaService;
+import com.jelaniak.twittercloneproject.service.S3Service;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/media")
 public class MediaController {
+
+    @Autowired
+    private S3Service s3Service;
 
     @Autowired
     private MediaService mediaService;
@@ -34,7 +38,16 @@ public class MediaController {
     @RequestMapping(
             value = "/delete/{mediaId}",
             method = RequestMethod.DELETE)
-    public void deleteMedia(@PathVariable String mediaId) {
+    public ResponseEntity<Void> deleteRepositoryMedia(@PathVariable ObjectId mediaId) {
         mediaService.deleteMedia(mediaId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/delete/s3/{s3MediaKey}",
+            method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteS3Media(@PathVariable String s3MediaKey) {
+        s3Service.deleteS3Media(s3MediaKey);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

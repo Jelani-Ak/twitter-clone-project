@@ -21,4 +21,6 @@ public class Media {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId mediaId;
     private String mediaUrl;
+    private String mediaType;
+    private String mediaKey;
 }

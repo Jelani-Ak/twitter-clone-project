@@ -19,7 +19,7 @@ public class UserUtility {
     public static User getNewUser(int number) {
         User user = new User();
 
-        user.setUserId(new ObjectId());
+        user.setUserId(ObjectId.get());
         user.setUsername("User" + number);
         user.setPassword("password" + number);
         user.setEmail("User" + number + "@example.org");

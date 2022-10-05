@@ -27,25 +27,31 @@ export class ComposeTweetComponent {
     if (this.selectedFile != null) {
       this.mediaService
         .uploadMediaFromRemote(this.selectedFile)
-        .subscribe((data) => {
-          this.mediaService.getMedia(data.mediaId).subscribe((media) => {
+        .subscribe((media) => {
+          this.mediaService.getMedia(media.mediaId).subscribe((media) => {
             this.tweet.media = media;
-            console.log(this.tweet);
+
+            this.createTweetFromRemote();
           });
         });
+
+      return;
     }
 
-    this.tweetService.createTweetFromRemote(this.tweet).subscribe((data) => {
-      console.log(data);
-      this.tweetService.tweets.push(data);
-      this.snackbar.open('Tweet Created Successfully', 'Ok', {
-        duration: 2500,
-      });
+    this.createTweetFromRemote();
+  }
+
+  private createTweetFromRemote() {
+    this.tweetService.createTweetFromRemote(this.tweet).subscribe((tweet) => {
+      this.tweetService.tweets.push(tweet);
+    });
+
+    this.snackbar.open('Tweet Created Successfully', 'Ok', {
+      duration: 2500,
     });
   }
 
   onFileSelected(event: any) {
-    console.log(event);
     this.selectedFile = <File>event.target.files[0];
   }
 
@@ -53,4 +59,6 @@ export class ComposeTweetComponent {
     input.value = null;
     this.selectedFile = null;
   }
+
+  clearEditors() {}
 }
