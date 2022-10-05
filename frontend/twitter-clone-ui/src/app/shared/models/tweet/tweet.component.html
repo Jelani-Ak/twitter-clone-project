@@ -3,39 +3,37 @@
     <img src="{{ placeholderImage }}" />
   </div>
   <div class="inner-tweet-container" fxFlex="85%">
-    <div class="details" style="display: flex">
-      <p class="username" style="margin-right: 10px">Username</p>
-      <p class="handle" style="margin-right: 10px">@Username</p>
-      <p class="date" style="text-align: right">{{ tweet.createdDate }}</p>
+    <div class="details">
+      <p class="username">Username</p>
+      <p class="handle">@UsernameHandle</p>
+      <span class="spacer"></span>
+      <p class="date">{{ tweet.dateOfCreation }}</p>
     </div>
 
     <br *ngIf="tweet.media" />
 
-    <span class="tweet-media">
-      <img *ngIf="isImage(tweet.media!.mediaType)" src="{{ tweet.media?.mediaUrl }}" />
-      <!-- <video src="{{ tweet.media?.mediaUrl }}"> -->
+    <span class="tweet-media-container">
+      <img
+        class="tweet-media-content"
+        *ngIf="isImage(tweet.media?.mediaType)"
+        src="{{ tweet.media?.mediaUrl }}"
+        onerror="this.style.display='none'"
+      />
+      <video
+        loop
+        muted
+        controls
+        class="tweet-media-content"
+        *ngIf="isVideo(tweet.media?.mediaType)"
+        src="{{ tweet.media?.mediaUrl }}"
+        onerror="this.style.display='none'"
+      ></video>
     </span>
 
-    <br />
+    <br *ngIf="tweet.content" />
 
-    <div class="content">
-      <p style="text-align: justify">
-        {{ tweet.content }}
-      </p>
-      
-      <!-- Placeholder, delete later -->
-      <br />
-      <p style="text-align: justify">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur
-        iusto, suscipit. Asperiores consequatur et ex illo labore laboriosam
-        mollitia obcaecati optio pariatur possimus quam, quod recusandae soluta
-        sunt suscipit tempore veniam veritatis voluptatem! Ad aperiam architecto
-        beatae distinctio dolorum exercitationem fuga fugiat id incidunt ipsam
-        ipsum laboriosam laudantium maiores nam nihil quis repellendus
-        reprehenderit saepe sapiente, sint sunt tenetur velit veritatis vitae
-        voluptatem? Aliquid laborum libero, magnam modi mollitia perspiciatis
-        quam quas quidem recusandae voluptate.
-      </p>      
+    <div class="tweet-content-container">
+      {{ tweet.content }}
     </div>
 
     <br />
@@ -63,12 +61,14 @@
         </span>
       </span>
     </div>
-    
+
     <div class="tweet-management-buttons-container">
       <div class="buttons">
-        <button class="button" mat-button (click)="deleteTweet(tweet)">Delete</button>
+        <button class="button" mat-button (click)="deleteTweet(tweet)">
+          Delete
+        </button>
         <span class="spacer"></span>
-        <button class="button" mat-button>Add Comment</button>
+        <button class="button" mat-button>Comment</button>
       </div>
     </div>
 

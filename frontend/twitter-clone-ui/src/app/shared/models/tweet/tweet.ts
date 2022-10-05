@@ -7,7 +7,7 @@ export class Tweet {
   username!: string;
   media?: Media;
   content!: string;
-  createdDate!: string;
+  dateOfCreation!: Date;
   comments!: Set<Comment>;
   commentCount!: number;
   retweetCount!: number;

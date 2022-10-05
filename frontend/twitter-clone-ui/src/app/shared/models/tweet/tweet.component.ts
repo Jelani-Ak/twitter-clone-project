@@ -37,8 +37,28 @@ export class TweetComponent {
     this.deleteTweetFromRemote(tweet.tweetId);
   }
 
-  isImage(tweetMediaType: string) {
-    return tweetMediaType == 'image/png' || 'image/jpg';
+  isImage(tweetMediaType: string | undefined) {
+    if (tweetMediaType == null) {
+      return false;
+    }
+
+    if (tweetMediaType == 'image/png' || 'image/jpg') {
+      return true;
+    }
+
+    return false;
+  }
+
+  isVideo(tweetMediaType: string | undefined) {
+    if (tweetMediaType == null) {
+      return false;
+    }
+
+    if (tweetMediaType == 'video/webm') {
+      return true;
+    }
+
+    return false;
   }
 
   private deleteTweetFromRemote(tweetId: string) {

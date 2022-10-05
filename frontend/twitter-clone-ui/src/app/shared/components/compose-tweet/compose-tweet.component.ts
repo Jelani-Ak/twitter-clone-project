@@ -3,7 +3,7 @@ import { Tweet } from '../../models/tweet/tweet';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';
-import { Media } from '../../models/media/media';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-compose-tweet',
@@ -44,6 +44,7 @@ export class ComposeTweetComponent {
   private createTweetFromRemote() {
     this.tweetService.createTweetFromRemote(this.tweet).subscribe((tweet) => {
       this.tweetService.tweets.push(tweet);
+      console.log(tweet);
     });
 
     this.snackbar.open('Tweet Created Successfully', 'Ok', {
@@ -55,10 +56,9 @@ export class ComposeTweetComponent {
     this.selectedFile = <File>event.target.files[0];
   }
 
-  cancel(input: any) {
+  cancel(input: any, form: NgForm) {
     input.value = null;
     this.selectedFile = null;
+    form.reset();
   }
-
-  clearEditors() {}
 }

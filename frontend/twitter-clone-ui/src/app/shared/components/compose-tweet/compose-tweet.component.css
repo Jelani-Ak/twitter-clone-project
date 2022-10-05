@@ -58,6 +58,7 @@ textarea {
 
 .compose-tweet-button {
   float: right;
+  width: 100px;
 }
 
 .compose-tweet-button:disabled {
