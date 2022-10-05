@@ -24,13 +24,17 @@
       Add media
       <label for="file-upload" class="custom-file-upload"></label>
     </button>
-    <input id="file-upload" #FileName (change)="upload($event)" type="file" />
+    <input id="file-upload" #FileName (change)="onFileSelected($event)" type="file" />
 
     <div class="filename">
       {{ FileName.value.replace("C:\\fakepath\\", "") }}
     </div>
 
-    <mat-icon *ngIf="FileName.value" class="remove-file" (click)="cancel(FileName)">
+    <mat-icon
+      *ngIf="FileName.value"
+      class="remove-file"
+      (click)="cancel(FileName)"
+    >
       cancel
     </mat-icon>
 

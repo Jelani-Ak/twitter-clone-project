@@ -113,10 +113,10 @@ public class UserService {
         user.setDateOfCreation(LocalDateTime.now());
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
-        user.setUsersYouFollow(new HashSet<User>());
-        user.setUsersFollowingYou(new HashSet<User>());
-        user.setMutualFollowers(new HashSet<User>());
-        user.setTweets(new HashSet<Tweet>());
+        user.setUsersYouFollow(new HashSet<>());
+        user.setUsersFollowingYou(new HashSet<>());
+        user.setMutualFollowers(new HashSet<>());
+        user.setTweets(new HashSet<>());
         user.setTweetCount(0);
         user.setTweetQuoteCount(0);
         user.setFollowing(false);

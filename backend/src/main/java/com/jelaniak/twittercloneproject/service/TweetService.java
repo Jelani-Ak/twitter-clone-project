@@ -31,7 +31,7 @@ public class TweetService {
         tweet.setMedia(tweet.getMedia());
         tweet.setContent(tweet.getContent());
         tweet.setDateOfCreation(LocalDateTime.now());
-        tweet.setComments(new HashSet<Comment>());
+        tweet.setComments(new HashSet<>());
         tweet.setCommentCount(0);
         tweet.setRetweetCount(0);
         tweet.setLikeCount(0);

@@ -1,3 +1,4 @@
-export class Media {
-
+export interface Media {
+  mediaId: string;
+  mediaUrl: string;
 }

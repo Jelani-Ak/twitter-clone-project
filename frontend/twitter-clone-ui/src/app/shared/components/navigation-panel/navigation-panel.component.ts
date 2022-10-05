@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation-panel',
   templateUrl: './navigation-panel.component.html',
   styleUrls: ['./navigation-panel.component.css'],
 })
-export class NavigationPanelComponent {}
+export class NavigationPanelComponent {
+  constructor(public router: Router) {}
+}

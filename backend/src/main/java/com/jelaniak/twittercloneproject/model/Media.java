@@ -20,6 +20,5 @@ public class Media {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId mediaId;
-    private String filename;
     private String mediaUrl;
 }

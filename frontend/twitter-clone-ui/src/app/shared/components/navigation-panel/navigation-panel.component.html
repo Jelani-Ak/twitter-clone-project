@@ -59,7 +59,8 @@
   <app-navigation-button
     class="aligned-with-icon create-tweet-button"
     icon="reply"
+    text="Tweet"
     style="margin-top: 50px !important"
-    text="Tweet">
+    *ngIf="router.url !== '/home'">
   </app-navigation-button>
 </div>
