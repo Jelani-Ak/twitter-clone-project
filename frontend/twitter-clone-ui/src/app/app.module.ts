@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
@@ -75,6 +76,7 @@ import { TweetManagementButtonsComponent } from './shared/components/tweet-manag
     ReactiveFormsModule,
     MatTableModule,
     MatSnackBarModule,
+    MatTooltipModule
   ],
   providers: [UserService, TweetService],
   bootstrap: [AppComponent],

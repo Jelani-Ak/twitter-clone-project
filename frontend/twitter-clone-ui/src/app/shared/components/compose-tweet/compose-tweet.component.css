@@ -28,6 +28,7 @@ textarea {
 }
 
 .tweet-button {
+  width: 100px;
   color: white;
   background: #673ab7;
   transition-duration: 0.25s;
