@@ -9,6 +9,7 @@ import com.jelaniak.twittercloneproject.model.User;
 
 public class UserUtility {
     /**
+     * For unit testing purposes.
      * Returns a newly created user with details that are concatenated with
      * the number given. The number parameter is specified in order to
      * create a new user with unique details

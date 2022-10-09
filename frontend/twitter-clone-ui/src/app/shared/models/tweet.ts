@@ -1,5 +1,5 @@
-import { Media } from '../media/media';
-import { Comment } from '../comment/comment';
+import { Media } from './media';
+import { Comment } from './comment';
 
 export class Tweet {
   tweetId!: string;

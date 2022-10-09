@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
-import { Tweet } from './tweet';
+import { Tweet } from '../../models/tweet';
 
 @Component({
   selector: 'app-tweet',
@@ -37,24 +37,8 @@ export class TweetComponent {
     this.deleteTweetFromRemote(tweet.tweetId);
   }
 
-  isImage(tweetMediaType: string | undefined) {
-    if (tweetMediaType == null) {
-      return false;
-    }
-
-    if (tweetMediaType == 'image/png' || 'image/jpg') {
-      return true;
-    }
-
-    return false;
-  }
-
-  isVideo(tweetMediaType: string | undefined) {
-    if (tweetMediaType == null) {
-      return false;
-    }
-
-    if (tweetMediaType == 'video/webm') {
+  isAcceptableMedia(tweetMediaType: string | undefined) {
+    if (tweetMediaType == 'image/png' || 'image/jpg' || 'video/webm') {
       return true;
     }
 

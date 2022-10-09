@@ -15,7 +15,7 @@
     <span class="tweet-media-container">
       <img
         class="tweet-media-content"
-        *ngIf="isImage(tweet.media?.mediaType)"
+        *ngIf="isAcceptableMedia(tweet.media?.mediaType)"
         src="{{ tweet.media?.mediaUrl }}"
         onerror="this.style.display='none'"
       />
@@ -24,7 +24,7 @@
         muted
         controls
         class="tweet-media-content"
-        *ngIf="isVideo(tweet.media?.mediaType)"
+        *ngIf="isAcceptableMedia(tweet.media?.mediaType)"
         src="{{ tweet.media?.mediaUrl }}"
         onerror="this.style.display='none'"
       ></video>
@@ -71,7 +71,5 @@
         <button class="button" mat-button>Comment</button>
       </div>
     </div>
-
-    <!-- <app-tweet-management-buttons [tweet]="tweet"></app-tweet-management-buttons> -->
   </div>
 </div>

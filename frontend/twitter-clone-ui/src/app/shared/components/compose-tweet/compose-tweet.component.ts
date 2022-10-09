@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Tweet } from '../../models/tweet/tweet';
+import { Tweet } from '../../models/tweet';
 import { TweetService } from '../../../core/services/tweet/tweet.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';

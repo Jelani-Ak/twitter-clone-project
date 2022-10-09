@@ -120,7 +120,3 @@ img {
   color: black;
   transition-duration: 0.25s;
 }
-
-.spacer {
-  flex: 1 1 auto;
-}

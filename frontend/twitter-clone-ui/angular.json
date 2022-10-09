@@ -58,15 +58,20 @@
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,
+              "outputHashing": "all",
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "budgets": []
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ui:build"
+          },
           "configurations": {
             "production": {
               "browserTarget": "twitter-clone-ui:build:production"

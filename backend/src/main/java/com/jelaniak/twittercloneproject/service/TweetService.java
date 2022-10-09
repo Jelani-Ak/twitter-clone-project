@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class TweetService {
         tweet.setContent(tweet.getContent());
         tweet.setDateOfCreation(LocalDateTime.now());
         tweet.setComments(new HashSet<>());
-        tweet.setCommentCount(0);
+        tweet.setCommentCount(tweet.getComments().size());
         tweet.setRetweetCount(0);
         tweet.setLikeCount(0);
         tweet.setTweetType(tweet.getTweetType());
@@ -40,11 +41,11 @@ public class TweetService {
         return tweetRepository.save(tweet);
     }
 
-    public Comment createComment(ObjectId tweetId, Comment comment) throws Exception {
+    public Comment createComment(ObjectId tweetId, Comment comment) throws TweetNotFoundException {
         Optional<Tweet> tweet = tweetRepository.findById(tweetId);
 
         if (tweet.isEmpty()) {
-            throw new Exception("Tweet not found");
+            throw new TweetNotFoundException("Tweet not found");
         }
 
         comment.setCommentId(comment.getCommentId());

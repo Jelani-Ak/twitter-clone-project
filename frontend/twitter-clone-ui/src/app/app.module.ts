@@ -23,8 +23,8 @@ import { NavigationButtonComponent } from './shared/components/navigation-button
 import { NavigationPanelComponent } from './shared/components/navigation-panel/navigation-panel.component';
 import { SearchNewsPanelComponent } from './shared/components/search-news-panel/search-news-panel.component';
 import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
-import { UserComponent } from './shared/models/user/user.component';
-import { TweetComponent } from './shared/models/tweet/tweet.component';
+import { UserComponent } from './shared/components/user/user.component';
+import { TweetComponent } from './shared/components/tweet/tweet.component';
 import { ComposeTweetComponent } from './shared/components/compose-tweet/compose-tweet.component';
 import { UserManagementButtonComponent } from './shared/components/user-management-button/user-management-button.component';
 import { LoginComponent } from './modules/home/pages/login/login.component';
@@ -34,9 +34,7 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
 
 import { UserService } from './core/services/user/user.service';
 import { TweetService } from './core/services/tweet/tweet.service';
-import { MediaComponent } from './shared/models/media/media.component';
-import { CommentComponent } from './shared/models/comment/comment.component';
-import { TweetManagementButtonsComponent } from './shared/components/tweet-management-buttons/tweet-management-buttons.component';
+import { CommentComponent } from './shared/components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -56,9 +54,7 @@ import { TweetManagementButtonsComponent } from './shared/components/tweet-manag
     RegisterComponent,
     ProfileComponent,
     LandingPageComponent,
-    MediaComponent,
     CommentComponent,
-    TweetManagementButtonsComponent,
   ],
   imports: [
     BrowserModule,

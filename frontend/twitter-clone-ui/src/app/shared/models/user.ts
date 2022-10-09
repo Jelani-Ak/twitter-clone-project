@@ -1,4 +1,4 @@
-import { Tweet } from '../tweet/tweet';
+import { Tweet } from './tweet';
 
 export class User {
   userId!: string;
