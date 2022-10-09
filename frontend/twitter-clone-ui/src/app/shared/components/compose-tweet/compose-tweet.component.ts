@@ -53,7 +53,7 @@ export class ComposeTweetComponent {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = <File>event.target.files[0];
+    this.selectedFile = <File> event.target.files[0];
   }
 
   cancel(input: any, form: NgForm) {

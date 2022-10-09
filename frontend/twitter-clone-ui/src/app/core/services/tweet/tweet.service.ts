@@ -8,6 +8,7 @@ import { Tweet } from 'src/app/shared/models/tweet';
 })
 export class TweetService {
   public tweets: Tweet[] = [];
+  public contentLoaded: boolean = false;
 
   private baseUrl = 'http://localhost:8080/api/v1/tweet/';
 
@@ -23,6 +24,8 @@ export class TweetService {
     this.getAllTweets().subscribe((tweets) => {
       this.tweets = tweets;
     });
+    
+    this.contentLoaded = true;
   }
 
   getAllTweets(): Observable<Tweet[]> {

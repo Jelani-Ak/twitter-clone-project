@@ -224,7 +224,7 @@ class UserServiceTest {
         User userFive = getNewUser(5);
 
         //when - action or the behaviour that we are going test
-        userService.createUsers(List.of(
+        userService.createAllUsers(List.of(
                 userOne,
                 userTwo,
                 userThree,

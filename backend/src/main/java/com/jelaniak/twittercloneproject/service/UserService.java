@@ -4,11 +4,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 
+import com.jelaniak.twittercloneproject.model.UserRole;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.jelaniak.twittercloneproject.exception.BadCredentialsException;
@@ -21,14 +23,35 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService implements UserDetailsService {
 
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username, '" + username + "' not found"));
     }
+
+    // TODO: Split functions into more purpose focused service/controllers
+    //  - UserProfileService.java
+    //      - updateUser()
+    //      - deleteUser()
+    //      -
+    //  - UserSocialService.java
+    //      - followUser()
+    //      - unfollowUser()
+    //      -
+    //  - UserRegistrationService.java
+    //      - createUser()
+    //      -
+    //  - AdminService.java
+    //      - deleteAllUsers()
+    //      - createAllUsers()
+    //      -
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -72,18 +95,21 @@ public class UserService implements UserDetailsService {
         return userRepository.save(existingUser);
     }
 
+    // TODO: Delete
     public void getFollowData(User user) {
         user.setUsersYouFollow(user.getUsersYouFollow());
         user.setUsersFollowingYou(user.getUsersFollowingYou());
         user.setMutualFollowers(user.getMutualFollowers());
     }
 
+    // TODO: Delete
     public void getTweetData(User user) {
         user.setTweets(user.getTweets());
         user.setTweetCount(user.getTweets().size());
         user.setTweetQuoteCount(user.getTweetQuoteCount());
     }
 
+    // TODO: Delete
     public User verifyUser(ObjectId userId) throws UserIdNotFoundException {
         User existingUser = findByUserId(userId);
 
@@ -99,27 +125,30 @@ public class UserService implements UserDetailsService {
         return userRepository.deleteByUserId(existingUser.getUserId());
     }
 
-    // Create a user defining all user credentials
-    public User createUser(User user) throws UserAlreadyExistsException {
-        String tempUsername = user.getUsername();
-        String tempEmail = user.getEmail();
+    @Transactional
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
 
-        //Check if username and email already exists
-        if (existsByUsernameAndEmail(tempUsername, tempEmail)) {
-            throw new UserAlreadyExistsException("""
-                    """ + "Username " + tempUsername + " and email "
-                    + tempEmail + " already exists");
+    public User createUser(User user) throws UserAlreadyExistsException {
+        boolean userExists = userRepository.findByUsername(user.getUsername()).isPresent();
+
+        if (userExists) {
+            throw new UserAlreadyExistsException("Username, '" + user.getUsername() + "' already taken");
         }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 
         user.setUserId(user.getUserId());
         user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword(encodedPassword);
         user.setEmail(user.getEmail());
-        user.setDisplayName(user.getDisplayName());
-        user.setUserHandleName("@" + user.getUserHandleName());
+        user.setDisplayName(user.getUsername());
+        user.setUserHandleName("@" + user.getUsername());
         user.setBioLocation(user.getBioLocation());
         user.setBioExternalLink(user.getBioExternalLink());
         user.setBioAboutText(user.getBioAboutText());
+        user.setUserRole(UserRole.USER);
         user.setDateOfCreation(LocalDateTime.now());
         user.setPictureAvatarUrl(user.getPictureAvatarUrl());
         user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
@@ -131,11 +160,13 @@ public class UserService implements UserDetailsService {
         user.setTweetQuoteCount(0);
         user.setFollowing(false);
         user.setVerified(false);
+        user.setLocked(false);
+        user.setEnabled(false);
 
         return userRepository.save(user);
     }
 
-    public void createUsers(List<User> users) {
+    public void createAllUsers(List<User> users) {
         userRepository.saveAll(users);
     }
 
@@ -159,20 +190,12 @@ public class UserService implements UserDetailsService {
         throw new BadCredentialsException("Bad credentials");
     }
 
+    // TODO: Delete
     public User validateCredentials(ObjectId userId) throws UserIdNotFoundException {
         User existingUser = findByUserId(userId);
 
         return userRepository.findByUsernameAndPassword(existingUser.getUsername(), existingUser.getPassword());
     }
 
-    //<editor-fold desc="Helper Functions">
-    private boolean existsByUsernameAndEmail(String tempUsername, String tempEmail) {
-        return userRepository.existsByUsernameAndEmail(tempUsername, tempEmail);
-    }
 
-    @Transactional
-    public void deleteAllUsers() {
-        userRepository.deleteAll();
-    }
-    //</editor-fold>
 }

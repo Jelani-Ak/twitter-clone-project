@@ -10,6 +10,9 @@ import { Tweet } from '../../models/tweet';
   styleUrls: ['./tweet.component.css'],
 })
 export class TweetComponent {
+  public imageLoaded: boolean = false;
+  public videoLoaded: boolean = false;
+
   // TODO: Delete later
   placeholderImage =
     'https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg';
@@ -19,6 +22,11 @@ export class TweetComponent {
     private snackbar: MatSnackBar,
     private mediaService: MediaService
   ) {}
+
+  addComment(tweet: Tweet) {
+    console.log(tweet);
+    console.log("Comment not implemented yet");
+  }
 
   deleteTweet(tweet: Tweet) {
     this.tweetService.tweets = this.tweetService.tweets.filter(
@@ -37,8 +45,18 @@ export class TweetComponent {
     this.deleteTweetFromRemote(tweet.tweetId);
   }
 
-  isAcceptableMedia(tweetMediaType: string | undefined) {
-    if (tweetMediaType == 'image/png' || 'image/jpg' || 'video/webm') {
+  isAcceptableImage(tweetMediaType: string | undefined) {
+    if (tweetMediaType == 'image/png' || 'image/jpg') {
+      this.imageLoaded = true;
+      return true;
+    }
+
+    return false;
+  }
+
+  isAcceptableVideo(tweetMediaType: string | undefined) {
+    if (tweetMediaType == 'video/webm') {
+      this.videoLoaded = true;
       return true;
     }
 

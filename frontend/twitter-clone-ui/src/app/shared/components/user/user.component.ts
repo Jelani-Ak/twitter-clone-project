@@ -7,7 +7,7 @@ import { User } from '../../models/user';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   users: User[] = [];
   columnsToDisplay = ['userId', 'username', 'password', 'email'];
   columnNames = {
@@ -17,9 +17,11 @@ export class UserComponent implements OnInit {
     email: 'E-mail',
   };
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    this.setup();
+  }
 
-  ngOnInit(): void {
+  setup(): void {
     this.getUsers();
   }
 
