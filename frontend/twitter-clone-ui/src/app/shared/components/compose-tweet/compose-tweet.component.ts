@@ -60,5 +60,6 @@ export class ComposeTweetComponent {
     input.value = null;
     this.selectedFile = null;
     form.reset();
+    console.warn("Needs fixing. Doesn't properly remove files");
   }
 }

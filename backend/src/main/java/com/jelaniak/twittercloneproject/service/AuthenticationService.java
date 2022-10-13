@@ -1,17 +1,18 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.BadCredentialsException;
-import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
+import com.jelaniak.twittercloneproject.exception.*;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.model.UserRole;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -98,5 +99,24 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         throw new BadCredentialsException("Failed to login. Bad credentials");
+    }
+
+    @Transactional
+    public String confirmToken(ObjectId tokenId) throws ConfirmationTokenNotFoundException, EmailAlreadyConfirmedException, ConfirmationTokenExpiredException {
+        ConfirmationToken confirmationToken = confirmationTokenService.findConfirmationToken(tokenId);
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            throw new EmailAlreadyConfirmedException("Email already confirmed");
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            throw new ConfirmationTokenExpiredException("Token expired");
+        }
+
+        confirmationTokenService.setConfirmedAt(tokenId);
+
+        return "Email confirmed";
     }
 }
