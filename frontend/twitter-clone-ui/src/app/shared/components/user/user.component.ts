@@ -11,10 +11,10 @@ import { User } from '../../models/user';
 export class UserComponent {
   users: User[] = [];
   columnsToDisplay = [
-    'userId', 
+    'userId',
     'username',
-    // 'password', 
-    'email'
+    // 'password',
+    'email',
   ];
   columnNames = {
     userId: 'User ID',
@@ -35,6 +35,11 @@ export class UserComponent {
     this.adminService.getAllUsers().subscribe((users) => {
       this.users = users;
     });
+  }
+
+  deleteUser(user: User) {
+    this.users = this.users.filter((userIndex) => userIndex != user);
+    this.adminService.deleteUserFromRemote(user.userId).subscribe();
   }
 
   rowInformation(column: string, row: { [index: string]: any }) {

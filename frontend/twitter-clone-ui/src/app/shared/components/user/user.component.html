@@ -10,7 +10,14 @@
       </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: columnsToDisplay"></mat-row>
+    <ng-container matColumnDef="deleteButton">
+      <mat-header-cell *matHeaderCellDef>Delete User</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-button (click)="deleteUser(row)">Delete</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay.concat(['deleteButton'])"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay.concat(['deleteButton'])"></mat-row>
   </mat-table>
 </div>

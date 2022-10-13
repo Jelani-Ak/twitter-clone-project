@@ -7,11 +7,15 @@ import { User } from 'src/app/shared/models/user';
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl = 'http://localhost:8080/api/v1/admin';
+  private baseUrl = 'http://localhost:8080/api/v1/admin/';
 
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + '/get/all/users');
+    return this.http.get<User[]>(this.baseUrl + 'get/all/users');
+  }
+
+  deleteUserFromRemote(userId: string): Observable<User> {
+    return this.http.delete<User>(this.baseUrl + 'delete/' + userId);
   }
 }
