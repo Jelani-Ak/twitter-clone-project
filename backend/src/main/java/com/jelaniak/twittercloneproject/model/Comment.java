@@ -31,14 +31,8 @@ public class Comment {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId commentId;
     private String commentUrl;
-
-    @DBRef
     private User user;
-
-    @DBRef
     private Tweet tweet;
-
-    @DBRef
     private Media media;
 
     @NotBlank

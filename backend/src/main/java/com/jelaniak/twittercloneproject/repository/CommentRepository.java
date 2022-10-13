@@ -9,5 +9,5 @@ import com.jelaniak.twittercloneproject.model.Comment;
 
 @Repository
 public interface CommentRepository extends MongoRepository<Comment, ObjectId> {
-    void deleteByCommentId(String commentId);
+    void deleteByCommentId(ObjectId commentId);
 }

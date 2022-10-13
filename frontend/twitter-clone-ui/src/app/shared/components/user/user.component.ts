@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AdminService } from 'src/app/core/services/admin/admin.service';
 import { UserService } from '../../../core/services/user/user.service';
 import { User } from '../../models/user';
 
@@ -9,7 +10,12 @@ import { User } from '../../models/user';
 })
 export class UserComponent {
   users: User[] = [];
-  columnsToDisplay = ['userId', 'username', 'password', 'email'];
+  columnsToDisplay = [
+    'userId', 
+    'username',
+    // 'password', 
+    'email'
+  ];
   columnNames = {
     userId: 'User ID',
     username: 'Username',
@@ -17,7 +23,7 @@ export class UserComponent {
     email: 'E-mail',
   };
 
-  constructor(private userService: UserService) {
+  constructor(private adminService: AdminService) {
     this.setup();
   }
 
@@ -26,12 +32,12 @@ export class UserComponent {
   }
 
   getUsers() {
-    this.userService.getAllUsers().subscribe((users) => {
+    this.adminService.getAllUsers().subscribe((users) => {
       this.users = users;
     });
   }
 
-  rowInformation(column: string | number, row: { [x: string]: any }) {
+  rowInformation(column: string, row: { [index: string]: any }) {
     return row[column];
   }
 

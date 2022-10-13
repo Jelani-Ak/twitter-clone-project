@@ -28,7 +28,7 @@ export class ComposeTweetComponent {
       this.mediaService
         .uploadMediaFromRemote(this.selectedFile)
         .subscribe((media) => {
-          this.mediaService.getMedia(media.mediaId).subscribe((media) => {
+          this.mediaService.getMediaById(media.mediaId).subscribe((media) => {
             this.tweet.media = media;
 
             this.createTweetFromRemote();

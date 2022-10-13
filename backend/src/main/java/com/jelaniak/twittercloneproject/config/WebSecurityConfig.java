@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.config;
 
-import com.jelaniak.twittercloneproject.service.UserService;
+import com.jelaniak.twittercloneproject.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,26 +9,25 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserService userService;
+    private AuthenticationService authenticationService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // TODO: Permit only authentication controller
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/user/**", "/api/v*/tweet/**", "/api/v*/media/**")
+                .antMatchers("/api/v*/authentication/**", "/api/v*/admin/**", "/api/v*/tweet/**", "/api/v*/media/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
@@ -45,7 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userService);
+        provider.setUserDetailsService(authenticationService);
 
         return provider;
     }

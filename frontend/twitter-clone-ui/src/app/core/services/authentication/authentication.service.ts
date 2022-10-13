@@ -7,15 +7,15 @@ import { User } from '../../../shared/models/user';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  private baseurl: String = 'http://localhost:8080/api/v1/user';
+  private baseurl: String = 'http://localhost:8080/api/v1/authentication';
 
   constructor(private http: HttpClient) {}
 
-  public logUserInFromRemote(user: User): Observable<User> {
-    return this.http.post<User>(this.baseurl + '/login', user);
+  public registerUserFromRemote(user: User): Observable<User> {
+    return this.http.post<User>(this.baseurl + '/register', user);
   }
 
-  public registerUserFromRemote(user: User): Observable<User> {
-    return this.http.post<User>(this.baseurl + '/register/create', user);
+  public logUserInFromRemote(user: User): Observable<User> {
+    return this.http.post<User>(this.baseurl + '/login', user);
   }
 }

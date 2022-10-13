@@ -24,16 +24,8 @@ export class TweetService {
     this.getAllTweets().subscribe((tweets) => {
       this.tweets = tweets;
     });
-    
+
     this.contentLoaded = true;
-  }
-
-  getAllTweets(): Observable<Tweet[]> {
-    return this.http.get<Tweet[]>(this.baseUrl + 'all');
-  }
-
-  getTweet(tweetId: string): Observable<Tweet> {
-    return this.http.get<Tweet>(this.baseUrl + tweetId);
   }
 
   createTweetFromRemote(tweet: Tweet): Observable<Tweet> {
@@ -42,5 +34,13 @@ export class TweetService {
 
   deleteTweetFromRemote(tweetId: string): Observable<Tweet> {
     return this.http.delete<Tweet>(this.baseUrl + 'delete/' + tweetId);
+  }
+
+  getTweetById(tweetId: string): Observable<Tweet> {
+    return this.http.get<Tweet>(this.baseUrl + tweetId);
+  }
+
+  getAllTweets(): Observable<Tweet[]> {
+    return this.http.get<Tweet[]>(this.baseUrl + 'all');
   }
 }
