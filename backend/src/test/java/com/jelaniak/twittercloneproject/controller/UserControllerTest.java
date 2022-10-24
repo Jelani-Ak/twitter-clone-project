@@ -71,7 +71,7 @@ class UserControllerTest {
         User userOne = getNewUser(1);
 
         when(authenticationService.createUser(any(User.class)))
-                .thenReturn(userOne);
+                .thenReturn(any());
 
         mockMvc.perform(post("/api/v1/user/register")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -3,7 +3,13 @@
   <app-navigation-button 
     class="aligned-with-icon" 
     icon="home" 
-    text="Home">
+    text="Home"
+    *ngIf="
+      router.url !== '/home' && 
+      router.url !== '/login' && 
+      router.url !== '/register'
+    "
+  >
   </app-navigation-button>
 
   <!-- Explore -->
@@ -60,7 +66,12 @@
     class="aligned-with-icon create-tweet-button"
     icon="reply"
     text="Tweet"
-    style="margin-top: 50px !important"
-    *ngIf="router.url !== '/home'">
+    [ngStyle]="{'margin-top': '50px !important'}"
+    *ngIf="
+      router.url !== '/home' && 
+      router.url !== '/login' && 
+      router.url !== '/register'
+    "
+  >
   </app-navigation-button>
 </div>

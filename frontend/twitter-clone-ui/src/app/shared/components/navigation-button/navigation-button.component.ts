@@ -33,7 +33,7 @@ export class NavigationButtonComponent implements OnInit {
       //Allow the user to change details/settings
       case 'More':
         //Open combobox with extra features
-        console.log(this.text + ' not implemented yet');
+        console.warn(this.text + ' not implemented yet');
         break;
       default:
         this.goToUrl(this.text);

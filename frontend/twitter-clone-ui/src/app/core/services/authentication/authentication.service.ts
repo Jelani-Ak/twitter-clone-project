@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../../shared/models/user';
 
@@ -17,5 +17,12 @@ export class AuthenticationService {
 
   public logUserInFromRemote(user: User): Observable<User> {
     return this.http.post<User>(this.baseurl + '/login', user);
+  }
+
+  public confirmUser(token: string): Observable<string> {
+    let params = new HttpParams();
+    params = params.append('token', token);
+    
+    return this.http.get<string>(this.baseurl + '/confirm', { params: params });
   }
 }

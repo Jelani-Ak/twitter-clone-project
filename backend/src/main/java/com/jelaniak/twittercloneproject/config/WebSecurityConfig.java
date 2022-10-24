@@ -23,20 +23,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: Permit only authentication controller
+        // TODO: Permit only authentication endpoint
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/authentication/**", "/api/v*/admin/**", "/api/v*/tweet/**", "/api/v*/media/**")
-                .permitAll()
+                    .antMatchers(
+                            "/api/v*/authentication/**",
+                            "/api/v*/tweet/**",
+                            "/api/v*/media/**",
+                            "/api/v*/admin/**"
+                    )
+                    .permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .formLogin();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(daoAuthenticationProvider());
+    protected void configure(AuthenticationManagerBuilder authentication) {
+        authentication.authenticationProvider(daoAuthenticationProvider());
     }
 
     @Bean

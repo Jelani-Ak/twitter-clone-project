@@ -1,7 +1,6 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.exception.*;
-import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.AuthenticationService;
 import org.bson.types.ObjectId;
@@ -35,8 +34,8 @@ public class AuthenticationController {
     @RequestMapping(
             value = "/confirm",
             method = RequestMethod.GET)
-    public ResponseEntity<String> confirmToken(@RequestParam("token") ObjectId token)
-            throws EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, ConfirmationTokenNotFoundException {
+    public ResponseEntity<String> confirmToken(@RequestParam("token") String token)
+            throws EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, ConfirmationTokenNotFoundException, EmailNotFoundException {
         return new ResponseEntity<>(authenticationService.confirmToken(token), HttpStatus.ACCEPTED);
     }
 }

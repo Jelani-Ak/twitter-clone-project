@@ -3,13 +3,14 @@
 </div>
 
 <div class="twitter-clone">
-  <app-navigation-panel *ngIf="router.url !== ('/')" fxFlex="{{ sidePanel }}"></app-navigation-panel>
+  <app-navigation-panel *ngIf="showSidePanels()" fxFlex="{{ sidePanel }}"></app-navigation-panel>
 
   <app-home class="timeline-container" *ngIf="router.url === '/home'" fxFlex="{{ timeline }}"></app-home>
   <app-login class="timeline-container" *ngIf="router.url === '/login'" fxFlex="{{ timeline }}"></app-login>
   <app-register class="timeline-container" *ngIf="router.url === '/register'" fxFlex="{{ timeline }}"></app-register>
+  <app-landing-page class="timeline-container" *ngIf="router.url === '/landing-page'" fxFlex="{{ timeline }}"></app-landing-page>
 
-  <app-user class="timeline-container" *ngIf="router.url === ('/')" fxFlex="100%"></app-user>
+  <app-user class="timeline-container" *ngIf="router.url === ('/admin')" fxFlex="100%"></app-user>
 
-  <app-search-news-panel *ngIf="router.url !== ('/')" fxFlex="{{ sidePanel }}"></app-search-news-panel>
+  <app-search-news-panel *ngIf="showSidePanels()" fxFlex="{{ sidePanel }}"></app-search-news-panel>
 </div>

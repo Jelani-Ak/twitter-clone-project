@@ -2,7 +2,6 @@ package com.jelaniak.twittercloneproject.repository;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +13,8 @@ import java.util.Optional;
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
     Optional<User> findByUsername(String username) throws UsernameNotFoundException;
+
+    Optional<User> findByEmail(String email);
 
     User findByUsernameAndEmail(String username, String email);
 

@@ -13,12 +13,17 @@ export class UserManagementButtonComponent {
 
   navigate() {
     if (this.text === 'Logout') {
-      console.log(this.text + ' not implemented yet');
+      console.warn(this.text + ' not implemented yet');
       return;
     }
 
     if (this.text === 'Admin') {
-      this.router.navigateByUrl('/');
+      this.router.navigateByUrl('/admin');
+      return;
+    }
+
+    if (this.text === 'Twitter Clone') {
+      this.router.navigateByUrl('/home');
       return;
     }
 

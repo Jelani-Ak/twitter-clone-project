@@ -1,0 +1,26 @@
+.management-buttons {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px;
+}
+
+.admin-button {
+  width: 100%;
+  color: white;
+  background: #673ab7;
+  border-radius: 0;
+  transition-duration: 0.25s;
+}
+
+.admin-button:hover {
+  color: black;
+  background: white;
+  border-radius: 0;
+  transition-duration: 0.25s;
+}
+
+      
+.mat-row:nth-child(odd){
+  background-color: #FAFAFA;
+}

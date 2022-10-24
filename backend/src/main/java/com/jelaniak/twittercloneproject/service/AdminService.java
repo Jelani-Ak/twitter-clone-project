@@ -1,7 +1,9 @@
 package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
+import com.jelaniak.twittercloneproject.repository.ConfirmationTokenRepository;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class AdminService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
@@ -37,5 +42,9 @@ public class AdminService {
 
     public void createAllUsers(List<User> users) {
         userRepository.saveAll(users);
+    }
+
+    public List<ConfirmationToken> getAllConfirmationTokens() {
+        return confirmationTokenRepository.findAll();
     }
 }

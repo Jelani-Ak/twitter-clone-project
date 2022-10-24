@@ -1,6 +1,7 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.AdminService;
 import org.bson.types.ObjectId;
@@ -31,5 +32,12 @@ public class AdminController {
             method = RequestMethod.DELETE)
     public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserIdNotFoundException {
         return new ResponseEntity<>(adminService.deleteUser(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/get/all/confirmationToken",
+            method = RequestMethod.GET)
+    public ResponseEntity<List<ConfirmationToken>> getAllConfirmationTokens() {
+        return new ResponseEntity<>(adminService.getAllConfirmationTokens(), HttpStatus.OK);
     }
 }
