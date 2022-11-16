@@ -25,7 +25,7 @@ export class TweetComponent {
 
   addComment(tweet: Tweet) {
     console.log(tweet);
-    console.log("Comment not implemented yet");
+    console.log('Comment not implemented yet');
   }
 
   deleteTweet(tweet: Tweet) {

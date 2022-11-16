@@ -1,9 +1,10 @@
-/* .inner-container {
-  border-width: 1px;
-  border-style: solid;
-  border-color: darkorange;
-} */
+
 
 .inner-container {
   display: grid;
+}
+
+.create-tweet-button {
+  margin-top: 52px;
+  margin-bottom: 0;
 }

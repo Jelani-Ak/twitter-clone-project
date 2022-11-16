@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-user-management-button',
@@ -9,24 +9,24 @@ import { Router } from '@angular/router';
 export class UserManagementButtonComponent {
   @Input() text!: string;
 
-  constructor(private router: Router) {}
+  constructor(private navigation: NavigationService) {}
 
   navigate() {
-    if (this.text === 'Logout') {
-      console.warn(this.text + ' not implemented yet');
-      return;
+    const location = this.text;
+    switch (location) {
+      case 'Logout':
+        console.warn(`${location} not implemented yet`);
+        break;
+      case 'Twitter Clone':
+        this.goToUrl('Home');
+        break;
+      default:
+        this.goToUrl(location);
+        break;
     }
+  }
 
-    if (this.text === 'Admin') {
-      this.router.navigateByUrl('/admin');
-      return;
-    }
-
-    if (this.text === 'Twitter Clone') {
-      this.router.navigateByUrl('/home');
-      return;
-    }
-
-    this.router.navigateByUrl('/' + this.text.toLowerCase());
+  goToUrl(location: string) {
+    this.navigation.navigate(location);
   }
 }
