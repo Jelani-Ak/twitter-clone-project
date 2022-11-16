@@ -112,8 +112,7 @@ public class AuthenticationService implements UserDetailsService {
         throw new BadCredentialsException("Failed to login. Bad credentials");
     }
 
-    @Transactional
-    public String confirmToken(String token) throws ConfirmationTokenNotFoundException, EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, EmailNotFoundException {
+    public void confirmToken(String token) throws ConfirmationTokenNotFoundException, EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, EmailNotFoundException {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {
@@ -137,8 +136,6 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         enableUser(confirmationToken.getUser().getEmail());
-
-        return "Email confirmed";
     }
 
     public void enableUser(String email) throws EmailNotFoundException {

@@ -34,8 +34,9 @@ public class AuthenticationController {
     @RequestMapping(
             value = "/confirm",
             method = RequestMethod.GET)
-    public ResponseEntity<String> confirmToken(@RequestParam("token") String token)
+    public ResponseEntity<?> confirmToken(@RequestParam("token") String token)
             throws EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, ConfirmationTokenNotFoundException, EmailNotFoundException {
-        return new ResponseEntity<>(authenticationService.confirmToken(token), HttpStatus.ACCEPTED);
+        authenticationService.confirmToken(token);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }

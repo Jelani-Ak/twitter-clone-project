@@ -24,3 +24,7 @@
 .mat-row:nth-child(odd){
   background-color: #FAFAFA;
 }
+
+.mat-table:last-child {
+  margin-bottom: 20px;
+}
