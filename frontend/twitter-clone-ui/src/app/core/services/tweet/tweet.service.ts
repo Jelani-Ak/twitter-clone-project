@@ -8,6 +8,7 @@ import { Tweet } from 'src/app/shared/models/tweet';
 })
 export class TweetService {
   public tweets: Tweet[] = [];
+  public contentLoaded: boolean = false;
 
   private baseUrl = 'http://localhost:8080/api/v1/tweet/';
 
@@ -23,14 +24,8 @@ export class TweetService {
     this.getAllTweets().subscribe((tweets) => {
       this.tweets = tweets;
     });
-  }
 
-  getAllTweets(): Observable<Tweet[]> {
-    return this.http.get<Tweet[]>(this.baseUrl + 'all');
-  }
-
-  getTweet(tweetId: string): Observable<Tweet> {
-    return this.http.get<Tweet>(this.baseUrl + tweetId);
+    this.contentLoaded = true;
   }
 
   createTweetFromRemote(tweet: Tweet): Observable<Tweet> {
@@ -39,5 +34,13 @@ export class TweetService {
 
   deleteTweetFromRemote(tweetId: string): Observable<Tweet> {
     return this.http.delete<Tweet>(this.baseUrl + 'delete/' + tweetId);
+  }
+
+  getTweetById(tweetId: string): Observable<Tweet> {
+    return this.http.get<Tweet>(this.baseUrl + tweetId);
+  }
+
+  getAllTweets(): Observable<Tweet[]> {
+    return this.http.get<Tweet[]>(this.baseUrl + 'all');
   }
 }

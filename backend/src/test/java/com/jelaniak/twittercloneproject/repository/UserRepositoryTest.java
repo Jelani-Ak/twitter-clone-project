@@ -17,9 +17,10 @@ import com.jelaniak.twittercloneproject.model.User;
 @ExtendWith(SpringExtension.class)
 class UserRepositoryTest {
 
+    // TODO: Needs remaking entirely
+
     @Autowired
     private UserRepository userRepository;
-
 
     @AfterEach
     void tearDown() {

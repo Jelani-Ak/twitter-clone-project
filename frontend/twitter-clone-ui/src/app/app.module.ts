@@ -14,6 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
@@ -35,6 +37,7 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
 import { UserService } from './core/services/user/user.service';
 import { TweetService } from './core/services/tweet/tweet.service';
 import { CommentComponent } from './shared/components/comment/comment.component';
+import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +58,7 @@ import { CommentComponent } from './shared/components/comment/comment.component'
     ProfileComponent,
     LandingPageComponent,
     CommentComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,9 @@ import { CommentComponent } from './shared/components/comment/comment.component'
     ReactiveFormsModule,
     MatTableModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatProgressSpinnerModule,
+    MatCardModule
   ],
   providers: [UserService, TweetService],
   bootstrap: [AppComponent],

@@ -7,11 +7,11 @@ import { User } from '../../../shared/models/user';
   providedIn: 'root',
 })
 export class UserService {
-  private baseUrl = 'http://localhost:8080/api/v1/user';
+  private baseUrl = 'http://localhost:8080/api/v1/user/';
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + '/get/all');
+  findByUserId(userId: string): Observable<User> {
+    return this.http.get<User>(this.baseUrl + 'get/' + userId);
   }
 }

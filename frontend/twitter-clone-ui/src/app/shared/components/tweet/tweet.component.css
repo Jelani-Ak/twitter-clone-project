@@ -1,13 +1,16 @@
-img {
+img.profile-image {
   max-width: 100%;
   max-height: 100%;
 }
 
 .tweet-container {
-  /*border-color: #673AB7;*/
-  /*border-style: solid;*/
-  /*border-width: 2px;*/
   margin: 10px 0;
+}
+
+div.tweet-media-content > img,
+div.tweet-media-content > video {
+  width: 100%;
+  height: 100%;
 }
 
 /* .profile-image-container {
@@ -22,15 +25,18 @@ img {
 
 .details {
   display: flex;
+  padding: 10px;
+  align-items: center;
+  background-color: #ddd;
 }
 
-.username,
-.handle {
+.username {
   margin-right: 10px;
 }
 
 .date {
   display: flex;
+  padding-right: 5px;
   align-items: flex-end;
 }
 
@@ -42,6 +48,7 @@ img {
 
 .tweet-media-content {
   width: 100%;
+  display: flex;
 }
 
 .tweet-content-container {
@@ -83,7 +90,7 @@ img {
 .metadata-line:active {
   scale: 0.9;
   color: #8161b9;
-  transition: 0.20s;
+  transition: 0.2s;
 }
 
 .tweet-material-icon {

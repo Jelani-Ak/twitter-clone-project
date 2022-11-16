@@ -1,21 +1,56 @@
 package com.jelaniak.twittercloneproject.config;
 
+import com.jelaniak.twittercloneproject.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @EnableWebMvc
 @Configuration
-public class WebSecurityConfig implements WebMvcConfigurer {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:4200")
-                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600);
+    protected void configure(HttpSecurity http) throws Exception {
+        // TODO: Permit only authentication endpoint
+        http
+                .csrf().disable()
+                .authorizeRequests()
+                    .antMatchers(
+                            "/api/v*/authentication/**",
+                            "/api/v*/tweet/**",
+                            "/api/v*/media/**",
+                            "/api/v*/admin/**"
+                    )
+                    .permitAll()
+                .anyRequest()
+                .authenticated().and()
+                .formLogin();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder authentication) {
+        authentication.authenticationProvider(daoAuthenticationProvider());
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        provider.setPasswordEncoder(bCryptPasswordEncoder);
+        provider.setUserDetailsService(authenticationService);
+
+        return provider;
     }
 }

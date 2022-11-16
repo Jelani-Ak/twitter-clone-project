@@ -28,7 +28,7 @@ export class ComposeTweetComponent {
       this.mediaService
         .uploadMediaFromRemote(this.selectedFile)
         .subscribe((media) => {
-          this.mediaService.getMedia(media.mediaId).subscribe((media) => {
+          this.mediaService.getMediaById(media.mediaId).subscribe((media) => {
             this.tweet.media = media;
 
             this.createTweetFromRemote();
@@ -53,12 +53,13 @@ export class ComposeTweetComponent {
   }
 
   onFileSelected(event: any) {
-    this.selectedFile = <File>event.target.files[0];
+    this.selectedFile = <File> event.target.files[0];
   }
 
   cancel(input: any, form: NgForm) {
     input.value = null;
     this.selectedFile = null;
     form.reset();
+    console.warn("Needs fixing. Doesn't properly remove files");
   }
 }

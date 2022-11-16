@@ -23,7 +23,7 @@ describe('AppComponent', () => {
   it(`should have as title 'twitter-clone-ui'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('twitter-clone-ui');
+    expect(app.TITLE).toEqual('twitter-clone-ui');
   });
 
   it('should render title', () => {

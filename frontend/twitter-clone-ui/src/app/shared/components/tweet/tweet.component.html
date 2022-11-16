@@ -1,6 +1,6 @@
 <div class="tweet-container" *ngFor="let tweet of tweetService.tweets">
   <div class="profile-image-container" fxFlex="15%">
-    <img src="{{ placeholderImage }}" />
+    <img class="profile-image" src="{{ placeholderImage }}" />
   </div>
   <div class="inner-tweet-container" fxFlex="85%">
     <div class="details">
@@ -8,68 +8,71 @@
       <p class="handle">@UsernameHandle</p>
       <span class="spacer"></span>
       <p class="date">{{ tweet.dateOfCreation }}</p>
+      <mat-icon>more_vert</mat-icon>
     </div>
 
-    <br *ngIf="tweet.media" />
+    <div *ngIf="tweet.media" class="tweet-media-container">
+      <div class="tweet-media-content">
+        <img
+          *ngIf="isAcceptableImage(tweet.media.mediaType) && imageLoaded"
+          src="{{ tweet.media.mediaUrl }}"
+          onerror="this.style.display='none'"
+        />
+        <video
+          loop
+          muted
+          controls
+          preload="auto"
+          *ngIf="isAcceptableVideo(tweet.media.mediaType) && videoLoaded"
+          src="{{ tweet.media.mediaUrl }}"
+          onerror="this.style.display='none'"
+        ></video>
+      </div>
+    </div>
 
-    <span class="tweet-media-container">
-      <img
-        class="tweet-media-content"
-        *ngIf="isAcceptableMedia(tweet.media?.mediaType)"
-        src="{{ tweet.media?.mediaUrl }}"
-        onerror="this.style.display='none'"
-      />
-      <video
-        loop
-        muted
-        controls
-        class="tweet-media-content"
-        *ngIf="isAcceptableMedia(tweet.media?.mediaType)"
-        src="{{ tweet.media?.mediaUrl }}"
-        onerror="this.style.display='none'"
-      ></video>
-    </span>
-
-    <br *ngIf="tweet.content" />
-
-    <div class="tweet-content-container">
+    <div
+      class="tweet-content-container"
+      [ngStyle]="{ padding: tweet.content ? '20px 0' : '0' }"
+    >
       {{ tweet.content }}
     </div>
 
-    <br />
-
     <div class="metadata-container">
       <span class="metadata">
-        <!-- Comment Count -->
-        <span class="metadata-line" matTooltip="Comment" matTooltipShowDelay="500">
+        <span class="metadata-line" matTooltip="Comment" matTooltipShowDelay="500" >
           <mat-icon class="tweet-material-icon">chat_bubble</mat-icon>
           {{ tweet.commentCount }}
         </span>
-        <!-- Retweet Count -->
-        <span class="metadata-line" matTooltip="Re-Tweet" matTooltipShowDelay="500">
+        <span class="metadata-line" matTooltip="Re-Tweet" matTooltipShowDelay="500" >
           <mat-icon class="tweet-material-icon">loop</mat-icon>
           {{ tweet.retweetCount }}
         </span>
-        <!-- Like Count -->
         <span class="metadata-line" matTooltip="Like" matTooltipShowDelay="500">
           <mat-icon class="tweet-material-icon">thumb_up_alt</mat-icon>
           {{ tweet.likeCount }}
         </span>
-        <!-- Share -->
         <span class="metadata-line" matTooltip="Share" matTooltipShowDelay="500">
           <mat-icon class="tweet-material-icon">share</mat-icon>
         </span>
       </span>
     </div>
 
+    <!-- TODO: Include this section in the comment.component.html at the bottom of comments
+    if greater than 5 -->
     <div class="tweet-management-buttons-container">
       <div class="buttons">
         <button class="button" mat-button (click)="deleteTweet(tweet)">
           Delete
         </button>
         <span class="spacer"></span>
-        <button class="button" mat-button>Comment</button>
+        <button class="button" mat-button (click)="addComment(tweet)">
+          Comment
+        </button>
       </div>
     </div>
+
+    <br />
+
+    <app-comment [tweet]="tweet"></app-comment>
   </div>
 </div>

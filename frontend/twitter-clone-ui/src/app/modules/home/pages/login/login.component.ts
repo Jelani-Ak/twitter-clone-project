@@ -23,10 +23,8 @@ export class LoginComponent {
     .logUserInFromRemote(this.user)
     .subscribe(() => {
       console.log('Login Successful');
-      this.snackbar.open('Login Successful', undefined, { duration: 2500 });
-      setTimeout(() => {
-        this.router.navigateByUrl('/home');
-      }, 2000);
+      this.snackbar.open('Login Successful', this.user.username, { duration: 2500 });
+      this.router.navigateByUrl('/home');
     });
   }
 }

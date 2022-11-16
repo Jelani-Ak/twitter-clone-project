@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../../core/services/user/user.service';
+import { Component } from '@angular/core';
+import { AdminService } from 'src/app/core/services/admin/admin.service';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { ConfirmationToken } from '../../models/confirmationToken';
 import { User } from '../../models/user';
 
 @Component({
@@ -7,38 +9,83 @@ import { User } from '../../models/user';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
-export class UserComponent implements OnInit {
+export class UserComponent {
   users: User[] = [];
-  columnsToDisplay = ['userId', 'username', 'password', 'email'];
-  columnNames = {
+  confirmationTokens: ConfirmationToken[] = [];
+
+  userColumnsToDisplay = [
+    'userId',
+    'username',
+    // 'password',
+    'email',
+  ];
+  userColumnNames = {
     userId: 'User ID',
     username: 'Username',
     password: 'Password',
     email: 'E-mail',
   };
 
-  constructor(private userService: UserService) {}
+  confirmationTokenColumnsToDisplay = [
+    'token',
+    'createdAt',
+    'expiresAt',
+    'confirmedAt',
+  ];
+  confirmationTokenColumnNames = {
+    token: 'Token',
+    createdAt: 'Created At',
+    expiresAt: 'Expired At',
+    confirmedAt: 'Confirmed At',
+  };
 
-  ngOnInit(): void {
+  constructor(
+    private adminService: AdminService, 
+    private authenticationService: AuthenticationService
+  ) {
+    this.setup();
+  }
+
+  setup(): void {
     this.getUsers();
+    this.getConfirmationTokens();
   }
 
   getUsers() {
-    this.userService.getAllUsers().subscribe((users) => {
-      this.users = users;
-    });
+    this.adminService
+      .getAllUsers()
+      .subscribe((users) => {
+        this.users = users;
+      });
   }
 
-  rowInformation(column: string | number, row: { [x: string]: any }) {
+  getConfirmationTokens() {
+    this.adminService
+      .getAllConfirmationTokens()
+      .subscribe((confirmationTokens) => {
+        this.confirmationTokens = confirmationTokens;
+      });
+  }
+
+  deleteUser(user: User) {
+    this.users = this.users.filter((userIndex) => userIndex != user);
+    this.adminService.deleteUserFromRemote(user.userId).subscribe();
+  }
+
+  confirmUser(token: string){
+    this.authenticationService.confirmUser(token).subscribe();
+  }
+
+  rowInformation(column: string, row: { [index: string]: any }) {
     return row[column];
   }
 
   translateColumnName(columnName: string): string {
-    const found = this.columnNames[columnName as keyof typeof this.columnNames];
+    const uesrname = this.userColumnNames[columnName as keyof typeof this.userColumnNames];
+    const token = this.confirmationTokenColumnNames[columnName as keyof typeof this.confirmationTokenColumnNames];
 
-    if (found) {
-      return found;
-    }
+    if (uesrname) return uesrname;
+    if (token) return token;
 
     return columnName;
   }

@@ -3,6 +3,8 @@ package com.jelaniak.twittercloneproject.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
+import com.jelaniak.twittercloneproject.service.AuthenticationService;
+import com.jelaniak.twittercloneproject.service.UserProfileService;
 import com.jelaniak.twittercloneproject.service.UserService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {UserController.class})
 class UserControllerTest {
 
+    // TODO: Needs remaking entirely
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,16 +44,24 @@ class UserControllerTest {
 
     @Autowired
     private UserController userController;
+    @Autowired
+    private AdminController adminController;
 
     @Autowired
     private UserRepository userRepository = mock(UserRepository.class);
 
     @MockBean
+    private AuthenticationService authenticationService;
+
+    @MockBean
     private UserService userService;
+
+    @MockBean
+    private UserProfileService userProfileService;
 
     @AfterEach
     void tearDown() {
-        if (!Objects.requireNonNull(userController.getAllUsers().getBody()).isEmpty()) {
+        if (!Objects.requireNonNull(adminController.getAllUsers().getBody()).isEmpty()) {
             userRepository.deleteAll();
         }
     }
@@ -57,8 +70,8 @@ class UserControllerTest {
     void createUserAndCheckStatusCodeIsCreated() throws Exception {
         User userOne = getNewUser(1);
 
-        when(userService.createUser(any(User.class)))
-                .thenReturn(userOne);
+        when(authenticationService.createUser(any(User.class)))
+                .thenReturn(any());
 
         mockMvc.perform(post("/api/v1/user/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -78,7 +91,7 @@ class UserControllerTest {
     void updateUserAndCheckStatusCodeIsAccepted() throws Exception {
         User userOne = getNewUser(1);
 
-        when(userService.updateUser(eq(userOne.getUserId()), any(User.class)))
+        when(userProfileService.updateUser(eq(userOne.getUserId()), any(User.class)))
                 .thenReturn(userOne);
 
         mockMvc.perform(put("/api/v1/user/update/" + userOne.getUserId())
@@ -98,7 +111,7 @@ class UserControllerTest {
     void deleteUserAndCheckStatusCodeIsOk() throws Exception {
         User userOne = getNewUser(1);
 
-        when(userService.deleteUser(userOne.getUserId())).thenReturn(userOne);
+        when(userProfileService.deleteUser(userOne.getUserId())).thenReturn(userOne);
 
         mockMvc.perform(delete("/api/v1/user/delete/{id}", userOne.getUserId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +154,7 @@ class UserControllerTest {
 
         List<User> users = List.of(userOne, userTwo, userThree, userFour, userFive);
 
-        when(userService.getAllUsers()).thenReturn(users);
+        when(adminController.getAllUsers()).thenReturn((ResponseEntity<List<User>>) users);
 
         mockMvc.perform(get("/api/v1/user/get/all")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -168,24 +181,6 @@ class UserControllerTest {
                 .andExpect(jsonPath("$[4].userId").value(userFive.getUserId().toString()))
                 .andExpect(jsonPath("$[4].username").value(userFive.getUsername()))
                 .andExpect(jsonPath("$[4].password").value(userFive.getPassword()))
-                .andDo(print());
-    }
-
-    @Test
-    void logUserInAndCheckStatusCodeIsAccepted() throws Exception {
-        User userOne = getNewUser(1);
-
-        when(userService.validateCredentials(userOne.getUserId())).thenReturn(userOne);
-
-        mockMvc.perform(post("/api/v1/user/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("utf-8")
-                        .content(mapper.writeValueAsString(userOne))
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.userId").value(userOne.getUserId().toString()))
-                .andExpect(jsonPath("$.username").value(userOne.getUsername()))
-                .andExpect(jsonPath("$.password").value(userOne.getPassword()))
                 .andDo(print());
     }
 }

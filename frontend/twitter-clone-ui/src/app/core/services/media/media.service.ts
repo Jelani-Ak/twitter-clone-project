@@ -18,7 +18,7 @@ export class MediaService {
     return this.httpClient.post<Media>(this.baseURL + 'upload', formData);
   }
 
-  getMedia(mediaId: string): Observable<Media> {
+  getMediaById(mediaId: string): Observable<Media> {
     return this.httpClient.get<Media>(this.baseURL + 'get/' + mediaId);
   }
 

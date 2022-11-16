@@ -24,11 +24,9 @@ export class RegisterComponent {
       .subscribe(() => {
         console.log('Registration Successful');
         this.snackbar.open('Registration Successful', undefined, {
-          duration: 2500,
+          duration: 2_500,
         });
-        setTimeout(() => {
-          this.router.navigateByUrl('/login');
-        }, 2000);
+        this.router.navigateByUrl('/login');
       });
   }
 }
