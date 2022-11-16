@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AdminService } from 'src/app/core/services/admin/admin.service';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { ConfirmationToken } from '../../models/confirmationToken';
-import { User } from '../../models/user';
+import { UtilityService } from 'src/app/core/services/utility/utility.service';
+import { ConfirmationToken } from 'src/app/shared/models/confirmationToken';
+import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-user',
@@ -16,15 +17,8 @@ export class UserComponent {
   userColumnsToDisplay = [
     'userId',
     'username',
-    // 'password',
     'email',
   ];
-  userColumnNames = {
-    userId: 'User ID',
-    username: 'Username',
-    password: 'Password',
-    email: 'E-mail',
-  };
 
   confirmationTokenColumnsToDisplay = [
     'token',
@@ -32,15 +26,10 @@ export class UserComponent {
     'expiresAt',
     'confirmedAt',
   ];
-  confirmationTokenColumnNames = {
-    token: 'Token',
-    createdAt: 'Created At',
-    expiresAt: 'Expired At',
-    confirmedAt: 'Confirmed At',
-  };
 
   constructor(
-    private adminService: AdminService, 
+    private adminService: AdminService,
+    private utilityService: UtilityService,
     private authenticationService: AuthenticationService
   ) {
     this.setup();
@@ -69,24 +58,24 @@ export class UserComponent {
 
   deleteUser(user: User) {
     this.users = this.users.filter((userIndex) => userIndex != user);
-    this.adminService.deleteUserFromRemote(user.userId).subscribe();
+    this.adminService.deleteUserFromRemote(user.userId).subscribe({
+      complete: () => { console.log(`${user} deleted`) },
+      error: () => { console.warn(`Faled to delete ${user}`) }
+    });
   }
 
-  confirmUser(token: string){
-    this.authenticationService.confirmUser(token).subscribe();
+  confirmUser(token: string) {
+    this.authenticationService.confirmUser(token).subscribe({
+      complete: () => { console.log('Token confirmed') },
+      error: () => { console.warn("Token already confirmed") }
+    });
   }
 
   rowInformation(column: string, row: { [index: string]: any }) {
     return row[column];
   }
 
-  translateColumnName(columnName: string): string {
-    const uesrname = this.userColumnNames[columnName as keyof typeof this.userColumnNames];
-    const token = this.confirmationTokenColumnNames[columnName as keyof typeof this.confirmationTokenColumnNames];
-
-    if (uesrname) return uesrname;
-    if (token) return token;
-
-    return columnName;
+  capitaliseAndSpace(text: string) {
+    return this.utilityService.capitaliseAndSpace(text);
   }
 }
