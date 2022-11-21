@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,8 +20,10 @@ import java.util.UUID;
 public class S3Service {
     private String key;
 
-    public static final String BUCKET_NAME = "twitter-clone-tut";
     private final AmazonS3Client awsS3Client;
+    private final String BUCKET_NAME = "twitter-clone-tut";
+
+    private static final Logger logger = LoggerFactory.getLogger(S3Service.class);
 
     public String uploadMedia(MultipartFile file) {
 
@@ -36,9 +40,12 @@ public class S3Service {
 
         try {
             awsS3Client.putObject(BUCKET_NAME, key, file.getInputStream(), metadata);
-        } catch (IOException ioException) {
+            logger.info("Successfully uploaded file, '" + key + "'");
+        } catch (Exception exception) {
+            String errorMessage = "Error occurred uploading the file";
+            logger.error(errorMessage, exception);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "An exception occurred while uploading the file.");
+                    errorMessage, exception);
         }
 
         //Read this file publicly without any authentication from the angular application

@@ -59,10 +59,10 @@ public class User implements UserDetails {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    private Set<User> usersYouFollow = new HashSet<>();
-    private Set<User> usersFollowingYou = new HashSet<>();
-    private Set<User> mutualFollowers = new HashSet<>();
-    private Set<Tweet> tweets = new HashSet<>();
+    private Set<User> usersYouFollow; //TODO: Create new model, 'FollowedUsers'
+    private Set<User> usersFollowingYou; // TODO: Create new model, 'UsersFollowing'
+    private Set<User> mutualFollowers; // TODO: Create new model, 'MutualFollowers'
+    private Set<Tweet> tweets;
 
     private Integer tweetCount;
     private Integer tweetQuoteCount;

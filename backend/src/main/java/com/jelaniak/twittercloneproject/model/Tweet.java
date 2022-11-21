@@ -45,7 +45,7 @@ public class Tweet {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateOfCreation;
 
-    private Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     private Integer commentCount;
     private Integer retweetCount;

@@ -32,7 +32,7 @@ public class TweetService {
         tweet.setMedia(tweet.getMedia());
         tweet.setContent(tweet.getContent());
         tweet.setDateOfCreation(LocalDateTime.now());
-        tweet.setComments(new HashSet<>()); // Should it hold the entire object or each id?
+        tweet.setComments(new HashSet<>()); // TODO - Hold each entire object? or each id and fetch it? (Change from object to tweetId only)
         tweet.setCommentCount(0);
         tweet.setRetweetCount(0);
         tweet.setLikeCount(0);
@@ -47,7 +47,7 @@ public class TweetService {
         comment.setCommentId(comment.getCommentId());
         comment.setUser(comment.getUser());
         comment.setCommentUrl(comment.getCommentUrl());
-        comment.setTweet(tweet); // TODO: Change from object to tweetId only
+        comment.setTweet(tweet); // TODO - Hold each entire object? or each id and fetch it? (Change from object to tweetId only)
         comment.setMedia(comment.getMedia());
         comment.setContent(comment.getContent());
         comment.setCommentCount(0);

@@ -43,10 +43,13 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public User createUser(User user) throws UserAlreadyExistsException {
+        LOGGER.info("Creating new user, '" + user.getUsername() + "'");
         boolean userExists = userRepository.findByUsername(user.getUsername()).isPresent();
 
         if (userExists) {
-            throw new UserAlreadyExistsException("Username, '" + user.getUsername() + "' already taken");
+            String errorMessage = "Failed to create user. Username, '" + user.getUsername() + "' already taken";
+            LOGGER.error(errorMessage);
+            throw new UserAlreadyExistsException(errorMessage);
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(user.getPassword());
@@ -85,9 +88,11 @@ public class AuthenticationService implements UserDetailsService {
 
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
+        LOGGER.info("Sending confirmation E-mail");
         String link = "http://localhost:8080/api/v1/authentication/confirm?token=" + token;
         emailSender.send(user.getEmail(), buildEmail(user.getUsername(), link));
         userRepository.save(user);
+        LOGGER.info("User created successfully");
 
         return user;
     }
