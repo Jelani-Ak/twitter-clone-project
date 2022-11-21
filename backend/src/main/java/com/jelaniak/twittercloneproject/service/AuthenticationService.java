@@ -22,19 +22,25 @@ import java.util.UUID;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
+
     private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
 
-    @Autowired
-    private EmailSender emailSender;
+    private final EmailSender emailSender;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private ConfirmationTokenService confirmationTokenService;
+    public AuthenticationService(
+            EmailSender emailSender,
+            UserRepository userRepository,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            ConfirmationTokenService confirmationTokenService) {
+        this.emailSender = emailSender;
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.confirmationTokenService = confirmationTokenService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

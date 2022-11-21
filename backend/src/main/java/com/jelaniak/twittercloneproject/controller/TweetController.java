@@ -16,8 +16,12 @@ import com.jelaniak.twittercloneproject.service.TweetService;
 @RequestMapping("/api/v1/tweet")
 public class TweetController {
 
+    private final TweetService tweetService;
+
     @Autowired
-    private TweetService tweetService;
+    public TweetController(TweetService tweetService) {
+        this.tweetService = tweetService;
+    }
 
     @RequestMapping(
             value = "/create",

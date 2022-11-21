@@ -15,11 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/api/v1/media")
 public class MediaController {
 
-    @Autowired
-    private S3Service s3Service;
+    private final S3Service s3Service;
+    private final MediaService mediaService;
 
     @Autowired
-    private MediaService mediaService;
+    public MediaController(S3Service s3Service, MediaService mediaService) {
+        this.s3Service = s3Service;
+        this.mediaService = mediaService;
+    }
 
     @RequestMapping(
             value = "/upload",

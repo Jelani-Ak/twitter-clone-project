@@ -15,14 +15,19 @@ import java.util.List;
 @Service
 public class AdminService {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
+    public AdminService(
+            UserService userService,
+            UserRepository userRepository,
+            ConfirmationTokenRepository confirmationTokenRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.confirmationTokenRepository = confirmationTokenRepository;
+    }
 
     @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {

@@ -11,8 +11,12 @@ import java.time.LocalDateTime;
 @Service
 public class ConfirmationTokenService {
 
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+
     @Autowired
-    private ConfirmationTokenRepository confirmationTokenRepository;
+    public ConfirmationTokenService(ConfirmationTokenRepository confirmationTokenRepository) {
+        this.confirmationTokenRepository = confirmationTokenRepository;
+    }
 
     public void saveConfirmationToken(ConfirmationToken confirmationToken) {
         confirmationTokenRepository.save(confirmationToken);

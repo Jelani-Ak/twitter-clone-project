@@ -19,11 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TweetService {
 
-    @Autowired
-    private TweetRepository tweetRepository;
+    private final TweetRepository tweetRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    private CommentRepository commentRepository;
+    public TweetService(
+            TweetRepository tweetRepository,
+            CommentRepository commentRepository) {
+        this.tweetRepository = tweetRepository;
+        this.commentRepository = commentRepository;
+    }
 
     public Tweet createTweet(Tweet tweet) {
         tweet.setTweetId(tweet.getTweetId());

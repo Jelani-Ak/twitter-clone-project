@@ -12,11 +12,14 @@ import com.jelaniak.twittercloneproject.repository.MediaRepository;
 @Service
 public class MediaService {
 
-    @Autowired
-    private S3Service s3Service;
+    private final S3Service s3Service;
+    private final MediaRepository mediaRepository;
 
     @Autowired
-    private MediaRepository mediaRepository;
+    public MediaService(S3Service s3Service, MediaRepository mediaRepository) {
+        this.s3Service = s3Service;
+        this.mediaRepository = mediaRepository;
+    }
 
     public Media uploadMedia(MultipartFile multipartFile) {
         String mediaUrl = s3Service.uploadMedia(multipartFile);

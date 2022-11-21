@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/user/profile")
 public class UserProfileController {
 
+    private final UserProfileService userProfileService;
+
     @Autowired
-    private UserProfileService userProfileService;
+    public UserProfileController(UserProfileService userProfileService) {
+        this.userProfileService = userProfileService;
+    }
 
     @RequestMapping(
             value = "/delete/{id}",

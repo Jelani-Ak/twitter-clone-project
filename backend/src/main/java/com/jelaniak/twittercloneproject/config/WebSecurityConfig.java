@@ -15,11 +15,16 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public WebSecurityConfig(
+            AuthenticationService authenticationService,
+            BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.authenticationService = authenticationService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

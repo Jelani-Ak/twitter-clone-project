@@ -11,11 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserProfileService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    private UserService userService;
+    public UserProfileService(
+            UserService userService,
+            UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
