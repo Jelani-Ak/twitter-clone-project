@@ -1,13 +1,19 @@
-<div>
+<div class="header">
   <app-header></app-header>
 </div>
 
 <div class="twitter-clone">
-  <app-navigation-panel *ngIf="showSidePanels()" fxFlex="{{ SIDE_PANEL }}"></app-navigation-panel>
+  <app-navigation-panel
+    class="side-panels"
+    *ngIf="showSidePanels()"
+  ></app-navigation-panel>
 
-  <div class="timeline-container" fxFlex="{{ getWidth() }}">
+  <div class="timeline-container" [ngStyle]="{ width: getWidth() }">
     <router-outlet></router-outlet>
   </div>
 
-  <app-search-news-panel *ngIf="showSidePanels()" fxFlex="{{ SIDE_PANEL }}"></app-search-news-panel>
+  <app-search-news-panel
+    class="side-panels"
+    *ngIf="showSidePanels()"
+  ></app-search-news-panel>
 </div>
