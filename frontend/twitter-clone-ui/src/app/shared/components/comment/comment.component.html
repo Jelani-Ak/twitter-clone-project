@@ -1,1 +1,22 @@
-<p>comment works!</p>
+<div class="comment-container" *ngFor="let comment of tweet.comments">
+  <div class="details">
+    <p class="username">Username</p>
+    <p class="handle">@UsernameHandle</p>
+    <span class="spacer"></span>
+    <p class="date">{{ comment.dateOfCreation }}</p>
+    <mat-icon>more_vert</mat-icon>
+  </div>
+
+  <!-- TODO: Work here next -->
+  
+</div>
+
+
+
+
+
+
+
+
+<!-- TODO: Delete later -->
+<p>Comment works!</p>

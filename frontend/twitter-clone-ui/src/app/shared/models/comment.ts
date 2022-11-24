@@ -1,3 +1,15 @@
+import { Media } from './media';
+import { Tweet } from './tweet';
+
 export class Comment {
-    // TODO: - Implement Comment TS model
+  commentId!: string;
+  commentUrl!: string;
+  username!: string;
+  tweet!: Tweet;
+  media?: Media;
+  content!: string;
+  dateOfCreation!: Date;
+  commentCount!: number;
+  retweetCount!: number;
+  likeCount!: number;
 }

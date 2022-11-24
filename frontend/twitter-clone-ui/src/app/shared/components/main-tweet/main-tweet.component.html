@@ -1,8 +1,5 @@
-<div class="profile-image-container" fxFlex="15%">
-  <img class="profile-image" src="{{ placeholderImage }}" />
-</div>
 
-<div class="inner-tweet-container" fxFlex="85%">
+<div class="tweet-container">
   <div class="details">
     <p class="username">Username</p>
     <p class="handle">@UsernameHandle</p>
@@ -73,7 +70,7 @@
         Delete
       </button>
       <span class="spacer"></span>
-      <button class="button" mat-button (click)="addComment(tweet)">
+      <button class="button" mat-button (click)="addComment()">
         Comment
       </button>
     </div>

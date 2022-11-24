@@ -3,11 +3,21 @@
   display: flex;
 }
 
-.text-and-icon {
+.context {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.context-icon,
+.context-icon-and-text {
   display: flex;
   align-items: center;
 }
 
-.icon {
+.context-icon {
   padding-right: 10px;
+  height: 20px;
 }

@@ -42,8 +42,7 @@ export class MainTweetComponent {
     return false;
   }
 
-  addComment(tweet: Tweet) {
-    console.log(tweet);
+  addComment() {
     console.log('Comment not implemented yet');
   }
 

@@ -7,7 +7,8 @@ import { Tweet } from '../../models/tweet';
   styleUrls: ['./comment.component.css'],
 })
 export class CommentComponent {
-  @Input() tweet!: Tweet;
+  @Input() tweet!: Tweet; // TODO: Take tweet.comments as input?
+  @Input() tweedId!: string;
 
   constructor() {}
 }
