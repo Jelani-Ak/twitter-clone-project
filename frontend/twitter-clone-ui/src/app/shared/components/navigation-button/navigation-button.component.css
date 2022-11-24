@@ -1,16 +1,23 @@
 .button {
-  background: #673AB7;
+  display: flex;
+  justify-content: flex-start;
+  background: #673ab7;
   color: white;
   border: none;
   margin-bottom: 10px;
-  padding: 10px 0;
   border-radius: 0;
   cursor: pointer;
   text-decoration: none;
-  text-align: left;
   width: 100%;
-  font-size: 15px;
+  height: 56px;
+  font-size: 17.5px;
+  font-weight: 300;
   transition-duration: 0.25s;
+}
+
+.icon-and-text {
+  display: flex;
+  align-items: center;
 }
 
 .button:focus {
@@ -31,9 +38,6 @@
   padding-left: 10px;
   padding-right: 17px;
   padding-bottom: 4px;
-  vertical-align: middle;
   margin-left: 30px;
-  transform: scale(1.5);
+  transform: scale(1.5);  
 }
-
-

@@ -1,11 +1,14 @@
 .user-management-button {
+  color: white !important;
   border-radius: 0;
   margin-left: 10px;
+  font-weight: 100;
+  font-size: 15px;
   transition-duration: 0.25s;
 }
 
 .user-management-button:hover {
-  color: black;
-  background-color: white;
+  color: black !important;
+  background-color: white !important;
   transition-duration: 0.25s;
 }

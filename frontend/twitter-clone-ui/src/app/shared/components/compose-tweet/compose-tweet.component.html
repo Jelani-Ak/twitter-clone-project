@@ -1,20 +1,31 @@
-<form #RegisterForm="ngForm" (ngSubmit)="createTweet()">
-  <mat-form-field appearance="fill" class="compose-tweet-form">
-    <mat-label>Compose Tweet</mat-label>
+<form class="form-container" #RegisterForm="ngForm" (ngSubmit)="createTweet()">
+  <mat-form-field
+    appearance="fill"
+    class="compose-tweet-form"
+    [style.width]="'100%'"
+    [style.height]="'145px'"
+    [style.font-weight]="'100'"
+    [style.margin-bottom]="'-0.79em'"
+  >
+    <mat-label
+      class="textarea-label"
+      [style.font-weight]="'100'"
+    >
+      Compose Tweet
+    </mat-label>
     <textarea
       #input
+      matInput
       #content="ngModel"
       [(ngModel)]="tweet.content"
       class="mat-form-field-textarea"
       id="content"
-      matInput
-      maxlength="280"
       name="content"
+      maxlength="280"
       placeholder="What's happening"
       type="text"
     >
     </textarea>
-    <span class="spacer"></span>
     <div class="hint">
       <mat-hint>{{ input.value.length || 0 }}/280</mat-hint>
     </div>
