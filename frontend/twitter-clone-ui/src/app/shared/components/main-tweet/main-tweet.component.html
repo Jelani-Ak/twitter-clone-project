@@ -1,0 +1,81 @@
+<div class="profile-image-container" fxFlex="15%">
+  <img class="profile-image" src="{{ placeholderImage }}" />
+</div>
+
+<div class="inner-tweet-container" fxFlex="85%">
+  <div class="details">
+    <p class="username">Username</p>
+    <p class="handle">@UsernameHandle</p>
+    <span class="spacer"></span>
+    <p class="date">{{ tweet.dateOfCreation }}</p>
+    <mat-icon>more_vert</mat-icon>
+  </div>
+
+  <div *ngIf="tweet.media" class="tweet-media-container">
+    <div class="tweet-media-content">
+      <img
+        *ngIf="isAcceptableImage(tweet.media.mediaType) && imageLoaded"
+        src="{{ tweet.media.mediaUrl }}"
+        onerror="this.style.display='none'"
+      />
+      <video
+        loop
+        muted
+        controls
+        preload="auto"
+        *ngIf="isAcceptableVideo(tweet.media.mediaType) && videoLoaded"
+        src="{{ tweet.media.mediaUrl }}"
+        onerror="this.style.display='none'"
+      ></video>
+    </div>
+  </div>
+
+  <div
+    class="tweet-content-container"
+    [ngStyle]="{ padding: tweet.content ? '20px 0' : '0' }"
+  >
+    {{ tweet.content }}
+  </div>
+
+  <div class="metadata-container">
+    <span class="metadata">
+      <span
+        class="metadata-line"
+        matTooltip="Comment"
+        matTooltipShowDelay="500"
+      >
+        <mat-icon class="tweet-material-icon">chat_bubble</mat-icon>
+        {{ tweet.commentCount }}
+      </span>
+      <span
+        class="metadata-line"
+        matTooltip="Re-Tweet"
+        matTooltipShowDelay="500"
+      >
+        <mat-icon class="tweet-material-icon">loop</mat-icon>
+        {{ tweet.retweetCount }}
+      </span>
+      <span class="metadata-line" matTooltip="Like" matTooltipShowDelay="500">
+        <mat-icon class="tweet-material-icon">thumb_up_alt</mat-icon>
+        {{ tweet.likeCount }}
+      </span>
+      <span class="metadata-line" matTooltip="Share" matTooltipShowDelay="500">
+        <mat-icon class="tweet-material-icon">share</mat-icon>
+      </span>
+    </span>
+  </div>
+
+  <div class="tweet-management-buttons-container">
+    <div class="tweet-management-buttons-gap"></div>
+    <div class="buttons"
+    >
+      <button class="button" mat-button (click)="deleteTweet(tweet)">
+        Delete
+      </button>
+      <span class="spacer"></span>
+      <button class="button" mat-button (click)="addComment(tweet)">
+        Comment
+      </button>
+    </div>
+  </div>
+</div>

@@ -57,9 +57,13 @@ textarea {
   align-items: center;
 }
 
+.add-media-button {
+  width: 87px;
+}
+
 .compose-tweet-button {
   float: right;
-  width: 100px;
+  width: 87px;
 }
 
 .compose-tweet-button:disabled {
@@ -76,7 +80,7 @@ input[type="file"] {
   left: 0;
   cursor: pointer;
   position: absolute;
-  padding: 20px 50px;
+  padding: 20px 44px;
   display: inline-block;
   box-sizing: content-box;
   background-color: rgba(0, 0, 0, 0);

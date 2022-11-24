@@ -1,27 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';
-import { TweetService } from '../../../core/services/tweet/tweet.service';
+import { TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { Tweet } from '../../models/tweet';
 
 @Component({
-  selector: 'app-tweet',
-  templateUrl: './tweet.component.html',
-  styleUrls: ['./tweet.component.css'],
+  selector: 'app-main-tweet',
+  templateUrl: './main-tweet.component.html',
+  styleUrls: ['./main-tweet.component.css'],
 })
-export class TweetComponent {
+export class MainTweetComponent {
+  @Input() tweet: Tweet = new Tweet();
+
   public imageLoaded: boolean = false;
   public videoLoaded: boolean = false;
 
-  // TODO: Delete later
-  placeholderImage =
-    'https://about.twitter.com/content/dam/about-twitter/en/brand-toolkit/brand-download-img-1.jpg.twimg.1920.jpg';
+  // TODO: Replace with actual profile images
+  placeholderImage = 'assets/Images/bird.jpg';
 
   constructor(
     public tweetService: TweetService,
     private snackbar: MatSnackBar,
     private mediaService: MediaService
   ) {}
+
+  isAcceptableImage(tweetMediaType: string | undefined) {
+    if (tweetMediaType == 'image/png' || 'image/jpg') {
+      this.imageLoaded = true;
+      return true;
+    }
+
+    return false;
+  }
+
+  isAcceptableVideo(tweetMediaType: string | undefined) {
+    if (tweetMediaType == 'video/webm') {
+      this.videoLoaded = true;
+      return true;
+    }
+
+    return false;
+  }
 
   addComment(tweet: Tweet) {
     console.log(tweet);
@@ -43,24 +62,6 @@ export class TweetComponent {
     }
 
     this.deleteTweetFromRemote(tweet.tweetId);
-  }
-
-  isAcceptableImage(tweetMediaType: string | undefined) {
-    if (tweetMediaType == 'image/png' || 'image/jpg') {
-      this.imageLoaded = true;
-      return true;
-    }
-
-    return false;
-  }
-
-  isAcceptableVideo(tweetMediaType: string | undefined) {
-    if (tweetMediaType == 'video/webm') {
-      this.videoLoaded = true;
-      return true;
-    }
-
-    return false;
   }
 
   private deleteTweetFromRemote(tweetId: string) {

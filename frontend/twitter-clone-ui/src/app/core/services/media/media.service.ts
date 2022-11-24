@@ -26,7 +26,7 @@ export class MediaService {
     return this.httpClient.delete<Media>(this.baseURL + 'delete/' + mediaId);
   }
 
-  deleteS3Media(s3MediaId: string): Observable<Media> {
-    return this.httpClient.delete<Media>(this.baseURL + 'delete/s3/' + s3MediaId);
+  deleteS3Media(publicId: string): Observable<Media> {
+    return this.httpClient.delete<Media>(this.baseURL + 'delete/cloudinary/' + publicId);
   }
 }

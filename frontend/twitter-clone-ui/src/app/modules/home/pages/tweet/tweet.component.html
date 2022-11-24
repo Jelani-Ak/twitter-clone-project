@@ -1,0 +1,15 @@
+<div class="title-container back-container" (click)="goBack()">
+  <div class="context">
+    <p>Viewing tweet</p>
+  </div>
+  <span class="spacer"></span>
+  <span class="text-and-icon">
+    <mat-icon class="icon">arrow_back</mat-icon>
+    <p class="page-title">Return</p>
+  </span>
+</div>
+
+<div class="tweet-container">
+  <app-main-tweet [tweet]="tweet"></app-main-tweet>
+  <app-comment [tweet]="tweet"></app-comment>
+</div>

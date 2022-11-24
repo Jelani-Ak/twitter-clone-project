@@ -59,9 +59,9 @@ public class User implements UserDetails {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
-    private Set<User> usersYouFollow; //TODO: Create new model, 'FollowedUsers'
-    private Set<User> usersFollowingYou; // TODO: Create new model, 'UsersFollowing'
-    private Set<User> mutualFollowers; // TODO: Create new model, 'MutualFollowers'
+    private Set<User> usersYouFollow; //TODO: Create new DTO, 'FollowedUsers'
+    private Set<User> usersFollowingYou; // TODO: Create new DTO, 'UsersFollowing'
+    private Set<User> mutualFollowers; // TODO: Create new DTO, 'MutualFollowers'
     private Set<Tweet> tweets;
 
     private Integer tweetCount;

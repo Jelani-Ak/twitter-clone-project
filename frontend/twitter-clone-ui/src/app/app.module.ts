@@ -26,7 +26,7 @@ import { NavigationPanelComponent } from './shared/components/navigation-panel/n
 import { SearchNewsPanelComponent } from './shared/components/search-news-panel/search-news-panel.component';
 import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
 import { UserComponent } from './shared/components/user/user.component';
-import { TweetComponent } from './shared/components/tweet/tweet.component';
+import { TimelineComponent } from './shared/components/timeline/timeline.component';
 import { ComposeTweetComponent } from './shared/components/compose-tweet/compose-tweet.component';
 import { UserManagementButtonComponent } from './shared/components/user-management-button/user-management-button.component';
 import { LoginComponent } from './modules/home/pages/login/login.component';
@@ -38,6 +38,8 @@ import { UserService } from './core/services/user/user.service';
 import { TweetService } from './core/services/tweet/tweet.service';
 import { CommentComponent } from './shared/components/comment/comment.component';
 import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-found-page.component';
+import { TweetComponent } from './modules/home/pages/tweet/tweet.component';
+import { MainTweetComponent } from './shared/components/main-tweet/main-tweet.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,7 @@ import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-f
     SearchNewsPanelComponent,
     DialogBoxComponent,
     UserComponent,
-    TweetComponent,
+    TimelineComponent,
     ComposeTweetComponent,
     LoginComponent,
     UserManagementButtonComponent,
@@ -59,6 +61,8 @@ import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-f
     LandingPageComponent,
     CommentComponent,
     NotFoundPageComponent,
+    TweetComponent,
+    MainTweetComponent,
   ],
   imports: [
     BrowserModule,

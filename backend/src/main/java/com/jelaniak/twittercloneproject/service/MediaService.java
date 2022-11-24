@@ -9,26 +9,28 @@ import org.springframework.web.multipart.MultipartFile;
 import com.jelaniak.twittercloneproject.model.Media;
 import com.jelaniak.twittercloneproject.repository.MediaRepository;
 
+import java.io.IOException;
+
 @Service
 public class MediaService {
 
-    private final S3Service s3Service;
+    private final CloudinaryService cloudinaryService;
     private final MediaRepository mediaRepository;
 
     @Autowired
-    public MediaService(S3Service s3Service, MediaRepository mediaRepository) {
-        this.s3Service = s3Service;
+    public MediaService(CloudinaryService cloudinaryService, MediaRepository mediaRepository) {
+        this.cloudinaryService = cloudinaryService;
         this.mediaRepository = mediaRepository;
     }
 
-    public Media uploadMedia(MultipartFile multipartFile) {
-        String mediaUrl = s3Service.uploadMedia(multipartFile);
+    public Media uploadMedia(MultipartFile multipartFile) throws IOException {
+        Object mediaUrl = cloudinaryService.uploadCloudinaryMedia(multipartFile);
 
         var media = new Media();
         media.setMediaId(media.getMediaId());
-        media.setMediaUrl(mediaUrl);
+        media.setMediaUrl(mediaUrl.toString());
         media.setMediaType(multipartFile.getContentType());
-        media.setMediaKey(s3Service.getKey());
+        media.setMediaKey(cloudinaryService.getPublicId());
 
         var savedMedia = mediaRepository.save(media);
 

@@ -1,8 +1,8 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.Media;
+import com.jelaniak.twittercloneproject.service.CloudinaryService;
 import com.jelaniak.twittercloneproject.service.MediaService;
-import com.jelaniak.twittercloneproject.service.S3Service;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,24 +10,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/media")
 public class MediaController {
 
-    private final S3Service s3Service;
+    private final CloudinaryService cloudinaryService;
     private final MediaService mediaService;
 
     @Autowired
-    public MediaController(S3Service s3Service, MediaService mediaService) {
-        this.s3Service = s3Service;
+    public MediaController(CloudinaryService cloudinaryService, MediaService mediaService) {
+        this.cloudinaryService = cloudinaryService;
         this.mediaService = mediaService;
     }
 
     @RequestMapping(
             value = "/upload",
             method = RequestMethod.POST)
-    public ResponseEntity<Media> uploadMeda(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Media> uploadMeda(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
         return new ResponseEntity<>(mediaService.uploadMedia(file), HttpStatus.CREATED);
     }
 
@@ -47,10 +49,10 @@ public class MediaController {
     }
 
     @RequestMapping(
-            value = "/delete/s3/{s3MediaKey}",
+            value = "/delete/cloudinary/{publicId}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteS3Media(@PathVariable String s3MediaKey) {
-        s3Service.deleteS3Media(s3MediaKey);
+    public ResponseEntity<Void> deleteS3Media(@PathVariable String publicId) throws IOException {
+        cloudinaryService.deleteCloudinaryMedia(publicId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,0 +1,13 @@
+.back-container {
+  cursor: pointer;
+  display: flex;
+}
+
+.text-and-icon {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  padding-right: 10px;
+}

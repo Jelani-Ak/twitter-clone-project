@@ -12,10 +12,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.util.UUID;
 
 @Service
+@Deprecated
 @RequiredArgsConstructor
 public class S3Service {
     private String key;
@@ -25,7 +25,7 @@ public class S3Service {
 
     private static final Logger logger = LoggerFactory.getLogger(S3Service.class);
 
-    public String uploadMedia(MultipartFile file) {
+    public String uploadS3Media(MultipartFile file) {
 
         //Prepare a Key
         var filenameExtension = StringUtils.getFilenameExtension(file.getOriginalFilename());
