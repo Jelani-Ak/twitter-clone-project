@@ -15,13 +15,11 @@ public class TweetUtility {
         Tweet tweet = new Tweet();
 
         tweet.setTweetId(new ObjectId());
-        tweet.setTweetUrl("http://www.tweet" + number + ".co.uk/example");
         tweet.setUser(user);
         tweet.setMedia(media);
         tweet.setContent("Content " + number);
         tweet.setDateOfCreation(LocalDateTime.now());
-        tweet.setComments(new HashSet<Comment>());
-        tweet.setCommentCount(tweet.getComments().size());
+        tweet.setComments(new HashSet<>());
         tweet.setLikeCount(tweet.getLikeCount());
         tweet.setTweetType(tweet.getTweetType());
 

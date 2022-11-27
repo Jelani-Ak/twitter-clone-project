@@ -1,0 +1,75 @@
+<div class="comment-container" *ngFor="let comment of comments">
+  <div class="details">
+    <p class="username">Username</p>
+    <p class="handle">@UsernameHandle</p>
+    <span class="spacer"></span>
+    <p class="date">{{ comment.dateOfCreation }}</p>
+    <mat-icon>more_vert</mat-icon>
+  </div>
+
+  <div *ngIf="comment.media" class="comment-media-container">
+    <div class="comment-media-content">
+      <img
+        *ngIf="isAcceptableImage(comment.media.mediaType) && imageLoaded"
+        src="{{ comment.media.mediaUrl }}"
+        onerror="this.style.display='none'"
+      />
+      <video
+        loop
+        muted
+        controls
+        preload="auto"
+        *ngIf="isAcceptableVideo(comment.media.mediaType) && videoLoaded"
+        src="{{ comment.media.mediaUrl }}"
+        onerror="this.style.display='none'"
+      ></video>
+    </div>
+  </div>
+
+  <div
+    class="comment-content-container"
+    [ngStyle]="{ padding: comment.content ? '20px 0' : '0' }"
+  >
+    {{ comment.content }}
+  </div>
+
+  <div class="metadata-container">
+    <span class="metadata">
+      <span
+        class="metadata-line"
+        matTooltip="Comment"
+        matTooltipShowDelay="500"
+      >
+        <mat-icon class="comment-material-icon">chat_bubble</mat-icon>
+        {{ comment.commentCount }}
+      </span>
+      <span
+        class="metadata-line"
+        matTooltip="Re-Tweet"
+        matTooltipShowDelay="500"
+      >
+        <mat-icon class="comment-material-icon">loop</mat-icon>
+        {{ comment.retweetCount }}
+      </span>
+      <span class="metadata-line" matTooltip="Like" matTooltipShowDelay="500">
+        <mat-icon class="comment-material-icon">thumb_up_alt</mat-icon>
+        {{ comment.likeCount }}
+      </span>
+      <span class="metadata-line" matTooltip="Share" matTooltipShowDelay="500">
+        <mat-icon class="comment-material-icon">share</mat-icon>
+      </span>
+    </span>
+  </div>
+
+  <div class="comment-management-buttons-container">
+    <div class="buttons">
+      <button class="button" mat-button (click)="deleteComment(comment)">
+        Delete
+      </button>
+      <!-- <span class="spacer"></span>
+      <button class="button" mat-button (click)="addComment()">
+        Comment
+      </button> -->
+    </div>
+  </div>
+</div>

@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(
                             "/api/v*/authentication/**",
                             "/api/v*/tweet/**",
+                            "/api/v*/comment/**",
                             "/api/v*/media/**",
                             "/api/v*/admin/**"
                     )

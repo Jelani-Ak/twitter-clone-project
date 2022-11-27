@@ -1,0 +1,99 @@
+.compose-container {
+  background-color: white;
+}
+
+button {
+  border-radius: 0;
+}
+
+textarea {
+  resize: none;
+  font-size: 15px;
+  font-weight: 100;
+  width: 100%;
+  height: 75px !important;
+}
+
+.hint {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  font-weight: 100;
+}
+
+.tweet-button {
+  width: 100px;
+  color: white;
+  font-weight: 100;
+  background: #673ab7;
+  transition-duration: 0.25s;
+}
+
+.tweet-button:hover {
+  color: black;
+  background: white;
+  transition-duration: 0.25s;
+}
+
+.button-row-container {
+  display: grid;
+  background-color: #eee;
+  grid-template-columns: min-content auto min-content min-content;
+}
+
+.filename {
+  width: 100%;
+  display: flex;
+  padding: 10px 0;
+  margin-left: 10px;
+  text-align: center;
+  align-items: center;
+}
+
+.add-media-button {
+  width: 87px;
+}
+
+.compose-tweet-button {
+  float: right;
+  width: 87px;
+}
+
+.compose-tweet-button:disabled {
+  color: #8677ac;
+  background: #b5a1e7;
+}
+
+input[type="file"] {
+  display: none;
+  pointer-events: auto;
+}
+.custom-file-upload {
+  top: -8px;
+  left: -30px;
+  cursor: pointer;
+  position: absolute;
+  padding: 18px 43.7px;
+  box-sizing: content-box;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.remove-file {
+  height: auto;
+  display: flex;
+  cursor: pointer;
+  padding: 5px 10px;
+  align-items: center;
+  transition-duration: 0.25s;
+}
+
+.remove-file:hover {
+  color: #673ab7;
+  transition-duration: 0.25s;
+}
+
+.remove-file:active {
+  color: #b5a1e7;
+  scale: 0.8;
+  transition-duration: 0.25s;
+}

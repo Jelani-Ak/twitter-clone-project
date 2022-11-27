@@ -8,7 +8,6 @@ import javax.validation.constraints.Size;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,9 +29,9 @@ public class Comment {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId commentId;
-    private String commentUrl;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId parentTweetId;
     private User user;
-    private Tweet tweet;
     private Media media;
 
     @NotBlank

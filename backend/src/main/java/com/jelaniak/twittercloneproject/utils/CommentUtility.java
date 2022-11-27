@@ -14,9 +14,8 @@ public class CommentUtility {
         Comment comment = new Comment();
 
         comment.setCommentId(new ObjectId());
-        comment.setCommentUrl("http://www.commment" + number + ".co.uk/example");
         comment.setUser(user);
-        comment.setTweet(tweet);
+        comment.setParentTweetId(tweet.getTweetId());
         comment.setMedia(media);
         comment.setContent("Content " + number);
         comment.setDateOfCreation(LocalDateTime.now());

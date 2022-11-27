@@ -1,7 +1,6 @@
 package com.jelaniak.twittercloneproject.model;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -31,10 +30,7 @@ public class Tweet {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId tweetId;
-    private String tweetUrl;
-
     private User user;
-
     private Media media;
 
     @NotBlank

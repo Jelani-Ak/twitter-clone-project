@@ -5,9 +5,9 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
 import { LoginComponent } from './modules/home/pages/login/login.component';
 import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-found-page.component';
 import { RegisterComponent } from './modules/home/pages/register/register.component';
-import { TweetComponent } from './modules/home/pages/tweet/tweet.component';
-import { CommentComponent } from './shared/components/comment/comment.component';
-import { UserComponent } from './shared/components/user/user.component';
+import { TweetPageComponent } from './modules/home/pages/tweet-page/tweet-page.component';
+import { CommentComponent } from './shared/components/model/comment/comment.component';
+import { UserComponent } from './shared/components/model/user/user.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'landing-page', component: LandingPageComponent },
 
-  { path: 'tweet/:id', component: TweetComponent, children: [
+  { path: 'tweet/:id', component: TweetPageComponent, children: [
     { path: 'comment/:id', component: CommentComponent},    
   ]},
   

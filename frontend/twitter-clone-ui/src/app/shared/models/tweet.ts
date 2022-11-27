@@ -3,12 +3,11 @@ import { Comment } from './comment';
 
 export class Tweet {
   tweetId!: string;
-  tweetUrl!: string;
   username!: string;
   media?: Media;
   content!: string;
   dateOfCreation!: Date;
-  comments!: Set<Comment>;
+  comments!: Array<Comment>;
   commentCount!: number;
   retweetCount!: number;
   likeCount!: number;

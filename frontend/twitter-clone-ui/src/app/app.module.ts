@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppRoutingModule } from './app-routing.module';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -15,19 +15,19 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
-import { NavigationButtonComponent } from './shared/components/navigation-button/navigation-button.component';
-import { NavigationPanelComponent } from './shared/components/navigation-panel/navigation-panel.component';
-import { SearchNewsPanelComponent } from './shared/components/search-news-panel/search-news-panel.component';
-import { DialogBoxComponent } from './shared/components/dialog-box/dialog-box.component';
-import { UserComponent } from './shared/components/user/user.component';
-import { TimelineComponent } from './shared/components/timeline/timeline.component';
-import { ComposeTweetComponent } from './shared/components/compose-tweet/compose-tweet.component';
-import { UserManagementButtonComponent } from './shared/components/user-management-button/user-management-button.component';
+import { NavigationButtonComponent } from './shared/components/button/navigation-button/navigation-button.component';
+import { NavigationPanelComponent } from './shared/components/side-panels/navigation-panel/navigation-panel.component';
+import { SearchNewsPanelComponent } from './shared/components/side-panels/search-news-panel/search-news-panel.component';
+import { UserComponent } from './shared/components/model/user/user.component';
+import { TimelineComponent } from './shared/components/center-panel/timeline/timeline.component';
+import { ComposeTweetComponent } from './shared/components/dialog/compose-tweet/compose-tweet.component';
+import { UserManagementButtonComponent } from './shared/components/button/user-management-button/user-management-button.component';
 import { LoginComponent } from './modules/home/pages/login/login.component';
 import { RegisterComponent } from './modules/home/pages/register/register.component';
 import { ProfileComponent } from './modules/home/pages/profile/profile.component';
@@ -35,10 +35,12 @@ import { LandingPageComponent } from './modules/home/pages/landing-page/landing-
 
 import { UserService } from './core/services/user/user.service';
 import { TweetService } from './core/services/tweet/tweet.service';
-import { CommentComponent } from './shared/components/comment/comment.component';
+import { CommentComponent } from './shared/components/model/comment/comment.component';
 import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-found-page.component';
-import { TweetComponent } from './modules/home/pages/tweet/tweet.component';
-import { MainTweetComponent } from './shared/components/main-tweet/main-tweet.component';
+import { TweetPageComponent } from './modules/home/pages/tweet-page/tweet-page.component';
+import { TweetComponent } from './shared/components/model/tweet/tweet.component';
+import { MatOptionModule } from '@angular/material/core';
+import { ComposeCommentComponent } from './shared/components/dialog/compose-comment/compose-comment.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,6 @@ import { MainTweetComponent } from './shared/components/main-tweet/main-tweet.co
     NavigationButtonComponent,
     NavigationPanelComponent,
     SearchNewsPanelComponent,
-    DialogBoxComponent,
     UserComponent,
     TimelineComponent,
     ComposeTweetComponent,
@@ -60,8 +61,9 @@ import { MainTweetComponent } from './shared/components/main-tweet/main-tweet.co
     LandingPageComponent,
     CommentComponent,
     NotFoundPageComponent,
+    TweetPageComponent,
     TweetComponent,
-    MainTweetComponent,
+    ComposeCommentComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,9 +82,16 @@ import { MainTweetComponent } from './shared/components/main-tweet/main-tweet.co
     MatSnackBarModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
-  providers: [UserService, TweetService],
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} },
+    UserService,
+    TweetService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

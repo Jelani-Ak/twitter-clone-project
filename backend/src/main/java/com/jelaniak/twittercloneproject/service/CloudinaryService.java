@@ -18,7 +18,7 @@ public class CloudinaryService {
     public Object uploadCloudinaryMedia(MultipartFile file) throws IOException {
         publicId = UUID.randomUUID().toString();
         
-        //TODO: Seperate folders by user
+        //TODO: Separate folders by user
         var response = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                 "public_id", publicId,
                 "use_filename", false,
