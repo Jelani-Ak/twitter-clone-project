@@ -3,6 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Media } from 'src/app/shared/models/media';
 
+export type MediaData = {
+  mediaId: string | undefined;
+  mediaKey: string | undefined;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -22,11 +27,11 @@ export class MediaService {
     return this.httpClient.get<Media>(this.baseURL + 'get/' + mediaId);
   }
 
-  deleteMediaFromRemote(mediaId: string): Observable<Media> {
+  deleteMediaFromRemote(mediaId: string | undefined): Observable<Media> {
     return this.httpClient.delete<Media>(this.baseURL + 'delete/' + mediaId);
   }
 
-  deleteCloudinaryMedia(publicId: string): Observable<Media> {
+  deleteCloudinaryMedia(publicId: string | undefined): Observable<Media> {
     return this.httpClient.delete<Media>(this.baseURL + 'delete/cloudinary/' + publicId);
   }
 }

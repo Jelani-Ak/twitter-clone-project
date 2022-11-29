@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class NotFoundPageComponent {
   constructor() {}
+
+  // TODO: Give the option to go to login, register or home?
 }

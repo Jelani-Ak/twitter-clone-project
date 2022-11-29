@@ -9,17 +9,17 @@ import { ComposeTweetComponent } from '../../dialog/compose-tweet/compose-tweet.
   styleUrls: ['./navigation-button.component.css'],
 })
 export class NavigationButtonComponent {
-  @Input() text!: string;
-  @Input() icon!: string;
+  @Input() text: string = "";
+  @Input() icon: string = "";
 
   dialogOpen: boolean = false;
 
   constructor(
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private navigation: NavigationService
   ) {}
 
-  navigate() {
+  public navigate() {
     const location = this.text;
     switch (location) {
       case 'Explore':
@@ -40,11 +40,11 @@ export class NavigationButtonComponent {
     }
   }
 
-  goToUrl(location: string) {
+  public goToUrl(location: string) {
     this.navigation.navigate(location);
   }
 
-  openComposeTweetDialog() {
+  private openComposeTweetDialog() {
     this.dialogOpen = true;
 
     this.dialog.open(ComposeTweetComponent, {

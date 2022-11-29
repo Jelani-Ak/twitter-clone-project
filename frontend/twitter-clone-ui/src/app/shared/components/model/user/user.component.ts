@@ -17,14 +17,14 @@ export class UserComponent {
   userColumnsToDisplay = [
     'userId',
     'username',
-    'email',
+    'email'
   ];
 
   confirmationTokenColumnsToDisplay = [
     'token',
     'createdAt',
     'expiresAt',
-    'confirmedAt',
+    'confirmedAt'
   ];
 
   constructor(
@@ -35,47 +35,67 @@ export class UserComponent {
     this.setup();
   }
 
-  setup(): void {
+  private setup(): void {
     this.getUsers();
     this.getConfirmationTokens();
   }
 
-  getUsers() {
-    this.adminService
-      .getAllUsers()
-      .subscribe((users) => {
+  private getUsers() {
+    this.adminService.getAllUsers().subscribe({
+      next: (users) => {
         this.users = users;
-      });
+      },
+      complete: () => {
+        console.log(`Loaded all users`);
+      },
+      error: (error) => {
+        console.error(`Failed to load all users`, error);
+      },
+    });
   }
 
-  getConfirmationTokens() {
-    this.adminService
-      .getAllConfirmationTokens()
-      .subscribe((confirmationTokens) => {
+  private getConfirmationTokens() {
+    this.adminService.getAllConfirmationTokens().subscribe({
+      next: (confirmationTokens) => {
         this.confirmationTokens = confirmationTokens;
-      });
+      },
+      complete: () => {
+        console.log(`Loaded all confirmation tokens`);
+      },
+      error: (error) => {
+        console.warn(`Faled to load cofirmaion tokens`, error);
+      },
+    });
   }
 
-  deleteUser(user: User) {
+  public deleteUser(user: User) {
     this.users = this.users.filter((userIndex) => userIndex != user);
     this.adminService.deleteUserFromRemote(user.userId).subscribe({
-      complete: () => { console.log(`${user} deleted`) },
-      error: () => { console.warn(`Faled to delete ${user}`) }
+      complete: () => {
+        console.log(`${user.username} deleted`);
+      },
+      error: (error) => {
+        console.warn(`Faled to delete ${user.username}`, error);
+      },
     });
   }
 
-  confirmUser(token: string) {
+  public confirmUser(token: string) {
     this.authenticationService.confirmUser(token).subscribe({
-      complete: () => { console.log('Token confirmed') },
-      error: () => { console.warn("Token already confirmed") }
+      complete: () => {
+        console.log('Token confirmed');
+      },
+      error: (error) => {
+        console.warn('Failed to confirm token', error);
+      },
     });
   }
 
-  rowInformation(column: string, row: { [index: string]: any }) {
+  public rowInformation(column: string, row: { [index: string]: any }) {
     return row[column];
   }
 
-  capitaliseAndSpace(text: string) {
+  public capitaliseAndSpace(text: string) {
     return this.utilityService.capitaliseAndSpace(text);
   }
 }

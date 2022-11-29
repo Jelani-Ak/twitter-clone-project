@@ -25,7 +25,7 @@ public class CommentController {
     @RequestMapping(
             value = "/create",
             method = RequestMethod.POST)
-    public ResponseEntity<Tweet> createComment(@RequestBody Comment comment) throws Exception {
+    public ResponseEntity<Comment> createComment(@RequestBody Comment comment) throws Exception {
         return new ResponseEntity<>(tweetService.createComment(comment), HttpStatus.CREATED);
     }
 

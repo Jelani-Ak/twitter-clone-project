@@ -18,11 +18,12 @@ public class CloudinaryService {
     public Object uploadCloudinaryMedia(MultipartFile file) throws IOException {
         publicId = UUID.randomUUID().toString();
         
-        //TODO: Separate folders by user
+        //TODO: Separate folders by user?
         var response = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                 "public_id", publicId,
                 "use_filename", false,
-                "unique_filename", true
+                "unique_filename", true,
+                "resource_type", "auto"
         ));
 
         return response.get("url");

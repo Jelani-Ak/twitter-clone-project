@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
+import { Comment } from 'src/app/shared/models/comment';
 import { Tweet } from 'src/app/shared/models/tweet';
 
 @Component({
@@ -11,7 +12,8 @@ import { Tweet } from 'src/app/shared/models/tweet';
 })
 export class TweetPageComponent implements OnInit {
   tweet = new Tweet();
-  tweetId: string = "";
+  comments: Comment[] = [];
+  tweetId: string = '';
 
   options: string[] = ['Likes', 'Newest', 'Oldest'];
 
@@ -25,26 +27,32 @@ export class TweetPageComponent implements OnInit {
     this.selectDefaultOption();
   }
 
-  ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
-      this.tweetId = queryParams['tweetId'];
-    })
-
-    this.tweetService.getTweetById(this.tweetId).subscribe((tweet) => {
-      this.tweet = tweet;
-    });
+  public ngOnInit(): void {
+    this.loadTweet();
   }
 
-  goBack() {
+  // TODO: Last page reference is lost on page refresh
+  public goBack() {
     this.location.back();
   }
 
-  // TODO: Replace with service to sort comments
-  printSelection() {
-    console.log(this.selectedItem);
+  // TODO: Implement comment sorting
+  public printSelection() {
+    console.warn('Sorting not implemented yet');
   }
 
   private selectDefaultOption() {
     this.selectedItem = this.options[0];
+  }
+
+  private loadTweet() {
+    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
+      this.tweetService
+        .getTweetById(queryParams['tweetId'])
+        .subscribe((tweet) => {
+          this.tweet = tweet;
+          this.comments = tweet.comments;
+        });
+    });
   }
 }

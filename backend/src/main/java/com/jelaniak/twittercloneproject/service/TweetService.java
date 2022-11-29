@@ -43,7 +43,7 @@ public class TweetService {
         return tweetRepository.save(tweet);
     }
 
-    public Tweet createComment(Comment comment) throws Exception {
+    public Comment createComment(Comment comment) throws Exception {
         Tweet tweet = findByTweetId(comment.getParentTweetId());
 
         comment.setCommentId(new ObjectId());
@@ -58,8 +58,9 @@ public class TweetService {
 
         tweet.getComments().add(comment);
         tweet.setCommentCount(tweet.getComments().size());
+        tweetRepository.save(tweet);
 
-        return tweetRepository.save(tweet);
+        return comment;
     }
 
     public List<Tweet> findAllTweets() {

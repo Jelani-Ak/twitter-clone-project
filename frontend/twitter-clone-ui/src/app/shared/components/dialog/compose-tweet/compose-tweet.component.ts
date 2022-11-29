@@ -1,10 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { Tweet } from '../../../models/tweet';
 import { TweetService } from '../../../../core/services/tweet/tweet.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-compose-tweet',
@@ -12,28 +12,33 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./compose-tweet.component.css'],
 })
 export class ComposeTweetComponent {
-  tweet = new Tweet();
+  tweet: Tweet = new Tweet();
+  content: String = new String();
 
-  content!: string;
   selectedFile: File | null = null;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackbar: MatSnackBar,
     private tweetService: TweetService,
     private mediaService: MediaService,
+    private snackbarService: SnackbarService,
     private dialogRef: MatDialogRef<ComposeTweetComponent>
   ) {}
 
   public createTweet() {
     try {
+      console.log(`Creating tweet..`);
+
       if (this.selectedFile == null) {
         this.createTweetFromRemote();
       } else {
         this.createTweetFromRemoteWithMedia();
       }
+      
+      this.snackbarService.displayToast('Tweet Created Successfully', 'Ok');
+
     } finally {
-      this.closeDialog();
+      this.closeTweetDialog();
     }
   }
 
@@ -50,28 +55,35 @@ export class ComposeTweetComponent {
   }
 
   private createTweetFromRemote() {
-    this.tweetService.createTweetFromRemote(this.tweet).subscribe((tweet) => {
-      this.tweetService.tweets.push(tweet);
-    });
-
-    this.snackbar.open('Tweet Created Successfully', 'Ok', {
-      duration: 2500,
+    this.tweetService.createTweetFromRemote(this.tweet).subscribe({
+      next: (tweet) => {
+        this.tweetService.tweets.push(tweet);
+      },
+      complete: () => {
+        console.log(`Tweet created succesfully`);
+      },
+      error: (error) => {
+        console.warn(`Failed to create tweet`, error);
+      },
     });
   }
 
   private createTweetFromRemoteWithMedia() {
-    this.mediaService
-      .uploadMediaFromRemote(this.selectedFile!)
-      .subscribe((media) => {
-        this.mediaService.getMediaById(media.mediaId).subscribe((media) => {
-          this.tweet.media = media;
-
-          this.createTweetFromRemote();
-        });
-      });
+    this.mediaService.uploadMediaFromRemote(this.selectedFile!).subscribe({
+      next: (media) => {
+        this.tweet.media = media;
+        this.createTweetFromRemote();
+      },
+      complete: () => {
+        console.log(`Media uploaded sucessfully to Cloudinary`);
+      },
+      error: (error) => {
+        console.error(`Failed to upload media to Cloudinary`, error);
+      },
+    });    
   }
 
-  private closeDialog() {
+  private closeTweetDialog() {
     if (this.data.dialogOpen) {
       this.dialogRef.close();
     }

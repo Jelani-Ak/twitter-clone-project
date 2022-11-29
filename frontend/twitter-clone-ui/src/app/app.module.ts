@@ -25,7 +25,7 @@ import { NavigationButtonComponent } from './shared/components/button/navigation
 import { NavigationPanelComponent } from './shared/components/side-panels/navigation-panel/navigation-panel.component';
 import { SearchNewsPanelComponent } from './shared/components/side-panels/search-news-panel/search-news-panel.component';
 import { UserComponent } from './shared/components/model/user/user.component';
-import { TimelineComponent } from './shared/components/center-panel/timeline/timeline.component';
+import { TweetTimelineComponent } from './shared/components/center-panel/tweet-timeline/tweet-timeline.component';
 import { ComposeTweetComponent } from './shared/components/dialog/compose-tweet/compose-tweet.component';
 import { UserManagementButtonComponent } from './shared/components/button/user-management-button/user-management-button.component';
 import { LoginComponent } from './modules/home/pages/login/login.component';
@@ -41,6 +41,7 @@ import { TweetPageComponent } from './modules/home/pages/tweet-page/tweet-page.c
 import { TweetComponent } from './shared/components/model/tweet/tweet.component';
 import { MatOptionModule } from '@angular/material/core';
 import { ComposeCommentComponent } from './shared/components/dialog/compose-comment/compose-comment.component';
+import { CommentTimelineComponent } from './shared/components/center-panel/comment-timeline/comment-timeline.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { ComposeCommentComponent } from './shared/components/dialog/compose-comm
     NavigationPanelComponent,
     SearchNewsPanelComponent,
     UserComponent,
-    TimelineComponent,
+    TweetTimelineComponent,
     ComposeTweetComponent,
     LoginComponent,
     UserManagementButtonComponent,
@@ -64,6 +65,7 @@ import { ComposeCommentComponent } from './shared/components/dialog/compose-comm
     TweetPageComponent,
     TweetComponent,
     ComposeCommentComponent,
+    CommentTimelineComponent,
   ],
   imports: [
     BrowserModule,

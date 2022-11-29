@@ -3,6 +3,7 @@ import { AuthenticationService } from '../../../../core/services/authentication/
 import { User } from '../../../../shared/models/user';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-login',
@@ -14,16 +15,17 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private snackbar: MatSnackBar,
+    private snackbarService: SnackbarService,
     private authenticationService: AuthenticationService
   ) {}
 
-  loginUser() {
+  // TODO: Add next, complete and error
+  public loginUser() {
     this.authenticationService
     .logUserInFromRemote(this.user)
     .subscribe(() => {
       console.log('Login Successful');
-      this.snackbar.open('Login Successful', this.user.username, { duration: 2500 });
+      this.snackbarService.displayToast('Login Successful', this.user.username);
       this.router.navigateByUrl('/home');
     });
   }

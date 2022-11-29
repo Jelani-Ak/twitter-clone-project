@@ -29,7 +29,7 @@ public class MediaController {
     @RequestMapping(
             value = "/upload",
             method = RequestMethod.POST)
-    public ResponseEntity<Media> uploadMeda(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+    public ResponseEntity<Media> uploadMeda(@RequestParam(value = "file") MultipartFile file) throws IOException {
         return new ResponseEntity<>(mediaService.uploadMedia(file), HttpStatus.CREATED);
     }
 

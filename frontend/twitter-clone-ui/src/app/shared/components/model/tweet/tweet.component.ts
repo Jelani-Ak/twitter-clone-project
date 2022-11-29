@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MediaService } from 'src/app/core/services/media/media.service';
-import { TweetService } from 'src/app/core/services/tweet/tweet.service';
-import { Tweet } from '../../../models/tweet';
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { TweetData, TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { ComposeCommentComponent } from '../../dialog/compose-comment/compose-comment.component';
+import { Tweet } from '../../../models/tweet';
 
 @Component({
   selector: 'app-tweet',
@@ -12,24 +12,21 @@ import { ComposeCommentComponent } from '../../dialog/compose-comment/compose-co
   styleUrls: ['./tweet.component.css'],
 })
 export class TweetComponent {
-  @Input() tweet!: Tweet;
+  @Input() public tweet: Tweet = new Tweet();
 
   dialogOpen = false;
 
   imageLoaded: boolean = false;
   videoLoaded: boolean = false;
 
-  // TODO: Replace with actual profile images
-  placeholderImage = 'assets/Images/bird.jpg';
-
   constructor(
     public tweetService: TweetService,
     private dialog: MatDialog,
-    private snackbar: MatSnackBar,
-    private mediaService: MediaService
+    private mediaService: MediaService,
+    private snackbarService: SnackbarService
   ) {}
 
-  isAcceptableImage(tweetMediaType: string | undefined) {
+  public isAcceptableImage(tweetMediaType: string | undefined) {
     if (tweetMediaType == 'image/png' || 'image/jpg') {
       this.imageLoaded = true;
       return true;
@@ -38,7 +35,7 @@ export class TweetComponent {
     return false;
   }
 
-  isAcceptableVideo(tweetMediaType: string | undefined) {
+  public isAcceptableVideo(tweetMediaType: string | undefined) {
     if (tweetMediaType == 'video/webm') {
       this.videoLoaded = true;
       return true;
@@ -47,57 +44,97 @@ export class TweetComponent {
     return false;
   }
 
-  addComment() {
+  // TODO: Add confirmation dialog for deleting tweet
+
+  public addComment() {
     this.openComposeCommentDialog();
   }
 
-  deleteTweet(tweet: Tweet) {
+  public deleteTweet(tweet: Tweet) {
+    const tweetData = this.buildTweetData(tweet);
+    this.deleteTweetFromCache(tweet);
+
+    if (!tweet.media) {
+      console.log(`Deleting Tweet..`);
+    } else {
+      console.log(`Deleting Tweet and Media..`);
+    }
+
+    this.deleteTweetFromRemote(tweetData);
+    this.snackbarService.displayToast('Tweet Deleted Successfully', 'Ok');
+  }
+
+  private deleteTweetFromCache(tweet: Tweet): void {
     this.tweetService.tweets = this.tweetService.tweets.filter(
       (tweetIndex) => tweetIndex.tweetId !== tweet.tweetId
     );
+  }
 
-    if (tweet.media) {
-      this.deleteTweetAndMediaFromRemote(
-        tweet.tweetId,
-        tweet.media.mediaId,
-        tweet.media.mediaKey
-      );
+  private deleteTweetFromRemote(tweetData: TweetData): void {
+    const tweetHasMedia =
+      tweetData.mediaData.mediaId != undefined &&
+      tweetData.mediaData.mediaKey != undefined;
 
-      return;
+    this.tweetService.deleteTweetFromRemote(tweetData.tweetId).subscribe({
+      complete: () => {
+        console.log(`Tweet deleted succesfully`);
+      },
+      error: (error) => {
+        console.error(`Failed to delete tweet`, error);
+      },
+    });
+    if (tweetHasMedia) {
+      this.mediaService
+        .deleteMediaFromRemote(tweetData.mediaData.mediaId)
+        .subscribe({
+          complete: () => {
+            console.log(`Media deleted succesfully from Repository`);
+          },
+          error: (error) => {
+            console.error(`Failed to delete media from repository`, error);
+          },
+        });
+      this.mediaService
+        .deleteCloudinaryMedia(tweetData.mediaData.mediaKey)
+        .subscribe({
+          complete: () => {
+            console.log(`Media deleted succesfully from Cloudinary`);
+          },
+          error: (error) => {
+            console.error(`Failed to delete media from Cloudinary`, error);
+          },
+        });
     }
+  }
 
-    this.deleteTweetFromRemote(tweet.tweetId);
+  private buildTweetData(tweet: Tweet): TweetData {
+    const tweetData: TweetData = {
+      tweetId: tweet.tweetId,
+      mediaData: {
+        mediaId: tweet.media?.mediaId,
+        mediaKey: tweet.media?.mediaKey,
+      },
+    };
+
+    return tweetData;
   }
 
   private openComposeCommentDialog() {
     this.dialogOpen = true;
 
-    this.dialog.open(ComposeCommentComponent, {
+    const dialogRef = this.dialog.open(ComposeCommentComponent, {
       id: 'compose-comment',
-      data: { 
-        tweet: this.tweet, 
-        dialogOpen: this.dialogOpen
+      data: {
+        tweet: this.tweet,
+        dialogOpen: this.dialogOpen,
       },
       autoFocus: true,
       width: '700px',
     });
-  }
 
-  private deleteTweetFromRemote(tweetId: string) {
-    this.tweetService.deleteTweetFromRemote(tweetId).subscribe();
-
-    this.snackbar.open('Tweet Deleted Successfully', 'Ok', {
-      duration: 2500,
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) this.tweet.comments.push(data);
+      this.dialogOpen = false;
     });
-  }
-
-  private deleteTweetAndMediaFromRemote(
-    tweetId: string,
-    mediaId: string,
-    mediaKey: string
-  ) {
-    this.deleteTweetFromRemote(tweetId);
-    this.mediaService.deleteMediaFromRemote(mediaId).subscribe();
-    this.mediaService.deleteCloudinaryMedia(mediaKey).subscribe();
   }
 }

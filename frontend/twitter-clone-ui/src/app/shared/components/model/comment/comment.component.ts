@@ -1,13 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MediaService } from 'src/app/core/services/media/media.service';
-import { TweetService } from 'src/app/core/services/tweet/tweet.service';
-import { Comment } from '../../../models/comment';
-
-export type TweetAndCommentId = {
-  parentTweetId: string;
-  commentId: string;
-};
+import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
+import { CommentData, TweetService } from 'src/app/core/services/tweet/tweet.service';
+import { Comment } from 'src/app/shared/models/comment';
 
 @Component({
   selector: 'app-comment',
@@ -15,16 +10,19 @@ export type TweetAndCommentId = {
   styleUrls: ['./comment.component.css'],
 })
 export class CommentComponent {
-  @Input() comments!: Comment[];
+  @Input() public comment: Comment = new Comment();
+  @Output() public deleteCommentEmit = new EventEmitter<any>();
 
   public imageLoaded: boolean = false;
   public videoLoaded: boolean = false;
 
   constructor(
-    private snackbar: MatSnackBar,
-    public tweetService: TweetService,
+    private tweetService: TweetService,
     private mediaService: MediaService,
+    private snackbarService: SnackbarService
   ) {}
+
+  // TODO: Add confirmation dialog for deleting comment
 
   public isAcceptableImage(commentMediaType: string | undefined) {
     if (commentMediaType == 'image/png' || 'image/jpg') {
@@ -45,43 +43,83 @@ export class CommentComponent {
   }
 
   public deleteComment(comment: Comment) {
-    this.comments = this.comments.filter(
-      (commentIndex) => commentIndex.commentId !== comment.commentId
-    )
+    const commentData = this.buildCommentData(comment);
+    this.deleteCommentFromCache(comment);
 
-    const data: TweetAndCommentId = {
-      parentTweetId: comment.parentTweetId,
-      commentId: comment.commentId,
-    };
-
-    if (comment.media) {
-      this.deleteCommentAndMediaFromRemote(
-        data,
-        comment.media.mediaId,
-        comment.media.mediaKey
-      );
-
-      return;
+    if (!comment.media) {
+      console.log(`Deleting Comment..`);
+    } else {
+      console.log(`Deleting Comment and Media..`);
     }
 
-    this.deleteCommentFromRemote(data);
+    this.deleteCommentAndMediaFromRemote(commentData); 
+    this.snackbarService.displayToast('Comment Deleted Successfully', 'Ok');
   }
 
-  private deleteCommentFromRemote(data: TweetAndCommentId) {
-    this.tweetService.deleteCommentFromRemote(data).subscribe();
+  private deleteCommentFromCache(comment: Comment) {      
+    this.tweetService.getTweetById(comment.parentTweetId).subscribe((tweet) => {
+      const comments = tweet.comments;
 
-    this.snackbar.open('Tweet Deleted Successfully', 'Ok', {
-      duration: 2500,
-    });
+      const index = comments.map((comment) => {
+        return comment.commentId;
+      }).indexOf(comment.commentId); 
+
+      const data = { comment, index };
+      this.deleteCommentEmit.emit(data);
+    })
   }
 
-  private deleteCommentAndMediaFromRemote(
-    data: TweetAndCommentId,
-    mediaId: string,
-    mediaKey: string
-  ) {
-    this.deleteCommentFromRemote(data);
-    this.mediaService.deleteMediaFromRemote(mediaId).subscribe();
-    this.mediaService.deleteCloudinaryMedia(mediaKey).subscribe();
+  private deleteCommentAndMediaFromRemote(commentData: CommentData) {
+    const commentHasMedia =
+      commentData.mediaData.mediaId != undefined &&
+      commentData.mediaData.mediaKey != undefined;
+
+    this.tweetService
+      .deleteCommentFromRemote(commentData.tweetAndCommentId)
+      .subscribe({
+        complete: () => {
+          console.log(`Comment deleted succesfully`);
+        },
+        error: (error) => {
+          console.error(`Failed to delete Comment`, error);
+        },
+      });
+    if (commentHasMedia) {
+      this.mediaService
+        .deleteMediaFromRemote(commentData.mediaData.mediaId)
+        .subscribe({
+          complete: () => {
+            console.log(`Media deleted succesfully from Repository`);
+          },
+          error: (error) => {
+            console.error(`Failed to delete media from repository`, error);
+          },
+        });
+      this.mediaService
+        .deleteCloudinaryMedia(commentData.mediaData.mediaKey)
+        .subscribe({
+          complete: () => {
+            console.log(`Media deleted succesfully from Cloudinary`);
+          },
+          error: (error) => {
+            console.error(`Failed to delete media from Cloudinary`, error);
+          },
+        });
+    }
+  }
+
+  private buildCommentData(comment: Comment): CommentData {
+    const commentData: CommentData = {
+      tweetAndCommentId: {
+        parentTweetId: comment.parentTweetId,
+        commentId: comment.commentId,
+      },
+      mediaData: {
+        mediaId: comment.media?.mediaId,
+        mediaKey: comment.media?.mediaKey,
+      },
+    };
+
+    return commentData;
   }
 }

@@ -3,17 +3,17 @@ import { Router } from '@angular/router';
 import { TweetService } from '../../../../core/services/tweet/tweet.service';
 
 @Component({
-  selector: 'app-timeline',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.css'],
+  selector: 'app-tweet-timeline',
+  templateUrl: './tweet-timeline.component.html',
+  styleUrls: ['./tweet-timeline.component.css'],
 })
-export class TimelineComponent {
+export class TweetTimelineComponent {
   constructor(
-    public tweetService: TweetService,
-    private router: Router
+    private router: Router,
+    public tweetService: TweetService
   ) {}
 
-  goToTweet(tweetId: string) {
+  public goToTweet(tweetId: string) {
     this.router.navigate([`/tweet/${tweetId}`], {
       queryParams: { tweetId: tweetId }
     });

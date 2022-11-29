@@ -7,11 +7,11 @@ import { NavigationService } from 'src/app/core/services/navigation/navigation.s
   styleUrls: ['./user-management-button.component.css'],
 })
 export class UserManagementButtonComponent {
-  @Input() text!: string;
+  @Input() text: string = "";
 
   constructor(private navigation: NavigationService) {}
 
-  navigate() {
+  public navigate() {
     const location = this.text;
     switch (location) {
       case 'Logout':
@@ -26,7 +26,7 @@ export class UserManagementButtonComponent {
     }
   }
 
-  goToUrl(location: string) {
+  private goToUrl(location: string) {
     this.navigation.navigate(location);
   }
 }
