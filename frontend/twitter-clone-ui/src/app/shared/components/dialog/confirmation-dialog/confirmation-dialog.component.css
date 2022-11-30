@@ -1,0 +1,24 @@
+.confirmation-container {
+  padding: 20px;
+}
+
+.context-container {
+  padding-bottom: 50px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.buttons {
+  padding: 10px 0;
+}
+

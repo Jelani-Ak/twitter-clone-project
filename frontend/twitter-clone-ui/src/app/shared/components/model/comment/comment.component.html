@@ -1,7 +1,9 @@
 <div class="comment-container">
   <div class="details">
-    <p class="username">Username</p> <!-- TODO: Replace with username in data -->
-    <p class="handle">@UsernameHandle</p> <!-- TODO: Replace with usernamehandle in data -->
+    <p class="username">Username</p>
+    <!-- TODO: Replace with username in data -->
+    <p class="handle">@UsernameHandle</p>
+    <!-- TODO: Replace with usernamehandle in data -->
     <span class="spacer"></span>
     <p class="date">{{ comment.dateOfCreation }}</p>
     <mat-icon>more_vert</mat-icon>
@@ -63,9 +65,10 @@
 
   <div class="comment-management-buttons-container">
     <div class="buttons">
-      <button class="button" mat-button (click)="deleteComment(comment)">
-        Delete
-      </button>
+      <app-generic-button
+        [text]="'Delete'"
+        (click)="openConfirmationDialog(comment)"
+      ></app-generic-button>
       <!-- <span class="spacer"></span>
       <button class="button" mat-button (click)="addComment()">
         Comment

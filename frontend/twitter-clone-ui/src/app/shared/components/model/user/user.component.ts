@@ -14,18 +14,8 @@ export class UserComponent {
   users: User[] = [];
   confirmationTokens: ConfirmationToken[] = [];
 
-  userColumnsToDisplay = [
-    'userId',
-    'username',
-    'email'
-  ];
-
-  confirmationTokenColumnsToDisplay = [
-    'token',
-    'createdAt',
-    'expiresAt',
-    'confirmedAt'
-  ];
+  USER_COLUMNS: string[] = ['userId', 'username', 'email'];
+  TOKEN_COLUMNS: string[] = ['token', 'createdAt', 'expiresAt', 'confirmedAt'];
 
   constructor(
     private adminService: AdminService,
@@ -36,11 +26,11 @@ export class UserComponent {
   }
 
   private setup(): void {
-    this.getUsers();
-    this.getConfirmationTokens();
+    this.getAllUsers();
+    this.getAllConfirmationTokens();
   }
 
-  private getUsers() {
+  private getAllUsers(): void {
     this.adminService.getAllUsers().subscribe({
       next: (users) => {
         this.users = users;
@@ -54,7 +44,7 @@ export class UserComponent {
     });
   }
 
-  private getConfirmationTokens() {
+  private getAllConfirmationTokens(): void {
     this.adminService.getAllConfirmationTokens().subscribe({
       next: (confirmationTokens) => {
         this.confirmationTokens = confirmationTokens;
@@ -68,7 +58,7 @@ export class UserComponent {
     });
   }
 
-  public deleteUser(user: User) {
+  public deleteUser(user: User): void {
     this.users = this.users.filter((userIndex) => userIndex != user);
     this.adminService.deleteUserFromRemote(user.userId).subscribe({
       complete: () => {
@@ -80,7 +70,7 @@ export class UserComponent {
     });
   }
 
-  public confirmUser(token: string) {
+  public confirmUser(token: string): void {
     this.authenticationService.confirmUser(token).subscribe({
       complete: () => {
         console.log('Token confirmed');
@@ -91,11 +81,11 @@ export class UserComponent {
     });
   }
 
-  public rowInformation(column: string, row: { [index: string]: any }) {
+  public rowInformation(column: string, row: { [index: string]: string }): string {
     return row[column];
   }
 
-  public capitaliseAndSpace(text: string) {
-    return this.utilityService.capitaliseAndSpace(text);
+  public capitaliseAndSpace(columnText: string): string {
+    return this.utilityService.capitaliseAndSpace(columnText);
   }
 }

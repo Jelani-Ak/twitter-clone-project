@@ -1,8 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { CommentData, TweetService } from 'src/app/core/services/tweet/tweet.service';
+import { CommentDTO, TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { Comment } from 'src/app/shared/models/comment';
+import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
+
+export type CommentIndex = {
+  comment: Comment,
+  index: number
+}
 
 @Component({
   selector: 'app-comment',
@@ -11,12 +18,15 @@ import { Comment } from 'src/app/shared/models/comment';
 })
 export class CommentComponent {
   @Input() public comment: Comment = new Comment();
-  @Output() public deleteCommentEmit = new EventEmitter<any>();
+  @Output() public deleteCommentEmit = new EventEmitter<CommentIndex>();
+  @Output('decrement-comment') public decrementCommentEmit = new EventEmitter<number>();
 
+  public dialogOpen: boolean = false;
   public imageLoaded: boolean = false;
   public videoLoaded: boolean = false;
 
   constructor(
+    private dialog: MatDialog,
     private tweetService: TweetService,
     private mediaService: MediaService,
     private snackbarService: SnackbarService
@@ -42,8 +52,8 @@ export class CommentComponent {
     return false;
   }
 
-  public deleteComment(comment: Comment) {
-    const commentData = this.buildCommentData(comment);
+  private deleteComment(comment: Comment) {
+    const commentData = this.tweetService.buildCommentDTO(comment);
     this.deleteCommentFromCache(comment);
 
     if (!comment.media) {
@@ -52,25 +62,28 @@ export class CommentComponent {
       console.log(`Deleting Comment and Media..`);
     }
 
-    this.deleteCommentAndMediaFromRemote(commentData); 
+    this.deleteCommentAndMediaFromRemote(commentData);
     this.snackbarService.displayToast('Comment Deleted Successfully', 'Ok');
   }
 
   private deleteCommentFromCache(comment: Comment) {      
     this.tweetService.getTweetById(comment.parentTweetId).subscribe((tweet) => {
-      const comments = tweet.comments;
+        const comments = tweet.comments;
 
-      const index = comments.map((comment) => {
-        return comment.commentId;
-      }).indexOf(comment.commentId); 
+        const commentIndex = comments.map((comment) => {
+          return comment.commentId;
+        }).indexOf(comment.commentId); 
 
-      const data = { comment, index };
-      this.deleteCommentEmit.emit(data);
+        const data: CommentIndex = { comment, index: commentIndex };
+        this.deleteCommentEmit.emit(data);    
     })
+
+    var event = new CustomEvent( 'decrement-comment-count', { detail: 1 });
+    document.dispatchEvent(event);
   }
 
-  private deleteCommentAndMediaFromRemote(commentData: CommentData) {
-    const commentHasMedia =
+  private deleteCommentAndMediaFromRemote(commentData: CommentDTO) {
+    const commentHasMedia: boolean =
       commentData.mediaData.mediaId != undefined &&
       commentData.mediaData.mediaKey != undefined;
 
@@ -108,18 +121,19 @@ export class CommentComponent {
     }
   }
 
-  private buildCommentData(comment: Comment): CommentData {
-    const commentData: CommentData = {
-      tweetAndCommentId: {
-        parentTweetId: comment.parentTweetId,
-        commentId: comment.commentId,
+  public openConfirmationDialog(comment: Comment) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      id: 'delete-comment',
+      data: {
+        type: "Comment",
+        dialogOpen: this.dialogOpen = true,
       },
-      mediaData: {
-        mediaId: comment.media?.mediaId,
-        mediaKey: comment.media?.mediaKey,
-      },
-    };
+      width: '400px',
+    });
 
-    return commentData;
+    dialogRef.afterClosed().subscribe((data: any) => {
+      if (data == "yes") { this.deleteComment(comment) }
+      this.dialogOpen = false;
+    });
   }
 }

@@ -1,9 +1,8 @@
 <div class="container">
   <!-- TODO: Create List of users button, Configurable amount-->
-
   <h2>User</h2>
   <mat-table [dataSource]="users" class="mat-elevation-z8">
-    <ng-container *ngFor="let column of userColumnsToDisplay" [matColumnDef]="column">
+    <ng-container *ngFor="let column of USER_COLUMNS" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ capitaliseAndSpace(column) }}
       </mat-header-cell>
@@ -13,7 +12,7 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="deleteButton">
+    <ng-container matColumnDef="user-management-buttons">
       <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <div class="management-buttons">
@@ -24,8 +23,8 @@
       </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="userColumnsToDisplay.concat(['deleteButton'])"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: userColumnsToDisplay.concat(['deleteButton'])"></mat-row>
+    <mat-header-row *matHeaderRowDef="USER_COLUMNS.concat(['user-management-buttons'])"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: USER_COLUMNS.concat(['user-management-buttons'])"></mat-row>
   </mat-table>
   <!-- TODO: Delete all button (user) ngif greater than 0 [aligned right]-->
 
@@ -35,7 +34,7 @@
 
   <h2>Confirmation Token</h2>
   <mat-table [dataSource]="confirmationTokens" class="mat-elevation-z8">
-    <ng-container *ngFor="let column of confirmationTokenColumnsToDisplay" [matColumnDef]="column">
+    <ng-container *ngFor="let column of TOKEN_COLUMNS" [matColumnDef]="column">
       <mat-header-cell *matHeaderCellDef mat-sort-header>
         {{ capitaliseAndSpace(column) }}
       </mat-header-cell>
@@ -45,7 +44,7 @@
       </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="confirmButton">
+    <ng-container matColumnDef="confirm-token-button">
       <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <div class="management-buttons">
@@ -54,11 +53,9 @@
       </mat-cell>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="confirmationTokenColumnsToDisplay.concat(['confirmButton'])"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: confirmationTokenColumnsToDisplay.concat(['confirmButton'])"></mat-row>
+    <mat-header-row *matHeaderRowDef="TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-row>
   </mat-table>
   <!-- TODO: Delete all button (confirmationToken) ngif greater than 0 [aligned right]-->
-
   <!-- TODO: Delete all button (everting (user, confirmationToken)) ngif greater than 0  [aligned left]-->
-
 </div>

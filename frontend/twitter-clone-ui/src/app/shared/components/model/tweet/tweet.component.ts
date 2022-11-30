@@ -2,9 +2,10 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { TweetData, TweetService } from 'src/app/core/services/tweet/tweet.service';
+import { TweetDTO, TweetService, } from 'src/app/core/services/tweet/tweet.service';
 import { ComposeCommentComponent } from '../../dialog/compose-comment/compose-comment.component';
 import { Tweet } from '../../../models/tweet';
+import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-tweet',
@@ -14,10 +15,9 @@ import { Tweet } from '../../../models/tweet';
 export class TweetComponent {
   @Input() public tweet: Tweet = new Tweet();
 
-  dialogOpen = false;
-
-  imageLoaded: boolean = false;
-  videoLoaded: boolean = false;
+  public imageLoaded: boolean = false;
+  public videoLoaded: boolean = false;
+  private dialogOpen: boolean = false;
 
   constructor(
     public tweetService: TweetService,
@@ -50,8 +50,8 @@ export class TweetComponent {
     this.openComposeCommentDialog();
   }
 
-  public deleteTweet(tweet: Tweet) {
-    const tweetData = this.buildTweetData(tweet);
+  private deleteTweet(tweet: Tweet): void {
+    const tweetData = this.tweetService.buildTweetDTO(tweet);
     this.deleteTweetFromCache(tweet);
 
     if (!tweet.media) {
@@ -60,8 +60,8 @@ export class TweetComponent {
       console.log(`Deleting Tweet and Media..`);
     }
 
-    this.deleteTweetFromRemote(tweetData);
     this.snackbarService.displayToast('Tweet Deleted Successfully', 'Ok');
+    this.deleteTweetFromRemote(tweetData);
   }
 
   private deleteTweetFromCache(tweet: Tweet): void {
@@ -70,8 +70,8 @@ export class TweetComponent {
     );
   }
 
-  private deleteTweetFromRemote(tweetData: TweetData): void {
-    const tweetHasMedia =
+  private deleteTweetFromRemote(tweetData: TweetDTO): void {
+    const tweetHasMedia: boolean =
       tweetData.mediaData.mediaId != undefined &&
       tweetData.mediaData.mediaKey != undefined;
 
@@ -107,33 +107,38 @@ export class TweetComponent {
     }
   }
 
-  private buildTweetData(tweet: Tweet): TweetData {
-    const tweetData: TweetData = {
-      tweetId: tweet.tweetId,
-      mediaData: {
-        mediaId: tweet.media?.mediaId,
-        mediaKey: tweet.media?.mediaKey,
-      },
-    };
-
-    return tweetData;
-  }
-
   private openComposeCommentDialog() {
-    this.dialogOpen = true;
-
     const dialogRef = this.dialog.open(ComposeCommentComponent, {
       id: 'compose-comment',
       data: {
         tweet: this.tweet,
-        dialogOpen: this.dialogOpen,
+        dialogOpen: this.dialogOpen = true,
       },
       autoFocus: true,
       width: '700px',
     });
 
     dialogRef.afterClosed().subscribe((data) => {
-      if (data) this.tweet.comments.push(data);
+      if (data) {
+        this.tweet.comments.push(data);
+        this.tweet.commentCount += 1;
+      }
+      this.dialogOpen = false;
+    });
+  }
+
+  public openConfirmationDialog(tweet: Tweet) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      id: 'delete-tweet',
+      data: {
+        type: "Tweet",
+        dialogOpen: this.dialogOpen = true,
+      },
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((data: any) => {
+      if (data == "yes") { this.deleteTweet(tweet) }
       this.dialogOpen = false;
     });
   }

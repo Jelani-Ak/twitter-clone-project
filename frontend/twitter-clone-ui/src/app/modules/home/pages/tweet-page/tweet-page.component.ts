@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { Comment } from 'src/app/shared/models/comment';
@@ -10,7 +10,7 @@ import { Tweet } from 'src/app/shared/models/tweet';
   templateUrl: './tweet-page.component.html',
   styleUrls: ['./tweet-page.component.css'],
 })
-export class TweetPageComponent implements OnInit {
+export class TweetPageComponent {
   tweet = new Tweet();
   comments: Comment[] = [];
   tweetId: string = '';
@@ -25,10 +25,12 @@ export class TweetPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) {
     this.selectDefaultOption();
+    this.loadTweetAndComments();
   }
 
-  public ngOnInit(): void {
-    this.loadTweet();
+  @HostListener('document:decrement-comment-count', ['$event'])
+  public decrementCommentCount(event: any) {
+    this.tweet.commentCount -= event.detail;
   }
 
   // TODO: Last page reference is lost on page refresh
@@ -45,14 +47,20 @@ export class TweetPageComponent implements OnInit {
     this.selectedItem = this.options[0];
   }
 
-  private loadTweet() {
+  private loadTweetAndComments() {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
-      this.tweetService
-        .getTweetById(queryParams['tweetId'])
-        .subscribe((tweet) => {
+      this.tweetService.getTweetById(queryParams['tweetId']).subscribe({
+        next: (tweet) => {
           this.tweet = tweet;
           this.comments = tweet.comments;
-        });
+        },
+        complete: () => {
+          console.log('Loaded tweet and comments');
+        },
+        error: (error) => {
+          console.error('Failed to load tweet and comments', error);
+        },
+      });
     });
   }
 }

@@ -63,13 +63,15 @@
 
   <div class="tweet-management-buttons-container">
     <div class="buttons">
-      <button class="button" mat-button (click)="deleteTweet(tweet)">
-        Delete
-      </button>
+      <app-generic-button
+        [text]="'Delete'"
+        (click)="openConfirmationDialog(tweet)"
+      ></app-generic-button>
       <span class="spacer"></span>
-      <button class="button" mat-button (click)="addComment()">
-        Comment
-      </button>
+      <app-generic-button
+        [text]="'Comment'"
+        (click)="addComment()"
+      ></app-generic-button>
     </div>
   </div>
 </div>

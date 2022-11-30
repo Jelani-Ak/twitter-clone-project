@@ -1,0 +1,18 @@
+<div class="confirmation-container">
+  <div class="context-container">
+    <h1 class="title">Delete {{ data.type }}</h1>
+    <p class="text">Are you sure you want to delete this {{ data.type }}?</p>
+  </div>
+  <div class="buttons-container">
+    <app-generic-button
+      class="no-button"
+      [text]="'No'"
+      (click)="no()"
+    ></app-generic-button>
+    <app-generic-button
+      class="yes-button"
+      [text]="'Yes'"
+      (click)="yes()"
+    ></app-generic-button>
+  </div>
+</div>

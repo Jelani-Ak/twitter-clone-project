@@ -87,36 +87,6 @@ div.comment-media-content > video {
 }
 
 .buttons {
-  padding: 10px 0;
-}
-
-.buttons {
   display: flex;
-}
-
-.button {
-  width: 100px;
-  background: #673ab7;
-  color: white;
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  font-weight: 100;
-  transition-duration: 0.25s;
-}
-
-.button:focus {
-  outline: none;
-}
-
-.button:active {
-  transform: scale(0.95);
-}
-
-.button:hover {
-  background: #ddd;
-  color: black;
-  transition-duration: 0.25s;
+  padding: 10px 0;
 }

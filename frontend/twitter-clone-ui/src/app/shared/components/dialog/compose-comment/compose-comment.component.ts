@@ -28,9 +28,7 @@ export class ComposeCommentComponent implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
-      this.comment.parentTweetId = queryParams['tweetId'];
-    });
+    this.initializeParentTweetId();
   }
 
   public createComment() {
@@ -60,9 +58,7 @@ export class ComposeCommentComponent implements OnInit {
   private createCommentFromRemote() {
     this.tweetService.createCommentFromRemote(this.comment).subscribe({
       next: (comment) => {
-        if (!this.comment.media) {
-          this.closeCommentDialog(comment);
-        }
+        if (!this.comment.media) this.closeCommentDialog(comment);
       },
       complete: () => {
         console.log(`Comment created sucessfully`);
@@ -77,7 +73,6 @@ export class ComposeCommentComponent implements OnInit {
     this.mediaService.uploadMediaFromRemote(this.selectedFile!).subscribe({
       next: (media) => {
         this.comment.media = media;
-
         this.tweetService.createCommentFromRemote(this.comment).subscribe({
           next: (comment) => {
             this.closeCommentDialog(comment);
@@ -95,6 +90,20 @@ export class ComposeCommentComponent implements OnInit {
       },
       error: (error) => {
         console.error(`Failed to upload media to Cloudinary`, error);
+      },
+    });
+  }
+
+  private initializeParentTweetId() {
+    this.activatedRoute.queryParams.subscribe({
+      next: (queryParams: Params) => {
+        this.comment.parentTweetId = queryParams['tweetId'];
+      },
+      complete: () => {
+        console.log('Initialised parent Tweet ID');
+      },
+      error: () => {
+        console.error('Failed to set parent tweet ID');
       },
     });
   }

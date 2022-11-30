@@ -12,6 +12,6 @@ export class CommentTimelineComponent {
   public deleteComment($event: any) {
     this.comments.forEach((comment) => {
       if (comment == $event.comment) this.comments.splice($event.index, 1);
-    })
+    });
   }
 }

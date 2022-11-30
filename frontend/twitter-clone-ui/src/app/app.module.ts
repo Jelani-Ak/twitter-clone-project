@@ -42,6 +42,8 @@ import { TweetComponent } from './shared/components/model/tweet/tweet.component'
 import { MatOptionModule } from '@angular/material/core';
 import { ComposeCommentComponent } from './shared/components/dialog/compose-comment/compose-comment.component';
 import { CommentTimelineComponent } from './shared/components/center-panel/comment-timeline/comment-timeline.component';
+import { ConfirmationDialogComponent } from './shared/components/dialog/confirmation-dialog/confirmation-dialog.component';
+import { GenericButtonComponent } from './shared/components/button/generic-button/generic-button.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { CommentTimelineComponent } from './shared/components/center-panel/comme
     TweetComponent,
     ComposeCommentComponent,
     CommentTimelineComponent,
+    ConfirmationDialogComponent,
+    GenericButtonComponent,
   ],
   imports: [
     BrowserModule,
