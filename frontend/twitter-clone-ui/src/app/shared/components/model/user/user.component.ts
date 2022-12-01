@@ -11,11 +11,11 @@ import { User } from 'src/app/shared/models/user';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent {
-  users: User[] = [];
-  confirmationTokens: ConfirmationToken[] = [];
+  public users: User[] = [];
+  public confirmationTokens: ConfirmationToken[] = [];
 
-  USER_COLUMNS: string[] = ['userId', 'username', 'email'];
-  TOKEN_COLUMNS: string[] = ['token', 'createdAt', 'expiresAt', 'confirmedAt'];
+  public USER_COLUMNS: string[] = ['userId', 'username', 'email'];
+  public TOKEN_COLUMNS: string[] = ['token', 'createdAt', 'expiresAt', 'confirmedAt'];
 
   constructor(
     private adminService: AdminService,

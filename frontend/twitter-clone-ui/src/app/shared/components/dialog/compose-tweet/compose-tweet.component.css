@@ -2,6 +2,27 @@
   background-color: white;
 }
 
+.details {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  background-color: #ddd;
+}
+
+.username {
+  margin-right: 10px;
+}
+
+.tweet-content {
+  padding: 10px;
+  background-color: #eee;
+}
+
+.tweet-context {
+  padding: 10px;
+  float: right;
+}
+
 button {
   border-radius: 0;
 }

@@ -3,9 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { TweetDTO, TweetService, } from 'src/app/core/services/tweet/tweet.service';
-import { ComposeCommentComponent } from '../../dialog/compose-comment/compose-comment.component';
-import { Tweet } from '../../../models/tweet';
+import { Tweet, TweetType } from '../../../models/tweet';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
+import { ComposeTweetComponent } from '../../dialog/compose-tweet/compose-tweet.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tweet',
@@ -21,6 +22,7 @@ export class TweetComponent {
 
   constructor(
     public tweetService: TweetService,
+    private router: Router,
     private dialog: MatDialog,
     private mediaService: MediaService,
     private snackbarService: SnackbarService
@@ -44,10 +46,8 @@ export class TweetComponent {
     return false;
   }
 
-  // TODO: Add confirmation dialog for deleting tweet
-
   public addComment() {
-    this.openComposeCommentDialog();
+    this.openComposeDialog();
   }
 
   private deleteTweet(tweet: Tweet): void {
@@ -107,11 +107,14 @@ export class TweetComponent {
     }
   }
 
-  private openComposeCommentDialog() {
-    const dialogRef = this.dialog.open(ComposeCommentComponent, {
+  private openComposeDialog() {
+    const dialogRef = this.dialog.open(ComposeTweetComponent, {
       id: 'compose-comment',
       data: {
         tweet: this.tweet,
+        tweetType: TweetType.COMMENT,
+        textAreaLabel: "Compose Comment",
+        placeholder: "Tweet your reply",
         dialogOpen: this.dialogOpen = true,
       },
       autoFocus: true,
@@ -131,14 +134,17 @@ export class TweetComponent {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       id: 'delete-tweet',
       data: {
-        type: "Tweet",
+        type: TweetType.TWEET,
         dialogOpen: this.dialogOpen = true,
       },
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe((data: any) => {
-      if (data == "yes") { this.deleteTweet(tweet) }
+    dialogRef.afterClosed().subscribe((data: string) => {
+      if (data == "yes") { 
+        this.deleteTweet(tweet)
+        this.router.navigate(['/home']);
+      }
       this.dialogOpen = false;
     });
   }

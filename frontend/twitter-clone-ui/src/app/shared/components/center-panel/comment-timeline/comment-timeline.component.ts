@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Comment } from 'src/app/shared/models/comment';
+import { Comment } from 'src/app/shared/models/tweet';
 
 @Component({
   selector: 'app-comment-timeline',
@@ -7,7 +7,7 @@ import { Comment } from 'src/app/shared/models/comment';
   styleUrls: ['./comment-timeline.component.css'],
 })
 export class CommentTimelineComponent {
-  @Input() comments: Comment[] = [];
+  @Input() public comments: Comment[] = [];
 
   public deleteComment($event: any) {
     this.comments.forEach((comment) => {

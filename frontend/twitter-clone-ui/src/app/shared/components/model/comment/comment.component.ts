@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { CommentDTO, TweetService } from 'src/app/core/services/tweet/tweet.service';
-import { Comment } from 'src/app/shared/models/comment';
+import { Comment, TweetType } from 'src/app/shared/models/tweet';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 
 export type CommentIndex = {
@@ -31,8 +31,6 @@ export class CommentComponent {
     private mediaService: MediaService,
     private snackbarService: SnackbarService
   ) {}
-
-  // TODO: Add confirmation dialog for deleting comment
 
   public isAcceptableImage(commentMediaType: string | undefined) {
     if (commentMediaType == 'image/png' || 'image/jpg') {
@@ -125,7 +123,7 @@ export class CommentComponent {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       id: 'delete-comment',
       data: {
-        type: "Comment",
+        type: TweetType.COMMENT,
         dialogOpen: this.dialogOpen = true,
       },
       width: '400px',

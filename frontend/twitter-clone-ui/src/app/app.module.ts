@@ -40,7 +40,6 @@ import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-f
 import { TweetPageComponent } from './modules/home/pages/tweet-page/tweet-page.component';
 import { TweetComponent } from './shared/components/model/tweet/tweet.component';
 import { MatOptionModule } from '@angular/material/core';
-import { ComposeCommentComponent } from './shared/components/dialog/compose-comment/compose-comment.component';
 import { CommentTimelineComponent } from './shared/components/center-panel/comment-timeline/comment-timeline.component';
 import { ConfirmationDialogComponent } from './shared/components/dialog/confirmation-dialog/confirmation-dialog.component';
 import { GenericButtonComponent } from './shared/components/button/generic-button/generic-button.component';
@@ -66,7 +65,6 @@ import { GenericButtonComponent } from './shared/components/button/generic-butto
     NotFoundPageComponent,
     TweetPageComponent,
     TweetComponent,
-    ComposeCommentComponent,
     CommentTimelineComponent,
     ConfirmationDialogComponent,
     GenericButtonComponent,

@@ -2,8 +2,7 @@ import { Location } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
-import { Comment } from 'src/app/shared/models/comment';
-import { Tweet } from 'src/app/shared/models/tweet';
+import { Tweet, Comment } from 'src/app/shared/models/tweet';
 
 @Component({
   selector: 'app-tweet-page',

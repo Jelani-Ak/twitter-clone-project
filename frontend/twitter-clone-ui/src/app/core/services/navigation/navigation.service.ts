@@ -7,13 +7,13 @@ import { Router } from '@angular/router';
 export class NavigationService {
   constructor(private router: Router) {}
 
-  navigate(url: String) {
+  public navigate(url: String) {
     this.router.navigate([`/${url.toLowerCase()}`]).then(
       () => {
         console.log(`Navigated to ${url}`);
       },
       (error) => {
-        console.log(error);
+        console.log(`Failed to navigate to ${url}`, error);
       }
     );
   }
