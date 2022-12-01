@@ -7,7 +7,7 @@ import { NavigationService } from 'src/app/core/services/navigation/navigation.s
   styleUrls: ['./user-management-button.component.css'],
 })
 export class UserManagementButtonComponent {
-  @Input() text: string = "";
+  @Input() public text: string = "";
 
   constructor(private navigation: NavigationService) {}
 

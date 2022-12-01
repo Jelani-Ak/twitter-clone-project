@@ -2,10 +2,27 @@
   class="compose-container"
   [ngStyle]="{ padding: data.dialogOpen ? '20px' : '0' }"
 >
+  <div class="tweet-reply-details" *ngIf="this.data.tweetType == 'Comment'">
+    <div class="details">
+      <p class="username">Username</p> <!-- TODO: Replace with username in data -->
+      <p class="handle">@UsernameHandle</p> <!-- TODO: Replace with usenamehandle in data -->
+      <span class="spacer"></span>
+      <p class="date">{{ data.tweet.dateOfCreation }}</p>
+    </div>
+    
+    <div class="tweet-content">
+      <p>{{ data.tweet.content }}</p>
+    </div>
+    
+    <div class="tweet-context">
+      <p>Replying to Username</p> <!-- TODO: Replace with username in data -->
+    </div>
+  </div>
+  
   <form
     class="form-container"
     #RegisterForm="ngForm"
-    (ngSubmit)="createTweet()"
+    (ngSubmit)="create()"
   >
     <mat-form-field
       appearance="fill"
@@ -16,7 +33,7 @@
       [style.margin-bottom]="'-0.79em'"
     >
       <mat-label class="textarea-label" [style.font-weight]="'100'">
-        Compose Tweet
+        {{ data.textAreaLabel ?? 'Compose Tweet' }}
       </mat-label>
       <textarea
         #input
@@ -27,12 +44,12 @@
         id="content"
         name="content"
         maxlength="280"
-        placeholder="What's happening"
+        placeholder="{{ data.placeholder ?? 'What\'s happening'}}"
         type="text"
       >
       </textarea>
       <div class="hint">
-        <mat-hint>{{ input.value.length || 0 }}/280</mat-hint>
+        <mat-hint>{{ input.value.length }}/280</mat-hint>
       </div>
     </mat-form-field>
     <div class="button-row-container">

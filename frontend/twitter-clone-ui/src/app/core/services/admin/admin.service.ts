@@ -12,15 +12,15 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers(): Observable<User[]> {
+  public getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.baseUrl + 'get/all/users');
   }
 
-  getAllConfirmationTokens(): Observable<ConfirmationToken[]> {
+  public getAllConfirmationTokens(): Observable<ConfirmationToken[]> {
     return this.http.get<ConfirmationToken[]>(this.baseUrl + 'get/all/confirmationToken');
   }
 
-  deleteUserFromRemote(userId: string): Observable<User> {
+  public deleteUserFromRemote(userId: string): Observable<User> {
     return this.http.delete<User>(this.baseUrl + 'delete/' + userId);
   }
 }

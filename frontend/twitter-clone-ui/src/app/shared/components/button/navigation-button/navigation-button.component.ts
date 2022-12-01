@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { NavigationService } from 'src/app/core/services/navigation/navigation.service';
+import { TweetType } from 'src/app/shared/models/tweet';
 import { ComposeTweetComponent } from '../../dialog/compose-tweet/compose-tweet.component';
 
 @Component({
@@ -9,8 +10,8 @@ import { ComposeTweetComponent } from '../../dialog/compose-tweet/compose-tweet.
   styleUrls: ['./navigation-button.component.css'],
 })
 export class NavigationButtonComponent {
-  @Input() text: string = "";
-  @Input() icon: string = "";
+  @Input() public text: string = "";
+  @Input() public icon: string = "";
 
   dialogOpen: boolean = false;
 
@@ -45,12 +46,13 @@ export class NavigationButtonComponent {
   }
 
   private openComposeTweetDialog() {
-    this.dialogOpen = true;
-
     this.dialog.open(ComposeTweetComponent, {
       id: 'compose-tweet',
       data: {
-        dialogOpen: this.dialogOpen
+        tweetType: TweetType.TWEET,
+        textAreaLabel: "Compose Tweet",        
+        placeholder: "What's happening",
+        dialogOpen: this.dialogOpen = true
       },
       autoFocus: true,
       width: '700px',

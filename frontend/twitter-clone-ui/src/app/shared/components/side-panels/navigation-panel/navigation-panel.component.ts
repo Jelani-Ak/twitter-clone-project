@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class NavigationPanelComponent {
   constructor(public router: Router) {}
 
-  shouldShowButton() {
+  public shouldShowButton() {
     if (this.router.url !== '/home') {
       return true;
     }

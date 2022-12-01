@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tweet } from 'src/app/shared/models/tweet';
-import { Comment } from 'src/app/shared/models/comment';
+import { Tweet, Comment } from 'src/app/shared/models/tweet';
 import { MediaData } from '../media/media.service';
 
 export type TweetAndCommentId = {
@@ -83,7 +82,7 @@ export class TweetService {
   }
 
   // Tweets
-  public createTweetFromRemote(tweet: Tweet): Observable<Tweet> {
+  public createTweetFromRemote(tweet: any): Observable<Tweet> {
     return this.http.post<Tweet>(this.baseTweetUrl + 'create', tweet);
   }
 
@@ -100,7 +99,7 @@ export class TweetService {
   }
 
   // Comments // TODO: Create and move into comment.service.ts?
-  public createCommentFromRemote(comment: Comment): Observable<Comment> {
+  public createCommentFromRemote(comment: any): Observable<Comment> {
     return this.http.post<Comment>(this.baseCommentUrl + 'create', comment);
   }
 

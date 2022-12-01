@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./generic-button.component.css']
 })
 export class GenericButtonComponent {
-  @Input() text: string = "";
+  @Input() public text: string = "";
 }
