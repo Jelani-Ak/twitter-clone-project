@@ -2,14 +2,17 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { CommentDTO, TweetService } from 'src/app/core/services/tweet/tweet.service';
+import {
+  CommentDTO,
+  TweetService,
+} from 'src/app/core/services/tweet/tweet.service';
 import { Comment, TweetType } from 'src/app/shared/models/tweet';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 
 export type CommentIndex = {
-  comment: Comment,
-  index: number
-}
+  comment: Comment;
+  index: number;
+};
 
 @Component({
   selector: 'app-comment',
@@ -64,19 +67,21 @@ export class CommentComponent {
     this.snackbarService.displayToast('Comment Deleted Successfully', 'Ok');
   }
 
-  private deleteCommentFromCache(comment: Comment) {      
+  private deleteCommentFromCache(comment: Comment) {
     this.tweetService.getTweetById(comment.parentTweetId).subscribe((tweet) => {
-        const comments = tweet.comments;
+      const comments = tweet.comments;
 
-        const commentIndex = comments.map((comment) => {
+      const commentIndex: number = comments
+        .map((comment) => {
           return comment.commentId;
-        }).indexOf(comment.commentId); 
+        })
+        .indexOf(comment.commentId);
 
-        const data: CommentIndex = { comment, index: commentIndex };
-        this.deleteCommentEmit.emit(data);    
-    })
+      const data: CommentIndex = { comment: comment, index: commentIndex };
+      this.deleteCommentEmit.emit(data);
+    });
 
-    var event = new CustomEvent( 'decrement-comment-count', { detail: 1 });
+    var event = new CustomEvent('decrement-comment-count', { detail: 1 });
     document.dispatchEvent(event);
   }
 
@@ -86,7 +91,7 @@ export class CommentComponent {
       commentData.mediaData.mediaKey != undefined;
 
     this.tweetService
-      .deleteCommentFromRemote(commentData.tweetAndCommentId)
+      .deleteCommentFromRemote(commentData.commentDeleteDTO)
       .subscribe({
         complete: () => {
           console.log(`Comment deleted succesfully`);
@@ -124,13 +129,15 @@ export class CommentComponent {
       id: 'delete-comment',
       data: {
         type: TweetType.COMMENT,
-        dialogOpen: this.dialogOpen = true,
+        dialogOpen: (this.dialogOpen = true),
       },
       width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((data: any) => {
-      if (data == "yes") { this.deleteComment(comment) }
+      if (data == 'yes') {
+        this.deleteComment(comment);
+      }
       this.dialogOpen = false;
     });
   }

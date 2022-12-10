@@ -29,7 +29,6 @@ public class AdminService {
         this.confirmationTokenRepository = confirmationTokenRepository;
     }
 
-    @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
@@ -40,7 +39,6 @@ public class AdminService {
         return userRepository.findAll();
     }
 
-    @Transactional
     public void deleteAllUsers() {
         userRepository.deleteAll();
     }

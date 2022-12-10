@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.config;
 
-import com.jelaniak.twittercloneproject.service.AuthenticationService;
+import com.jelaniak.twittercloneproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,31 +15,30 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationService authenticationService;
+    private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public WebSecurityConfig(
-            AuthenticationService authenticationService,
+            UserService userService,
             BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.authenticationService = authenticationService;
+        this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // TODO: Permit only authentication endpoint
         http
                 .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(
-                            "/api/v*/authentication/**",
-                            "/api/v*/tweet/**",
-                            "/api/v*/comment/**",
-                            "/api/v*/media/**",
-                            "/api/v*/admin/**"
-                    )
-                    .permitAll()
+                .antMatchers(
+                        "/api/v*/authentication/**",
+                        "/api/v*/tweet/**",
+                        "/api/v*/comment/**",
+                        "/api/v*/media/**",
+                        "/api/v*/admin/**"
+                )
+                .permitAll()
                 .anyRequest()
                 .authenticated().and()
                 .formLogin();
@@ -55,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(authenticationService);
+        provider.setUserDetailsService(userService);
 
         return provider;
     }

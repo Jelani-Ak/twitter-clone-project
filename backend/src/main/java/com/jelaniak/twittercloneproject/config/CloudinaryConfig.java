@@ -3,7 +3,6 @@ package com.jelaniak.twittercloneproject.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.SingletonManager;
 import com.cloudinary.utils.ObjectUtils;
-import com.jelaniak.twittercloneproject.email.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,35 +29,41 @@ public class CloudinaryConfig {
 
     @PostConstruct
     public void setup() {
-        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", getCLOUD_NAME(),
-                "api_key", getAPI_KEY(),
-                "api_secret", getAPI_SECRET_KEY(),
-                "secure", true
-        ));
-        SingletonManager manager = new SingletonManager();
-        manager.setCloudinary(cloudinary);
-        manager.init();
+        LOGGER.info("Starting Cloudinary..");
 
-        if (getCLOUD_NAME() != null && getAPI_KEY() != null && getAPI_SECRET_KEY() != null) {
-            LOGGER.info("Cloudinary setup successful");
-        } else {
-            LOGGER.warn("Failed to setup Cloudinary");
+        try {
+            Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+                    "cloud_name", getCLOUD_NAME(),
+                    "api_key", getAPI_KEY(),
+                    "api_secret", getAPI_SECRET_KEY(),
+                    "secure", true
+            ));
+
+            SingletonManager manager = new SingletonManager();
+            manager.setCloudinary(cloudinary);
+            manager.init();
+
+            cloudinary.uploader();
+        } catch (Exception error) {
+            LOGGER.warn("Failed to setup Cloudinary", error);
+            throw new RuntimeException(error);
         }
+
+        LOGGER.info("Cloudinary started successfully");
     }
 
     @Bean
-    public String getCLOUD_NAME() {
+    private String getCLOUD_NAME() {
         return CLOUD_NAME;
     }
 
     @Bean
-    public String getAPI_KEY() {
+    private String getAPI_KEY() {
         return API_KEY;
     }
 
     @Bean
-    public String getAPI_SECRET_KEY() {
+    private String getAPI_SECRET_KEY() {
         return API_SECRET_KEY;
     }
 }

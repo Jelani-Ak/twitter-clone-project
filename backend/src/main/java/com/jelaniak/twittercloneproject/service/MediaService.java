@@ -42,7 +42,6 @@ public class MediaService {
         );
     }
 
-    @Transactional
     public void deleteMedia(ObjectId mediaId) {
         mediaRepository.deleteByMediaId(mediaId);
     }

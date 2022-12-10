@@ -3,11 +3,8 @@ package com.jelaniak.twittercloneproject.service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.jelaniak.twittercloneproject.dto.TweetAndCommentIdDTO;
-import com.jelaniak.twittercloneproject.exception.CommentNotFoundException;
+import com.jelaniak.twittercloneproject.dto.CommentDeleteDTO;
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,13 +69,11 @@ public class TweetService {
                 .orElseThrow(() -> new TweetNotFoundException("Tweet by Id: [" + tweetId + "] was not found."));
     }
 
-    @Transactional
     public void deleteTweet(ObjectId tweetId) {
         tweetRepository.deleteByTweetId(tweetId);
     }
 
-    @Transactional
-    public void deleteComment(TweetAndCommentIdDTO data) throws TweetNotFoundException {
+    public void deleteComment(CommentDeleteDTO data) throws TweetNotFoundException {
         Tweet tweet = findByTweetId(data.getParentTweetId());
 
         Comment commentFound = tweet.getComments().stream().filter(commentIndex ->

@@ -4,11 +4,6 @@ import { Observable } from 'rxjs';
 import { Tweet, Comment } from 'src/app/shared/models/tweet';
 import { MediaData } from '../media/media.service';
 
-export type TweetAndCommentId = {
-  parentTweetId: string;
-  commentId: string;
-};
-
 export type TweetId = {
   tweetId: string;
 };
@@ -19,8 +14,13 @@ export type TweetDTO = {
 };
 
 export type CommentDTO = {
-  tweetAndCommentId: TweetAndCommentId;
+  commentDeleteDTO: CommentDeleteDTO;
   mediaData: MediaData;
+};
+
+export type CommentDeleteDTO = {
+  parentTweetId: string;
+  commentId: string;
 };
 
 @Injectable({
@@ -68,7 +68,7 @@ export class TweetService {
 
   public buildCommentDTO(comment: Comment): CommentDTO {
     const commentDTO: CommentDTO = {
-      tweetAndCommentId: {
+      commentDeleteDTO: {
         parentTweetId: comment.parentTweetId,
         commentId: comment.commentId,
       },
@@ -103,7 +103,7 @@ export class TweetService {
     return this.http.post<Comment>(this.baseCommentUrl + 'create', comment);
   }
 
-  public deleteCommentFromRemote(data: TweetAndCommentId): Observable<Comment> {
+  public deleteCommentFromRemote(data: CommentDeleteDTO): Observable<Comment> {
     return this.http.delete<Comment>(this.baseCommentUrl + 'delete', {
       body: data,
     });

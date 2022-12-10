@@ -22,7 +22,6 @@ public class UserProfileService {
         this.userRepository = userRepository;
     }
 
-    @Transactional
     public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
