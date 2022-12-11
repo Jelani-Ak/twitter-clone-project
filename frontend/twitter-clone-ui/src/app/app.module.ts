@@ -18,8 +18,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './core/header/header.component';
-import { FooterComponent } from './core/footer/footer.component';
+import { HeaderComponent } from './core/components/header/header.component';
+import { FooterComponent } from './core/components/footer/footer.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
 import { NavigationButtonComponent } from './shared/components/button/navigation-button/navigation-button.component';
 import { NavigationPanelComponent } from './shared/components/side-panels/navigation-panel/navigation-panel.component';
