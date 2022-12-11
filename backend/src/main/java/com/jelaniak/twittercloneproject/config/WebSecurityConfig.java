@@ -1,61 +1,73 @@
 package com.jelaniak.twittercloneproject.config;
 
-import com.jelaniak.twittercloneproject.service.UserService;
+import com.jelaniak.twittercloneproject.security.jwt.AuthenticationEntryPointJwt;
+import com.jelaniak.twittercloneproject.security.jwt.AuthenticationTokenFilter;
+import com.jelaniak.twittercloneproject.service.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthenticationEntryPointJwt unauthorizedHandler;
 
     @Autowired
     public WebSecurityConfig(
-            UserService userService,
-            BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userService = userService;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+            UserDetailsServiceImpl userDetailsService,
+            AuthenticationEntryPointJwt unauthorizedHandler
+    ) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(
-                        "/api/v*/authentication/**",
-                        "/api/v*/tweet/**",
-                        "/api/v*/comment/**",
-                        "/api/v*/media/**",
-                        "/api/v*/admin/**"
-                )
-                .permitAll()
-                .anyRequest()
-                .authenticated().and()
+                .antMatchers("/api/v*/authentication/**").permitAll()
+                .antMatchers("/api/v*/tweet/**").permitAll()
+                .antMatchers("/api/v*/comment/**").permitAll()
+                .antMatchers("/api/v*/media/**").permitAll()
+                .antMatchers("/api/v*/admin/**").permitAll()
+                .anyRequest().authenticated().and()
                 .formLogin();
+
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder authentication) {
-        authentication.authenticationProvider(daoAuthenticationProvider());
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
-        provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(userService);
+    @Bean
+    public AuthenticationTokenFilter authenticationJwtTokenFilter() {
+        return new AuthenticationTokenFilter();
+    }
 
-        return provider;
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

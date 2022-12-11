@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.service;
+package com.jelaniak.twittercloneproject.service.cloud;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Singleton;

@@ -1,7 +1,7 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.Media;
-import com.jelaniak.twittercloneproject.service.CloudinaryService;
+import com.jelaniak.twittercloneproject.service.cloud.CloudinaryService;
 import com.jelaniak.twittercloneproject.service.MediaService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;

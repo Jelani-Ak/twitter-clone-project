@@ -1,7 +1,7 @@
 package com.jelaniak.twittercloneproject.controller;
 
-import com.jelaniak.twittercloneproject.dto.LoginRequestDTO;
-import com.jelaniak.twittercloneproject.dto.RegisterRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.LoginRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.RegisterRequestDTO;
 import com.jelaniak.twittercloneproject.exception.*;
 import com.jelaniak.twittercloneproject.service.AuthenticationService;
 import com.jelaniak.twittercloneproject.service.UserService;
@@ -25,17 +25,17 @@ public class AuthenticationController {
     }
 
     @RequestMapping(
-            value = "/register",
+            value = "/sign-up",
             method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser(@RequestBody RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+    public ResponseEntity<?> signUp(@RequestBody RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
         userService.register(registerRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Registration successful", HttpStatus.OK);
     }
 
     @RequestMapping(
-            value = "/login",
+            value = "/sign-in",
             method = RequestMethod.POST)
-    public ResponseEntity<?> logUserIn(@RequestBody LoginRequestDTO loginRequest) throws BadCredentialsException {
+    public ResponseEntity<?> signIn(@RequestBody LoginRequestDTO loginRequest) throws BadCredentialsException {
         return new ResponseEntity<>(authenticationService.logUserIn(loginRequest), HttpStatus.ACCEPTED);
     }
 

@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 
-import com.jelaniak.twittercloneproject.dto.CommentDeleteDTO;
+import com.jelaniak.twittercloneproject.dto.request.CommentDeleteDTO;
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.repository.TweetRepository;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TweetService {

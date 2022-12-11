@@ -1,34 +1,34 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.dto.RegisterRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.RegisterRequestDTO;
 import com.jelaniak.twittercloneproject.email.EmailSender;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
+import com.jelaniak.twittercloneproject.model.Role;
 import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.model.UserRole;
+import com.jelaniak.twittercloneproject.model.RoleType;
+import com.jelaniak.twittercloneproject.repository.RoleRepository;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final EmailSender emailSender;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
@@ -36,20 +36,16 @@ public class UserService implements UserDetailsService {
     @Autowired
     public UserService(
             EmailSender emailSender,
+            RoleRepository roleRepository,
             UserRepository userRepository,
             BCryptPasswordEncoder bCryptPasswordEncoder,
             ConfirmationTokenService confirmationTokenService
     ) {
         this.emailSender = emailSender;
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.confirmationTokenService = confirmationTokenService;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User with username, '" + username + "' not found"));
     }
 
     public User findByUserId(ObjectId userId) throws UserIdNotFoundException {
@@ -58,15 +54,42 @@ public class UserService implements UserDetailsService {
     }
 
     public void register(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
-        LOGGER.info("Creating new user, '" + registerRequest.getUsername() + "'");
-        boolean userExists = userRepository.existsByUsername(registerRequest.getUsername());
+        LOGGER.info("Creating new user, '" + registerRequest.getUsername() + "'..");
 
-        if (userExists) {
-            String errorMessage = "Failed to create user. Username, '" + registerRequest.getUsername() + "' already taken";
-            LOGGER.error(errorMessage);
-            throw new UserAlreadyExistsException(errorMessage);
-        }
+        checkUserExists(registerRequest);
+        checkEmailExists(registerRequest);
 
+        User user = createUser(registerRequest);
+
+        ConfirmationToken token = createToken(user);
+
+        LOGGER.info("Sending confirmation E-mail");
+        sendConfirmationToken(user, token);
+
+
+        LOGGER.info("User created successfully");
+    }
+
+    private void sendConfirmationToken(User user, ConfirmationToken token) {
+        String link = "http://localhost:8080/api/v1/authentication/confirm?token=" + token;
+        emailSender.send(user.getEmail(), buildEmail(user.getUsername(), link));
+        userRepository.save(user);
+    }
+
+    private ConfirmationToken createToken(User user) {
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+        confirmationToken.setToken(token);
+        confirmationToken.setCreatedAt(LocalDateTime.now());
+        confirmationToken.setExpiresAt(LocalDateTime.now().plusMinutes(15));
+        confirmationToken.setConfirmedAt(null);
+        confirmationToken.setUser(user);
+
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        return confirmationToken;
+    }
+
+    private User createUser(RegisterRequestDTO registerRequest) {
         User user = new User();
 
         user.setUserId(new ObjectId());
@@ -78,7 +101,7 @@ public class UserService implements UserDetailsService {
 //        user.setBioLocation(user.getBioLocation());
 //        user.setBioExternalLink(user.getBioExternalLink());
 //        user.setBioAboutText(user.getBioAboutText());
-        user.setUserRole(UserRole.USER);
+        user.setRoles(assignRoles(registerRequest.getRoles()));
         user.setDateOfCreation(LocalDateTime.now());
 //        user.setPictureAvatarUrl(user.getPictureAvatarUrl());
 //        user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
@@ -93,23 +116,62 @@ public class UserService implements UserDetailsService {
         user.setLocked(false);
         user.setEnabled(false);
 
-        userRepository.save(user);
+        return userRepository.save(user);
+    }
 
-        String token = UUID.randomUUID().toString();
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setToken(token);
-        confirmationToken.setCreatedAt(LocalDateTime.now());
-        confirmationToken.setExpiresAt(LocalDateTime.now().plusMinutes(15));
-        confirmationToken.setConfirmedAt(null);
-        confirmationToken.setUser(user);
+    private Set<Role> assignRoles(Set<String> roles) {
+        Set<Role> rolesToAssign = new HashSet<>();
 
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        if (roles == null) {
+            Role userRole = roleRepository.findByRole(RoleType.User)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            rolesToAssign.add(userRole);
+        } else {
 
-        LOGGER.info("Sending confirmation E-mail");
-        String link = "http://localhost:8080/api/v1/authentication/confirm?token=" + token;
-        emailSender.send(user.getEmail(), buildEmail(user.getUsername(), link));
-        userRepository.save(user);
-        LOGGER.info("User created successfully");
+            roles.forEach(role -> {
+                String errorMessage = "Error: '" + role + "'is not found.";
+
+                switch (role) {
+                    case "Admin" -> {
+                        Role adminRole = roleRepository.findByRole(RoleType.Admin)
+                                .orElseThrow(() -> new RuntimeException(errorMessage));
+                        rolesToAssign.add(adminRole);
+                    }
+                    case "Moderator" -> {
+                        Role moderatorRole = roleRepository.findByRole(RoleType.Moderator)
+                                .orElseThrow(() -> new RuntimeException(errorMessage));
+                        rolesToAssign.add(moderatorRole);
+                    }
+                    default -> {
+                        Role userRole = roleRepository.findByRole(RoleType.User)
+                                .orElseThrow(() -> new RuntimeException(errorMessage));
+                        rolesToAssign.add(userRole);
+                    }
+                }
+            });
+        }
+
+        return rolesToAssign;
+    }
+
+    private void checkUserExists(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+        boolean userExists = userRepository.existsByUsername(registerRequest.getUsername());
+
+        if (userExists) {
+            String errorMessage = "Failed to create user. Username, '" + registerRequest.getUsername() + "' is already taken";
+            LOGGER.error(errorMessage);
+            throw new UserAlreadyExistsException(errorMessage);
+        }
+    }
+
+    private void checkEmailExists(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+        boolean emailExists = userRepository.existsByEmail(registerRequest.getEmail());
+
+        if (emailExists) {
+            String errorMessage = "Failed to create user. Email, '" + registerRequest.getEmail() + "' is already taken";
+            LOGGER.error(errorMessage);
+            throw new UserAlreadyExistsException(errorMessage);
+        }
     }
 
     // TODO: 03/12/2022 - To be remade and put in an html file

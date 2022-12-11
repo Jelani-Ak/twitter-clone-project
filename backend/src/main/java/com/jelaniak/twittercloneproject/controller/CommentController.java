@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.controller;
 
-import com.jelaniak.twittercloneproject.dto.CommentDeleteDTO;
+import com.jelaniak.twittercloneproject.dto.request.CommentDeleteDTO;
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.service.TweetService;

@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.dto;
+package com.jelaniak.twittercloneproject.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

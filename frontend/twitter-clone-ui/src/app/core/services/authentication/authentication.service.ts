@@ -12,11 +12,11 @@ export class AuthenticationService {
   constructor(private http: HttpClient) {}
 
   public registerUserFromRemote(user: User): Observable<User> {
-    return this.http.post<User>(this.baseurl + '/register', user);
+    return this.http.post<User>(this.baseurl + '/sign-up', user);
   }
 
   public logUserInFromRemote(user: User): Observable<User> {
-    return this.http.post<User>(this.baseurl + '/login', user);
+    return this.http.post<User>(this.baseurl + '/sign-in', user);
   }
 
   public confirmUser(token: string): Observable<string> {
