@@ -1,6 +1,10 @@
 <button (click)="navigate()" class="button" mat-button>
-  <mat-icon *ngIf="icon !== ''" class="icon-display">
-    {{ icon }}
-  </mat-icon>
-  {{ text }}
+  <div class="icon-and-text">
+    <mat-icon *ngIf="icon !== ''" class="icon">
+      {{ icon }}
+    </mat-icon>
+    <p class="text">
+      {{ text }}
+    </p>
+  </div>
 </button>

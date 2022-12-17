@@ -41,7 +41,7 @@ export class NavigationButtonComponent {
     }
   }
 
-  public goToUrl(location: string) {
+  private goToUrl(location: string) {
     this.navigation.navigate(location);
   }
 

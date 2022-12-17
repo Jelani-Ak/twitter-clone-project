@@ -74,11 +74,12 @@ export class RegisterComponent {
   ) {}
 
   public registerUser() {
-    if (
+    const formEmpty =
       !this.registerForm.value.username ||
       !this.registerForm.value.password ||
       !this.registerForm.value.email
-    ) {
+
+    if (formEmpty) {
       return;
     }
 

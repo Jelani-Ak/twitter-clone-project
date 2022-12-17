@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) {}
 
-  public ngOnInit(): void {
+  public ngDoCheck(): void {
     if (this.storageService.isLoggedIn()) {
       this.loggedIn = true;
       this.roles = this.storageService.getUser().roles;
@@ -38,10 +38,11 @@ export class LoginComponent implements OnInit {
   }
 
   public loginUser() {
-    if (
+    const formEmpty = 
       !this.loginForm.value.username || 
       !this.loginForm.value.password
-    ) {
+
+    if (formEmpty) {
       return;
     }
 

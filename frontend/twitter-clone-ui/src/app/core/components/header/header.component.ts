@@ -1,10 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { StorageService } from '../../services/storage/storage.service';
-
-export type AuthenticatedUser = {
-  userId: string;
-  roles: Array<string>;
-};
 
 @Component({
   selector: 'app-header',
@@ -12,10 +7,11 @@ export type AuthenticatedUser = {
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent {
-  public currentUser: any;
+  public get currentUser(): any {
+    return this.storageService.getUser();
+  }
 
-  constructor(private storageServive: StorageService) {
-    this.currentUser = this.storageServive.getUser();
+  constructor(private storageService: StorageService) {
     console.log('Session started');
   }
 
@@ -25,7 +21,7 @@ export class HeaderComponent {
   }
 
   public isLoggedIn(): boolean {
-    const isLoggedIn = this.storageServive.isLoggedIn();
+    const isLoggedIn = this.storageService.isLoggedIn();
     return isLoggedIn;
   }
 }

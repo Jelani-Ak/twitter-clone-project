@@ -52,6 +52,8 @@ public class User {
     private Set<User> usersYouFollow; //TODO: Create new Model, 'FollowedUsers'
     private Set<User> usersFollowingYou; // TODO: Create new Model, 'UsersFollowing'
     private Set<User> mutualFollowers; // TODO: Create new Model, 'MutualFollowers'
+
+    @DBRef
     private Set<Tweet> tweets;
 
     private Integer tweetCount;

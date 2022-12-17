@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Comment, Tweet, TweetType } from 'src/app/shared/models/tweet';
 import { TweetService } from '../../../../core/services/tweet/tweet.service';
 import { MediaService } from 'src/app/core/services/media/media.service';
@@ -6,13 +6,18 @@ import { NgForm } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 
 @Component({
   selector: 'app-compose-tweet',
   templateUrl: './compose-tweet.component.html',
   styleUrls: ['./compose-tweet.component.css'],
 })
-export class ComposeTweetComponent implements OnInit {
+export class ComposeTweetComponent {
+  public get currentUser(): any {
+    return this.storageService.getUser();
+  }
+
   public tweet: any = new Object();
 
   private selectedFile: File | null = null;
@@ -22,12 +27,11 @@ export class ComposeTweetComponent implements OnInit {
     private router: Router,
     private tweetService: TweetService,
     private mediaService: MediaService,
+    private storageService: StorageService,
     private activatedRoute: ActivatedRoute,
     private snackbarService: SnackbarService,
     private dialogRef: MatDialogRef<ComposeTweetComponent>
-  ) {}
-
-  public ngOnInit(): void {
+  ) {
     this.initialiseData();
   }
 
@@ -68,12 +72,11 @@ export class ComposeTweetComponent implements OnInit {
     this.selectedFile = <File>event.target.files[0];
   }
 
-  // TODO: Does not correctly clear forms
   public cancel(input: any, form: NgForm) {
+    form.reset();
     input.value = null;
     this.selectedFile = null;
-    form.reset();
-    console.warn("Needs fixing. Doesn't properly remove files");
+    console.log("Selected file removed");
   }
 
   private createTweet() {
@@ -85,7 +88,7 @@ export class ComposeTweetComponent implements OnInit {
     if (tweet) {
       this.createTweetFromRemote();
     }
-    
+
     if (tweetWithMedia) {
       this.createTweetFromRemoteWithMedia();
     }
@@ -100,7 +103,7 @@ export class ComposeTweetComponent implements OnInit {
     if (comment) {
       this.createCommentFromRemote();
     }
-    
+
     if (commentWithMedia) {
       this.createCommentFromRemoteWithMedia();
     }
@@ -110,11 +113,11 @@ export class ComposeTweetComponent implements OnInit {
     const tweet = this.selectedFile == null;
     const tweetWithMedia = this.selectedFile != null;
     const onHomepage = this.router.url == '/home';
-    
+
     if (tweet && onHomepage) {
       this.createTweetFromRemote();
     }
-    
+
     if (tweetWithMedia && onHomepage) {
       this.createTweetFromRemoteWithMedia();
     }
@@ -207,5 +210,16 @@ export class ComposeTweetComponent implements OnInit {
     if (this.data.dialogOpen) {
       this.dialogRef.close(comment);
     }
+  }
+
+  public disableSubmitButton() {
+    const noContent = !this.tweet.content;
+    const noFile = !this.selectedFile;
+
+    if (noContent && noFile) {
+      return true;
+    }
+
+    return false;
   }
 }

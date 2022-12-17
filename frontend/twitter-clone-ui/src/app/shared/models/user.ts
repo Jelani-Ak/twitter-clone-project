@@ -12,7 +12,7 @@ export class User {
   bioLocation?: string;
   bioExternalLink?: string;
   
-  userRole!: string;
+  roles!: Array<string>;
 
   dateOfCreation!: string;
   pictureAvatarUrl?: string;

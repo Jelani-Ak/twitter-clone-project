@@ -18,21 +18,11 @@ export class StorageService {
 
   public getUser() {
     const user = window.sessionStorage.getItem(this.USER_KEY);
-
-    if (user) {
-      return JSON.parse(user);
-    }
-
-    return {};
+    return user ? JSON.parse(user) : {};
   }
 
   public isLoggedIn(): boolean {
     const user = window.sessionStorage.getItem(this.USER_KEY);
-
-    if (user) {
-      return true;
-    }
-
-    return false;
+    return user ? true : false;
   }
 }
