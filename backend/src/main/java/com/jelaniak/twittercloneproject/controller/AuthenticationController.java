@@ -1,7 +1,7 @@
 package com.jelaniak.twittercloneproject.controller;
 
-import com.jelaniak.twittercloneproject.dto.request.LoginRequestDTO;
-import com.jelaniak.twittercloneproject.dto.request.RegisterRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.SignInRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.SignUpRequestDTO;
 import com.jelaniak.twittercloneproject.exception.*;
 import com.jelaniak.twittercloneproject.service.AuthenticationService;
 import com.jelaniak.twittercloneproject.service.UserService;
@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin()
 @RestController
-@RequestMapping("/api/v1/authentication")
+@RequestMapping(value = "/api/v1/authentication")
 public class AuthenticationController {
 
     private final UserService userService;
@@ -24,27 +24,37 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @RequestMapping(
-            value = "/sign-up",
-            method = RequestMethod.POST)
-    public ResponseEntity<?> signUp(@RequestBody RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
-        userService.register(registerRequest);
+    @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO signUpRequest) throws UserAlreadyExistsException {
+        userService.signUp(signUpRequest);
         return new ResponseEntity<>("Registration successful", HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/sign-in",
-            method = RequestMethod.POST)
-    public ResponseEntity<?> signIn(@RequestBody LoginRequestDTO loginRequest) throws BadCredentialsException {
-        return new ResponseEntity<>(authenticationService.logUserIn(loginRequest), HttpStatus.ACCEPTED);
+    @RequestMapping(value = "/sign-in", method = RequestMethod.POST)
+    public ResponseEntity<?> signIn(@RequestBody SignInRequestDTO signInRequest) {
+        return new ResponseEntity<>(authenticationService.signIn(signInRequest), HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = "/confirm",
-            method = RequestMethod.GET)
+    @RequestMapping(value = "/sign-out", method = RequestMethod.POST)
+    public ResponseEntity<?> signOut() {
+        authenticationService.signOut();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public ResponseEntity<?> confirmToken(@RequestParam("token") String token)
-            throws EmailAlreadyConfirmedException, ConfirmationTokenExpiredException, ConfirmationTokenNotFoundException, EmailNotFoundException {
+            throws EmailAlreadyConfirmedException,
+                    ConfirmationTokenExpiredException,
+                    ConfirmationTokenNotFoundException,
+                    EmailNotFoundException {
         authenticationService.confirmToken(token);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
+
+    @RequestMapping(value = "/delete-token", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteToken(@RequestBody String token) throws ConfirmationTokenNotFoundException {
+        authenticationService.deleteToken(token);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
 }

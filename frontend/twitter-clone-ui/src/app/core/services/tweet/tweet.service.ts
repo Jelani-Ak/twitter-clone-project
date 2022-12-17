@@ -9,7 +9,7 @@ export type TweetId = {
 };
 
 export type TweetDTO = {
-  tweetId: string;
+  tweetDeleteDTO: TweetDeleteDTO;
   mediaData: MediaData;
 };
 
@@ -22,6 +22,10 @@ export type CommentDeleteDTO = {
   parentTweetId: string;
   commentId: string;
 };
+
+export type TweetDeleteDTO = {
+  tweetId: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +45,10 @@ export class TweetService {
   }
 
   private cacheTweets(): void {
+    if (this.tweets.length > 0) {
+      return;
+    }
+
     this.getAllTweets().subscribe({
       next: (tweets) => {
         this.tweets = tweets;
@@ -56,7 +64,9 @@ export class TweetService {
 
   public buildTweetDTO(tweet: Tweet): TweetDTO {
     const tweetDTO: TweetDTO = {
-      tweetId: tweet.tweetId,
+      tweetDeleteDTO: {
+        tweetId: tweet.tweetId
+      },
       mediaData: {
         mediaId: tweet.media?.mediaId,
         mediaKey: tweet.media?.mediaKey,
@@ -83,11 +93,13 @@ export class TweetService {
 
   // Tweets
   public createTweetFromRemote(tweet: any): Observable<Tweet> {
-    return this.http.post<Tweet>(this.baseTweetUrl + 'create', tweet);
+    return this.http.post<Tweet>(this.baseTweetUrl + 'create-tweet', tweet);
   }
 
-  public deleteTweetFromRemote(tweetId: string | undefined): Observable<Tweet> {
-    return this.http.delete<Tweet>(this.baseTweetUrl + 'delete/' + tweetId);
+  public deleteTweetFromRemote(tweetData: TweetDeleteDTO): Observable<Tweet> {
+    return this.http.delete<Tweet>(this.baseTweetUrl + 'delete-tweet', {
+      body: tweetData,
+    });
   }
 
   public getTweetById(tweetId: string): Observable<Tweet> {
@@ -95,17 +107,17 @@ export class TweetService {
   }
 
   public getAllTweets(): Observable<Tweet[]> {
-    return this.http.get<Tweet[]>(this.baseTweetUrl + 'all');
+    return this.http.get<Tweet[]>(this.baseTweetUrl + 'get-all-tweets');
   }
 
   // Comments // TODO: Create and move into comment.service.ts?
   public createCommentFromRemote(comment: any): Observable<Comment> {
-    return this.http.post<Comment>(this.baseCommentUrl + 'create', comment);
+    return this.http.post<Comment>(this.baseCommentUrl + 'create-comment', comment);
   }
 
-  public deleteCommentFromRemote(data: CommentDeleteDTO): Observable<Comment> {
-    return this.http.delete<Comment>(this.baseCommentUrl + 'delete', {
-      body: data,
+  public deleteCommentFromRemote(commentData: CommentDeleteDTO): Observable<Comment> {
+    return this.http.delete<Comment>(this.baseCommentUrl + 'delete-comment', {
+      body: commentData,
     });
   }
 }

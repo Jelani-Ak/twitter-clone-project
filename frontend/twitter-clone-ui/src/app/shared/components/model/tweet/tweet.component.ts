@@ -75,7 +75,7 @@ export class TweetComponent {
       tweetData.mediaData.mediaId != undefined &&
       tweetData.mediaData.mediaKey != undefined;
 
-    this.tweetService.deleteTweetFromRemote(tweetData.tweetId).subscribe({
+    this.tweetService.deleteTweetFromRemote(tweetData.tweetDeleteDTO).subscribe({
       complete: () => {
         console.log(`Tweet deleted succesfully`);
       },
@@ -147,5 +147,20 @@ export class TweetComponent {
       }
       this.dialogOpen = false;
     });
+  }
+
+  public viewTweet(tweetId: string) {
+    this.router.navigate([`/tweet/${tweetId}`], {
+      queryParams: { tweetId: tweetId }
+    });
+  }
+
+  public showViewTweet() {
+    const viewingTweet = this.router.url.split("/")[1] == "tweet";
+    if (viewingTweet) {
+      return false;
+    }
+
+    return true;
   }
 }

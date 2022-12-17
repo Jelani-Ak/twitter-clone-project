@@ -43,26 +43,21 @@ public class CloudinaryConfig {
             manager.setCloudinary(cloudinary);
             manager.init();
 
-            cloudinary.uploader();
+            LOGGER.info("Cloudinary started successfully");
         } catch (Exception error) {
             LOGGER.warn("Failed to setup Cloudinary", error);
             throw new RuntimeException(error);
         }
-
-        LOGGER.info("Cloudinary started successfully");
     }
 
-    @Bean
     private String getCLOUD_NAME() {
         return CLOUD_NAME;
     }
 
-    @Bean
     private String getAPI_KEY() {
         return API_KEY;
     }
 
-    @Bean
     private String getAPI_SECRET_KEY() {
         return API_SECRET_KEY;
     }

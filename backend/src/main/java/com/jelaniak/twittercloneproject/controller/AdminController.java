@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin()
 @RestController
-@RequestMapping("/api/v1/admin")
+@RequestMapping(value = "/api/v1/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -25,7 +25,7 @@ public class AdminController {
     }
 
     @RequestMapping(
-            value = "/get/all/users",
+            value = "/get-all-users",
             method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(adminService.getAllUsers(), HttpStatus.OK);
@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     @RequestMapping(
-            value = "/get/all/confirmationToken",
+            value = "/get-all-tokens",
             method = RequestMethod.GET)
     public ResponseEntity<List<ConfirmationToken>> getAllConfirmationTokens() {
         return new ResponseEntity<>(adminService.getAllConfirmationTokens(), HttpStatus.OK);

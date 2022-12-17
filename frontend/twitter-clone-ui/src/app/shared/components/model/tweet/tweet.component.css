@@ -5,9 +5,39 @@
   box-sizing: border-box;
 }
 
-.details {
+.details-container {
   display: flex;
+}
+
+.details {
+  width: 82%;
+}
+
+.fill-details {
+  width: 100%;
+}
+
+.details,
+.fill-details {
+  padding: 10px 0 10px 10px;
+}
+
+.view-tweet {
+  width: fit-content;
+  cursor: pointer;
   padding: 10px;
+  transition-duration: 0.25s;
+}
+
+.view-tweet:hover {
+  color: white;
+  background-color: #673ab7;
+  transition-duration: 0.25s;
+}
+
+.details,
+.view-tweet {
+  display: flex;
   align-items: center;
   background-color: #ddd;
 }
@@ -18,7 +48,7 @@
 
 .date {
   display: flex;
-  padding-right: 5px;
+  padding-right: 10px;
   align-items: flex-end;
 }
 

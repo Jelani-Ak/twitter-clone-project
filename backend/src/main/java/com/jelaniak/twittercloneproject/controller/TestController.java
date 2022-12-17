@@ -1,12 +1,11 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/test")
+@RequestMapping(value = "/api/v1/test")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class TestController {
     @RequestMapping(
             value = "/all",

@@ -43,6 +43,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { CommentTimelineComponent } from './shared/components/center-panel/comment-timeline/comment-timeline.component';
 import { ConfirmationDialogComponent } from './shared/components/dialog/confirmation-dialog/confirmation-dialog.component';
 import { GenericButtonComponent } from './shared/components/button/generic-button/generic-button.component';
+import { httpInterceptorProviders } from './core/interceptors/http-request/http-request.interceptor';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { GenericButtonComponent } from './shared/components/button/generic-butto
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} },
+    httpInterceptorProviders,
     UserService,
     TweetService,
   ],

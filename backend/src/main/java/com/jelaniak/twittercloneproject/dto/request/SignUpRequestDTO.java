@@ -9,7 +9,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequestDTO {
+public class SignUpRequestDTO {
     private String email;
     private String username;
     private String password;

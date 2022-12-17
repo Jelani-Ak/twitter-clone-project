@@ -33,4 +33,10 @@ public class ConfirmationTokenService {
 
         confirmationTokenRepository.save(foundToken);
     }
+
+    public void deleteToken(String token) throws ConfirmationTokenNotFoundException {
+        ConfirmationToken foundToken = getToken(token);
+
+        confirmationTokenRepository.delete(foundToken);
+    }
 }

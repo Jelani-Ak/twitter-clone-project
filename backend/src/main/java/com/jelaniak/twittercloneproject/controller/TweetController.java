@@ -2,6 +2,7 @@ package com.jelaniak.twittercloneproject.controller;
 
 import java.util.List;
 
+import com.jelaniak.twittercloneproject.dto.request.TweetDeleteDTO;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.service.TweetService;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/tweet")
+@RequestMapping(value = "/api/v1/tweet")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class TweetController {
 
     private final TweetService tweetService;
@@ -24,17 +25,17 @@ public class TweetController {
     }
 
     @RequestMapping(
-            value = "/create",
+            value = "/create-tweet",
             method = RequestMethod.POST)
     public ResponseEntity<Tweet> createTweet(@RequestBody Tweet tweet) {
         return new ResponseEntity<>(tweetService.createTweet(tweet), HttpStatus.CREATED);
     }
 
     @RequestMapping(
-            value = "/delete/{id}",
+            value = "/delete-tweet",
             method = RequestMethod.DELETE)
-    public void deleteTweet(@PathVariable ObjectId id) {
-        tweetService.deleteTweet(id);
+    public void deleteTweet(@RequestBody TweetDeleteDTO data) {
+        tweetService.deleteTweet(data);
     }
 
     @RequestMapping(
@@ -45,7 +46,7 @@ public class TweetController {
     }
 
     @RequestMapping(
-            value = "/all",
+            value = "/get-all-tweets",
             method = RequestMethod.GET)
     public ResponseEntity<List<Tweet>> getAllTweets() {
         return new ResponseEntity<>(tweetService.findAllTweets(), HttpStatus.OK);

@@ -14,9 +14,9 @@ import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping(value = "/api/v1/user")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;

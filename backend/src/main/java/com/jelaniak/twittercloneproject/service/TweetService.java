@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.jelaniak.twittercloneproject.dto.request.CommentDeleteDTO;
+import com.jelaniak.twittercloneproject.dto.request.TweetDeleteDTO;
 import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,8 @@ public class TweetService {
                 .orElseThrow(() -> new TweetNotFoundException("Tweet by Id: [" + tweetId + "] was not found."));
     }
 
-    public void deleteTweet(ObjectId tweetId) {
+    public void deleteTweet(TweetDeleteDTO data) {
+        ObjectId tweetId = data.getTweetId();
         tweetRepository.deleteByTweetId(tweetId);
     }
 

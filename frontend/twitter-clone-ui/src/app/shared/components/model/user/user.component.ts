@@ -15,7 +15,12 @@ export class UserComponent {
   public confirmationTokens: ConfirmationToken[] = [];
 
   public USER_COLUMNS: string[] = ['userId', 'username', 'email'];
-  public TOKEN_COLUMNS: string[] = ['token', 'createdAt', 'expiresAt', 'confirmedAt'];
+  public TOKEN_COLUMNS: string[] = [
+    'token',
+    'createdAt',
+    'expiresAt',
+    'confirmedAt',
+  ];
 
   constructor(
     private adminService: AdminService,
@@ -59,7 +64,9 @@ export class UserComponent {
   }
 
   public deleteUser(user: User): void {
-    this.users = this.users.filter((userIndex) => userIndex != user);
+    this.users = this.users.filter(
+      (userIndex) => userIndex != user
+    );
     this.adminService.deleteUserFromRemote(user.userId).subscribe({
       complete: () => {
         console.log(`${user.username} deleted`);
@@ -71,7 +78,7 @@ export class UserComponent {
   }
 
   public confirmUser(token: string): void {
-    this.authenticationService.confirmUser(token).subscribe({
+    this.authenticationService.confirmUserFromRemote(token).subscribe({
       complete: () => {
         console.log('Token confirmed');
       },
@@ -81,7 +88,24 @@ export class UserComponent {
     });
   }
 
-  public rowInformation(column: string, row: { [index: string]: string }): string {
+  public deleteToken(token: string): void {
+    this.confirmationTokens = this.confirmationTokens.filter(
+      (tokenIndex) => tokenIndex.token != token
+    );
+    this.authenticationService.deleteTokenFromRemote(token).subscribe({
+      complete: () => {
+        console.log('Token deleted');
+      },
+      error: (error) => {
+        console.warn('Failed to delete token', error);
+      },
+    });
+  }
+
+  public rowInformation(
+    column: string,
+    row: { [index: string]: string }
+  ): string {
     return row[column];
   }
 

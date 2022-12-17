@@ -4,48 +4,24 @@
   </div>
 
   <div class="form-container">
-    <form #loginform="ngForm" (ngSubmit)="loginUser()">
+    <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+      <!-- Username -->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Username</mat-label>
-        <input
-          #username="ngModel"
-          [(ngModel)]="user.username"
-          [class.is-invalid]="username.invalid && username.touched"
-          id="username"
-          matInput
-          name="username"
-          required
-          type="text"
-        />
-        <mat-error
-          *ngIf="username.errors && username.invalid && username.touched"
-        >
-          Username is required
+        <input matInput autocomplete="off" type="text" formControlName="username" />
+        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+          Enter a username
         </mat-error>
       </mat-form-field>
 
-      <br />
-
+      <!-- Password -->
       <mat-form-field appearance="fill" class="user-management-form">
         <mat-label>Password</mat-label>
-        <input
-          #password="ngModel"
-          [(ngModel)]="user.password"
-          [class.is-invalid]="password.invalid && password.touched"
-          id="password"
-          matInput
-          name="password"
-          required
-          type="password"
-        />
-        <mat-error
-          *ngIf="password.errors && password.invalid && password.touched"
-        >
-          Password is required
+        <input matInput autocomplete="off" type="password" formControlName="password" />
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Enter a password
         </mat-error>
       </mat-form-field>
-
-      <br />
 
       <div class="login-button-container">
         <app-generic-button [text]="'Login'" type="submit"></app-generic-button>

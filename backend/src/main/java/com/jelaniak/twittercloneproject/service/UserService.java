@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.dto.request.RegisterRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.SignUpRequestDTO;
 import com.jelaniak.twittercloneproject.email.EmailSender;
 import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
@@ -53,7 +53,7 @@ public class UserService {
                 .orElseThrow(() -> new UserIdNotFoundException("Id of " + userId + " was not found"));
     }
 
-    public void register(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+    public void signUp(SignUpRequestDTO registerRequest) throws UserAlreadyExistsException {
         LOGGER.info("Creating new user, '" + registerRequest.getUsername() + "'..");
 
         checkUserExists(registerRequest);
@@ -89,22 +89,22 @@ public class UserService {
         return confirmationToken;
     }
 
-    private User createUser(RegisterRequestDTO registerRequest) {
+    private User createUser(SignUpRequestDTO signUpRequest) {
         User user = new User();
 
         user.setUserId(new ObjectId());
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(bCryptPasswordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
-//        user.setDisplayName(user.getUsername());
-//        user.setUserHandleName("@" + user.getUsername());
-//        user.setBioLocation(user.getBioLocation());
-//        user.setBioExternalLink(user.getBioExternalLink());
-//        user.setBioAboutText(user.getBioAboutText());
-        user.setRoles(assignRoles(registerRequest.getRoles()));
+        user.setUsername(signUpRequest.getUsername());
+        user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
+        user.setEmail(signUpRequest.getEmail());
+//        user.setDisplayName(user.getUsername()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setUserHandleName("@" + user.getUsername()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setBioLocation(user.getBioLocation()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setBioExternalLink(user.getBioExternalLink()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setBioAboutText(user.getBioAboutText()); // TODO: 12/12/2022 - Move to UserProfileService
+        user.setRoles(assignRoles(signUpRequest.getRoles()));
         user.setDateOfCreation(LocalDateTime.now());
-//        user.setPictureAvatarUrl(user.getPictureAvatarUrl());
-//        user.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
+//        user.setPictureAvatarUrl(user.getPictureAvatarUrl()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setPictureBackgroundUrl(user.getPictureBackgroundUrl()); // TODO: 12/12/2022 - Move to UserProfileService
         user.setUsersYouFollow(new HashSet<>());
         user.setUsersFollowingYou(new HashSet<>());
         user.setMutualFollowers(new HashSet<>());
@@ -154,7 +154,7 @@ public class UserService {
         return rolesToAssign;
     }
 
-    private void checkUserExists(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+    private void checkUserExists(SignUpRequestDTO registerRequest) throws UserAlreadyExistsException {
         boolean userExists = userRepository.existsByUsername(registerRequest.getUsername());
 
         if (userExists) {
@@ -164,7 +164,7 @@ public class UserService {
         }
     }
 
-    private void checkEmailExists(RegisterRequestDTO registerRequest) throws UserAlreadyExistsException {
+    private void checkEmailExists(SignUpRequestDTO registerRequest) throws UserAlreadyExistsException {
         boolean emailExists = userRepository.existsByEmail(registerRequest.getEmail());
 
         if (emailExists) {

@@ -9,9 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/comment")
+@RequestMapping(value = "/api/v1/comment")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class CommentController {
 
     private final TweetService tweetService;
@@ -22,14 +22,14 @@ public class CommentController {
     }
 
     @RequestMapping(
-            value = "/create",
+            value = "/create-comment",
             method = RequestMethod.POST)
     public ResponseEntity<Comment> createComment(@RequestBody Comment comment) throws Exception {
         return new ResponseEntity<>(tweetService.createComment(comment), HttpStatus.CREATED);
     }
 
     @RequestMapping(
-            value = "/delete",
+            value = "/delete-comment",
             method = RequestMethod.DELETE)
     public void deleteComment(@RequestBody CommentDeleteDTO data) throws TweetNotFoundException {
         tweetService.deleteComment(data);

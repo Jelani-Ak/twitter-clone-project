@@ -1,14 +1,41 @@
 <div class="header-container">
   <mat-toolbar color="primary" class="header">
     <mat-toolbar-row>
-      <app-user-management-button text="Twitter Clone"></app-user-management-button>
-      
+      <!-- Home -->
+      <app-user-management-button
+        text="Twitter Clone"
+      ></app-user-management-button>
+
       <span class="spacer"></span>
 
-      <app-user-management-button text="Login"></app-user-management-button>
-      <app-user-management-button text="Register"></app-user-management-button>
-      <app-user-management-button text="Logout"></app-user-management-button>
-      <app-user-management-button text="Admin"></app-user-management-button>
+      <app-user-management-button
+        *ngIf="isLoggedIn()"
+        text="{{ currentUser.username }}"
+      ></app-user-management-button>
+
+      <!-- Login -->
+      <app-user-management-button
+        *ngIf="!isLoggedIn()"
+        text="Login"
+      ></app-user-management-button>
+
+      <!-- Register -->
+      <app-user-management-button
+        *ngIf="!isLoggedIn()"
+        text="Register"
+      ></app-user-management-button>
+
+      <!-- Logout -->
+      <app-user-management-button
+        *ngIf="isLoggedIn()"
+        text="Logout"
+      ></app-user-management-button>
+
+      <!-- Admin -->
+      <app-user-management-button
+        *ngIf="isAdmin() && isLoggedIn()"
+        text="Admin"
+      ></app-user-management-button>
     </mat-toolbar-row>
   </mat-toolbar>
 </div>

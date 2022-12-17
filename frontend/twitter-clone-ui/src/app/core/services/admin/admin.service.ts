@@ -13,11 +13,11 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   public getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.baseUrl + 'get/all/users');
+    return this.http.get<User[]>(this.baseUrl + 'get-all-users');
   }
 
   public getAllConfirmationTokens(): Observable<ConfirmationToken[]> {
-    return this.http.get<ConfirmationToken[]>(this.baseUrl + 'get/all/confirmationToken');
+    return this.http.get<ConfirmationToken[]>(this.baseUrl + 'get-all-tokens');
   }
 
   public deleteUserFromRemote(userId: string): Observable<User> {

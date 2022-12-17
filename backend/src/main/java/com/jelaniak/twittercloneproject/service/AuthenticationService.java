@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.dto.request.LoginRequestDTO;
+import com.jelaniak.twittercloneproject.dto.request.SignInRequestDTO;
 import com.jelaniak.twittercloneproject.dto.response.JwtResponseDTO;
 import com.jelaniak.twittercloneproject.exception.*;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
@@ -11,17 +11,16 @@ import com.jelaniak.twittercloneproject.service.security.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
@@ -46,11 +45,11 @@ public class AuthenticationService {
         this.confirmationTokenService = confirmationTokenService;
     }
 
-    public JwtResponseDTO logUserIn(LoginRequestDTO loginRequest) {
+    public JwtResponseDTO signIn(SignInRequestDTO signInRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
+                        signInRequest.getUsername(),
+                        signInRequest.getPassword()
                 )
         );
 
@@ -72,10 +71,15 @@ public class AuthenticationService {
         return response;
     }
 
+    public void signOut() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(null);
+    }
+
     public void confirmToken(String token)
             throws ConfirmationTokenNotFoundException,
-                    EmailAlreadyConfirmedException,
                     ConfirmationTokenExpiredException,
+                    EmailAlreadyConfirmedException,
                     EmailNotFoundException {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token);
 
@@ -100,6 +104,10 @@ public class AuthenticationService {
         }
 
         enableUser(confirmationToken.getUser().getEmail());
+    }
+
+    public void deleteToken(String token) throws ConfirmationTokenNotFoundException {
+        confirmationTokenService.deleteToken(token);
     }
 
     public void enableUser(String email) throws EmailNotFoundException {

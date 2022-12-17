@@ -12,9 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@CrossOrigin
 @RestController
-@RequestMapping("/api/v1/media")
+@RequestMapping(value = "/api/v1/media")
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class MediaController {
 
     private final CloudinaryService cloudinaryService;

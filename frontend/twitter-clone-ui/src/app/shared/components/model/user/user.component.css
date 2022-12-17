@@ -21,9 +21,8 @@
   transition-duration: 0.25s;
 }
 
-      
-.mat-row:nth-child(odd){
-  background-color: #FAFAFA;
+.mat-row:nth-child(odd) {
+  background-color: #fafafa;
 }
 
 .mat-table:last-child {

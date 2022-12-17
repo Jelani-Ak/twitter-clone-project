@@ -1,61 +1,63 @@
 <div class="container">
   <!-- TODO: Create List of users button, Configurable amount-->
-  <h2>User</h2>
-  <mat-table [dataSource]="users" class="mat-elevation-z8">
-    <ng-container *ngFor="let column of USER_COLUMNS" [matColumnDef]="column">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ capitaliseAndSpace(column) }}
-      </mat-header-cell>
-      
-      <mat-cell *matCellDef="let row">
-        {{ rowInformation(column, row) }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="user-management-buttons">
-      <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <div class="management-buttons">
-          <button class="admin-button" mat-button (click)="deleteUser(row)">Delete</button>
-          <button class="admin-button" mat-button>Update</button>
-          <button class="admin-button" mat-button>Ban</button>
-        </div>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="USER_COLUMNS.concat(['user-management-buttons'])"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: USER_COLUMNS.concat(['user-management-buttons'])"></mat-row>
-  </mat-table>
+  <div class="user-table">
+    <h2>User</h2>
+    <mat-table [dataSource]="users" class="mat-elevation-z8">
+      <ng-container *ngFor="let column of USER_COLUMNS" [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ capitaliseAndSpace(column) }}
+        </mat-header-cell>
+        
+        <mat-cell *matCellDef="let row">
+          {{ rowInformation(column, row) }}
+        </mat-cell>
+      </ng-container>
+    
+      <ng-container matColumnDef="user-management-buttons">
+        <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div class="management-buttons">
+            <button class="admin-button" mat-button (click)="deleteUser(row)">Delete</button>
+            <button class="admin-button" mat-button>Update</button>
+            <button class="admin-button" mat-button>Ban</button>
+          </div>
+        </mat-cell>
+      </ng-container>
+    
+      <mat-header-row *matHeaderRowDef="USER_COLUMNS.concat(['user-management-buttons'])"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: USER_COLUMNS.concat(['user-management-buttons'])"></mat-row>
+    </mat-table>
+  </div>
   <!-- TODO: Delete all button (user) ngif greater than 0 [aligned right]-->
 
-  <br />
-  <br />
-  <br />
 
-  <h2>Confirmation Token</h2>
-  <mat-table [dataSource]="confirmationTokens" class="mat-elevation-z8">
-    <ng-container *ngFor="let column of TOKEN_COLUMNS" [matColumnDef]="column">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>
-        {{ capitaliseAndSpace(column) }}
-      </mat-header-cell>
-      
-      <mat-cell *matCellDef="let row">
-        {{ rowInformation(column, row) }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="confirm-token-button">
-      <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <div class="management-buttons">
-          <button class="admin-button" mat-button (click)="confirmUser(row.token)">Confirm</button>
-        </div>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-row>
-  </mat-table>
+  <div class="token-table">
+    <h2>Confirmation Token</h2>
+    <mat-table [dataSource]="confirmationTokens" class="mat-elevation-z8">
+      <ng-container *ngFor="let column of TOKEN_COLUMNS" [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ capitaliseAndSpace(column) }}
+        </mat-header-cell>
+        
+        <mat-cell *matCellDef="let row">
+          {{ rowInformation(column, row) }}
+        </mat-cell>
+      </ng-container>
+    
+      <ng-container matColumnDef="confirm-token-button">
+        <mat-header-cell *matHeaderCellDef>Management</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <div class="management-buttons">
+            <button class="admin-button" mat-button (click)="confirmUser(row.token)">Confirm</button>
+            <button class="admin-button" mat-button (click)="deleteToken(row.token)">Delete</button>
+          </div>
+        </mat-cell>
+      </ng-container>
+    
+      <mat-header-row *matHeaderRowDef="TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: TOKEN_COLUMNS.concat(['confirm-token-button'])"></mat-row>
+    </mat-table>
+  </div>
   <!-- TODO: Delete all button (confirmationToken) ngif greater than 0 [aligned right]-->
   <!-- TODO: Delete all button (everting (user, confirmationToken)) ngif greater than 0  [aligned left]-->
 </div>
