@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.user;
 
 public class EmailAlreadyConfirmedException extends Exception {
     public EmailAlreadyConfirmedException() {

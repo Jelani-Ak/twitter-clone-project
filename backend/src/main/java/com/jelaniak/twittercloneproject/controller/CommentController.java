@@ -1,7 +1,8 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.dto.request.CommentDeleteDTO;
-import com.jelaniak.twittercloneproject.exception.TweetNotFoundException;
+import com.jelaniak.twittercloneproject.exception.comment.CommentNotFoundException;
+import com.jelaniak.twittercloneproject.exception.tweet.TweetNotFoundException;
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserService;
 
+@CrossOrigin()
 @RestController
 @RequestMapping(value = "/api/v1/user")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class UserController {
 
     private final UserService userService;
@@ -27,9 +27,9 @@ public class UserController {
     }
 
     @RequestMapping(
-            value = "/get/{id}",
+            value = "/{userId}/get-user",
             method = RequestMethod.GET)
-    public ResponseEntity<User> findByUserId(@PathVariable ObjectId id) throws UserIdNotFoundException {
-        return new ResponseEntity<>(userService.findByUserId(id), HttpStatus.OK);
+    public ResponseEntity<User> findByUserId(@PathVariable ObjectId userId) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.findByUserId(userId), HttpStatus.OK);
     }
 }

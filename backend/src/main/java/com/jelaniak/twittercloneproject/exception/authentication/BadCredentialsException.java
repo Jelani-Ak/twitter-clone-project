@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.authentication;
 
 public class BadCredentialsException extends Exception {
     public BadCredentialsException() {

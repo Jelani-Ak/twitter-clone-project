@@ -1,12 +1,11 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserProfileService {
@@ -22,13 +21,13 @@ public class UserProfileService {
         this.userRepository = userRepository;
     }
 
-    public User deleteUser(ObjectId userId) throws UserIdNotFoundException {
+    public User deleteUser(ObjectId userId) throws UserNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
         return userRepository.deleteByUserId(existingUser.getUserId());
     }
 
-    public User updateUser(ObjectId userId, User user) throws UserIdNotFoundException {
+    public User updateUser(ObjectId userId, User user) throws UserNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
         existingUser.setUsername(user.getUsername());

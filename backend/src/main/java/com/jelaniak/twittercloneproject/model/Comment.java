@@ -31,7 +31,8 @@ public class Comment {
     private ObjectId commentId;
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId parentTweetId;
-    private User user;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId userId;
     private Media media;
 
     @NotBlank

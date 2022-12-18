@@ -2,10 +2,10 @@
   class="compose-container"
   [ngStyle]="{ padding: data.dialogOpen ? '20px' : '0' }"
 >
-  <div class="tweet-reply-details" *ngIf="this.data.tweetType == 'Comment'">
+  <div class="tweet-reply-details" *ngIf="data.tweetType == 'Comment'">
     <div class="details">
-      <p class="username">Username</p> <!-- TODO: Replace with username in data -->
-      <p class="handle">@UsernameHandle</p> <!-- TODO: Replace with usenamehandle in data -->
+      <p class="username">{{ tweetAuthor.username }}</p>
+      <p class="handle">{{ tweetAuthor.userHandleName }}</p>
       <span class="spacer"></span>
       <p class="date">{{ data.tweet.dateOfCreation }}</p>
     </div>
@@ -15,20 +15,13 @@
     </div>
 
     <div class="tweet-context">
-      <p>Replying to Username</p> <!-- TODO: Replace with username in data -->
+      <p>Replying to '{{ tweetAuthor.username }}'</p>
     </div>
   </div>
 
   <form class="form-container" #RegisterForm="ngForm" (ngSubmit)="create()">
-    <mat-form-field
-      appearance="fill"
-      class="compose-tweet-form"
-      [style.width]="'100%'"
-      [style.height]="'145px'"
-      [style.font-weight]="'100'"
-      [style.margin-bottom]="'-0.79em'"
-    >
-      <mat-label class="textarea-label" [style.font-weight]="'100'">
+    <mat-form-field appearance="fill" class="compose-tweet-form">
+      <mat-label class="textarea-label">
         {{ data.textAreaLabel ?? "Compose Tweet" }}
       </mat-label>
       <textarea
@@ -67,7 +60,7 @@
       <mat-icon
         *ngIf="FileName.value"
         class="remove-file"
-        (click)="cancel(FileName, RegisterForm)"
+        (click)="cancel(FileName)"
       >
         cancel
       </mat-icon>

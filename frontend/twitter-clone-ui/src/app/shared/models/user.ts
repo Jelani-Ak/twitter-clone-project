@@ -7,8 +7,8 @@ export class User {
 
   email!: string;
   displayName?: string;
-  userHandle?: string;
-  bioText?: string;
+  userHandleName?: string;
+  biobioAboutTextText?: string;
   bioLocation?: string;
   bioExternalLink?: string;
   
@@ -18,15 +18,15 @@ export class User {
   pictureAvatarUrl?: string;
   pictureBackgroundUrl?: string;
 
-  following?: Set<User>;
-  followers?: Set<User>;
-  followersMutual?: Set<User>;
+  usersYouFollow?: Set<User>;
+  usersFollowingYou?: Set<User>;
+  mutualFollowers?: Set<User>;
   tweets?: Set<Tweet>;
 
   tweetCount?: number;
   tweetQuoteCount?: number;
 
-  follow?: boolean;
+  following?: boolean;
   verified?: boolean;
   locked?: boolean;
   enabled?: boolean;

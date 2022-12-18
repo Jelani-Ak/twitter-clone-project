@@ -2,7 +2,11 @@ package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.dto.request.SignInRequestDTO;
 import com.jelaniak.twittercloneproject.dto.request.SignUpRequestDTO;
-import com.jelaniak.twittercloneproject.exception.*;
+import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenExpiredException;
+import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyConfirmedException;
+import com.jelaniak.twittercloneproject.exception.user.EmailNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.service.AuthenticationService;
 import com.jelaniak.twittercloneproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +46,11 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-    public ResponseEntity<?> confirmToken(@RequestParam("token") String token)
-            throws EmailAlreadyConfirmedException,
-                    ConfirmationTokenExpiredException,
-                    ConfirmationTokenNotFoundException,
-                    EmailNotFoundException {
+    public ResponseEntity<?> confirmToken(@RequestParam("token") String token) throws
+            EmailAlreadyConfirmedException,
+            ConfirmationTokenExpiredException,
+            ConfirmationTokenNotFoundException,
+            EmailNotFoundException {
         authenticationService.confirmToken(token);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

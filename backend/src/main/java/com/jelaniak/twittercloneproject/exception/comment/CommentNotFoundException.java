@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.comment;
 
 public class CommentNotFoundException extends Exception {
     public CommentNotFoundException() {

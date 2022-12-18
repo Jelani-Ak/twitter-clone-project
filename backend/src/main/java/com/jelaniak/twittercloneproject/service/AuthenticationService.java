@@ -2,7 +2,10 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.dto.request.SignInRequestDTO;
 import com.jelaniak.twittercloneproject.dto.response.JwtResponseDTO;
-import com.jelaniak.twittercloneproject.exception.*;
+import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenExpiredException;
+import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyConfirmedException;
+import com.jelaniak.twittercloneproject.exception.user.EmailNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
@@ -76,11 +79,11 @@ public class AuthenticationService {
         securityContext.setAuthentication(null);
     }
 
-    public void confirmToken(String token)
-            throws ConfirmationTokenNotFoundException,
-                    ConfirmationTokenExpiredException,
-                    EmailAlreadyConfirmedException,
-                    EmailNotFoundException {
+    public void confirmToken(String token) throws
+            ConfirmationTokenNotFoundException,
+            ConfirmationTokenExpiredException,
+            EmailAlreadyConfirmedException,
+            EmailNotFoundException {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token);
 
         if (confirmationToken.getConfirmedAt() != null) {

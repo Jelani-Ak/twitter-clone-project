@@ -3,6 +3,7 @@ package com.jelaniak.twittercloneproject.controller;
 import java.util.List;
 
 import com.jelaniak.twittercloneproject.dto.request.TweetDeleteDTO;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class TweetController {
     @RequestMapping(
             value = "/create-tweet",
             method = RequestMethod.POST)
-    public ResponseEntity<Tweet> createTweet(@RequestBody Tweet tweet) {
+    public ResponseEntity<Tweet> createTweet(@RequestBody Tweet tweet) throws UserNotFoundException {
         return new ResponseEntity<>(tweetService.createTweet(tweet), HttpStatus.CREATED);
     }
 
@@ -39,10 +40,10 @@ public class TweetController {
     }
 
     @RequestMapping(
-            value = "/{id}",
+            value = "/{tweetId}",
             method = RequestMethod.GET)
-    public ResponseEntity<Tweet> getTweetById(@PathVariable ObjectId id) throws Exception {
-        return new ResponseEntity<>(tweetService.findByTweetId(id), HttpStatus.ACCEPTED);
+    public ResponseEntity<Tweet> getTweetById(@PathVariable ObjectId tweetId) throws Exception {
+        return new ResponseEntity<>(tweetService.findByTweetId(tweetId), HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(

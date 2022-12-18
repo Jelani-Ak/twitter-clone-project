@@ -2,7 +2,7 @@ import { Media } from './media';
 
 export class Tweet {
   tweetId!: string;
-  username!: string;
+  userId!: string;
   media?: Media;
   content?: string;
   dateOfCreation!: Date;
@@ -16,7 +16,7 @@ export class Tweet {
 export class Comment {
   commentId!: string;
   parentTweetId!: string;
-  username!: string;
+  userId!: string;
   media?: Media;
   content?: string;
   dateOfCreation!: Date;
@@ -31,5 +31,5 @@ export enum TweetType {
   RETWEET = 'Retweet',
   MEDIA = 'Media',
   LIKED = 'Liked',
-  COMMENT = 'Comment'
+  COMMENT = 'Comment',
 }

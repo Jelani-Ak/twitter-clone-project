@@ -1,20 +1,32 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { TweetDTO, TweetService, } from 'src/app/core/services/tweet/tweet.service';
+import {
+  TweetDTO,
+  TweetService,
+} from 'src/app/core/services/tweet/tweet.service';
 import { Tweet, TweetType } from '../../../models/tweet';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 import { ComposeTweetComponent } from '../../dialog/compose-tweet/compose-tweet.component';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/core/services/user/user.service';
+import { User } from 'src/app/shared/models/user';
 
 @Component({
   selector: 'app-tweet',
   templateUrl: './tweet.component.html',
   styleUrls: ['./tweet.component.css'],
 })
-export class TweetComponent {
+export class TweetComponent implements OnChanges {
   @Input() public tweet: Tweet = new Tweet();
+  public tweetAuthor: User = new User();
 
   public imageLoaded: boolean = false;
   public videoLoaded: boolean = false;
@@ -24,9 +36,35 @@ export class TweetComponent {
     public tweetService: TweetService,
     private router: Router,
     private dialog: MatDialog,
+    private userService: UserService,
     private mediaService: MediaService,
     private snackbarService: SnackbarService
   ) {}
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    const tweetLoaded = Object.keys(this.tweet).length > 0;
+    if (tweetLoaded) {
+      const tweetAuthorLoaded = Object.keys(this.tweetAuthor).length > 0;
+      if (tweetAuthorLoaded) {
+        return;
+      }
+      this.initialiseTweetAuthor();
+    }
+  }
+
+  private initialiseTweetAuthor() {
+    this.userService.findByUserId(this.tweet.userId).subscribe({
+      next: (user) => {
+        this.tweetAuthor = user;
+      },
+      complete: () => {
+        console.log('Tweet author data loaded');
+      },
+      error: (error) => {
+        console.error('Failed to retrieve tweet author data', error);
+      },
+    });
+  }
 
   public isAcceptableImage(tweetMediaType: string | undefined) {
     if (tweetMediaType == 'image/png' || 'image/jpg') {
@@ -75,14 +113,16 @@ export class TweetComponent {
       tweetData.mediaData.mediaId != undefined &&
       tweetData.mediaData.mediaKey != undefined;
 
-    this.tweetService.deleteTweetFromRemote(tweetData.tweetDeleteDTO).subscribe({
-      complete: () => {
-        console.log(`Tweet deleted succesfully`);
-      },
-      error: (error) => {
-        console.error(`Failed to delete tweet`, error);
-      },
-    });
+    this.tweetService
+      .deleteTweetFromRemote(tweetData.tweetDeleteDTO)
+      .subscribe({
+        complete: () => {
+          console.log(`Tweet deleted succesfully`);
+        },
+        error: (error) => {
+          console.error(`Failed to delete tweet`, error);
+        },
+      });
     if (tweetHasMedia) {
       this.mediaService
         .deleteMediaFromRemote(tweetData.mediaData.mediaId)
@@ -113,9 +153,9 @@ export class TweetComponent {
       data: {
         tweet: this.tweet,
         tweetType: TweetType.COMMENT,
-        textAreaLabel: "Compose Comment",
-        placeholder: "Tweet your reply",
-        dialogOpen: this.dialogOpen = true,
+        textAreaLabel: 'Compose Comment',
+        placeholder: 'Tweet your reply',
+        dialogOpen: (this.dialogOpen = true),
       },
       autoFocus: true,
       width: '700px',
@@ -135,14 +175,14 @@ export class TweetComponent {
       id: 'delete-tweet',
       data: {
         type: TweetType.TWEET,
-        dialogOpen: this.dialogOpen = true,
+        dialogOpen: (this.dialogOpen = true),
       },
       width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((data: string) => {
-      if (data == "yes") { 
-        this.deleteTweet(tweet)
+      if (data == 'yes') {
+        this.deleteTweet(tweet);
         this.router.navigate(['/home']);
       }
       this.dialogOpen = false;
@@ -151,12 +191,12 @@ export class TweetComponent {
 
   public viewTweet(tweetId: string) {
     this.router.navigate([`/tweet/${tweetId}`], {
-      queryParams: { tweetId: tweetId }
+      queryParams: { tweetId: tweetId },
     });
   }
 
   public showViewTweet() {
-    const viewingTweet = this.router.url.split("/")[1] == "tweet";
+    const viewingTweet = this.router.url.split('/')[1] == 'tweet';
     if (viewingTweet) {
       return false;
     }

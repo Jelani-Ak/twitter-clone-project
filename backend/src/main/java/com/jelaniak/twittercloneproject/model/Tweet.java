@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -30,7 +31,8 @@ public class Tweet {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId tweetId;
-    private User user;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId userId;
     private Media media;
 
     @NotBlank
@@ -41,6 +43,7 @@ public class Tweet {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime dateOfCreation;
 
+    @DBRef
     private Set<Comment> comments;
 
     private Integer commentCount;

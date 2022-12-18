@@ -23,16 +23,19 @@
   float: right;
 }
 
-button {
-  border-radius: 0;
+.compose-tweet-form {
+  width: 100%;
+  height: 145px;
+  font-weight: 100;
+  margin-bottom: -0.79rem;
+}
+
+.textarea-label {
+  font-weight: 100;
 }
 
 textarea {
-  resize: none;
-  font-size: 15px;
-  font-weight: 100;
-  width: 100%;
-  height: 75px !important;
+  height: 70px !important;
 }
 
 .hint {
@@ -40,6 +43,10 @@ textarea {
   align-items: flex-end;
   flex-direction: column;
   font-weight: 100;
+}
+
+button {
+  border-radius: 0;
 }
 
 .tweet-button {

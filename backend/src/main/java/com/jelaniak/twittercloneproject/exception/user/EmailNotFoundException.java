@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.user;
 
 public class EmailNotFoundException extends Exception {
     public EmailNotFoundException() {

@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.comment;
 
 public class ConfirmationTokenExpiredException extends Exception {
     public ConfirmationTokenExpiredException() {

@@ -8,4 +8,6 @@ import { TweetService } from '../../../../core/services/tweet/tweet.service';
 })
 export class TweetTimelineComponent {
   constructor(public tweetService: TweetService) {}
+
+  // TODO: Cache tweets of current user and followed users here, sorted by date
 }

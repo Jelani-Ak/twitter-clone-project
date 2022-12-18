@@ -1,8 +1,8 @@
 <div class="tweet-container">
   <div class="details-container">    
     <div class="details" [ngClass]="!showViewTweet() ? 'fill-details' : 'details' ">
-      <p class="username">Username</p> <!-- TODO: Replace with username in data -->
-      <p class="handle">@UsernameHandle</p> <!-- TODO: Replace with usernamehandle in data -->
+      <p class="username">{{ tweetAuthor.username }}</p>
+      <p class="handle">{{ tweetAuthor.userHandleName }}</p>
       <span class="spacer"></span>
       <p class="date">{{ tweet.dateOfCreation }}</p>
       <mat-icon>more_vert</mat-icon>

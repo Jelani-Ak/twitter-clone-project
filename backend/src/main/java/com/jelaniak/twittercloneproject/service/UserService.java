@@ -2,8 +2,8 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.dto.request.SignUpRequestDTO;
 import com.jelaniak.twittercloneproject.email.EmailSender;
-import com.jelaniak.twittercloneproject.exception.UserAlreadyExistsException;
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserAlreadyExistsException;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.Role;
 import com.jelaniak.twittercloneproject.model.User;
@@ -48,9 +48,10 @@ public class UserService {
         this.confirmationTokenService = confirmationTokenService;
     }
 
-    public User findByUserId(ObjectId userId) throws UserIdNotFoundException {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserIdNotFoundException("Id of " + userId + " was not found"));
+    public User findByUserId(ObjectId userId) throws UserNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User by Id: [" + userId + "] was not found"));
+        return user;
     }
 
     public void signUp(SignUpRequestDTO registerRequest) throws UserAlreadyExistsException {
@@ -96,8 +97,8 @@ public class UserService {
         user.setUsername(signUpRequest.getUsername());
         user.setPassword(bCryptPasswordEncoder.encode(signUpRequest.getPassword()));
         user.setEmail(signUpRequest.getEmail());
-//        user.setDisplayName(user.getUsername()); // TODO: 12/12/2022 - Move to UserProfileService
-//        user.setUserHandleName("@" + user.getUsername()); // TODO: 12/12/2022 - Move to UserProfileService
+//        user.setDisplayName(user.getUsername()); // TODO: 12/12/2022 - Move to UserProfileService ( Coalesce with username )
+        user.setUserHandleName("@" + user.getUsername()); // TODO: 12/12/2022 - Add to UserProfileService
 //        user.setBioLocation(user.getBioLocation()); // TODO: 12/12/2022 - Move to UserProfileService
 //        user.setBioExternalLink(user.getBioExternalLink()); // TODO: 12/12/2022 - Move to UserProfileService
 //        user.setBioAboutText(user.getBioAboutText()); // TODO: 12/12/2022 - Move to UserProfileService

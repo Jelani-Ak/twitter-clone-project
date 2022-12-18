@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.controller;
 
-import com.jelaniak.twittercloneproject.exception.UserIdNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.service.UserProfileService;
 import org.bson.types.ObjectId;
@@ -24,7 +24,7 @@ public class UserProfileController {
     @RequestMapping(
             value = "/delete/{id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserIdNotFoundException {
+    public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserNotFoundException {
         return new ResponseEntity<>(userProfileService.deleteUser(id), HttpStatus.OK);
     }
 
@@ -33,7 +33,7 @@ public class UserProfileController {
             method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(
             @PathVariable("id") ObjectId id,
-            @RequestBody User user) throws UserIdNotFoundException {
+            @RequestBody User user) throws UserNotFoundException {
         return new ResponseEntity<>(userProfileService.updateUser(id, user), HttpStatus.ACCEPTED);
     }
 }

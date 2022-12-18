@@ -1,4 +1,4 @@
-package com.jelaniak.twittercloneproject.exception;
+package com.jelaniak.twittercloneproject.exception.tweet;
 
 public class TweetNotFoundException extends Exception {
     public TweetNotFoundException() {

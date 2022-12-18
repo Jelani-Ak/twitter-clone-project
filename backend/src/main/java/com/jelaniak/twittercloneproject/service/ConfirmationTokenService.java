@@ -1,6 +1,6 @@
 package com.jelaniak.twittercloneproject.service;
 
-import com.jelaniak.twittercloneproject.exception.ConfirmationTokenNotFoundException;
+import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.repository.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
