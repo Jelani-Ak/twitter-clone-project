@@ -16,9 +16,8 @@
 }
 
 .icon-and-text {
-  width: 100%;
   display: flex;
-  margin-left: 10px;
+  margin-left: 30px;
   align-items: center;
   justify-content: flex-start;
 }
@@ -45,8 +44,8 @@
 
 @media screen and (max-width: 760px) {
   .icon-and-text {
-    align-items: center;
     margin: 0;
+    align-items: center;
     justify-content: center;
   }
 

@@ -36,8 +36,6 @@ export class ComposeTweetComponent implements OnInit {
     private dialogRef: MatDialogRef<ComposeTweetComponent>
   ) {}
 
-  public ngDoCheck(): void {} // Needed for ngOnInit?
-
   public ngOnInit(): void {
     this.initialiseTweetData();
     this.initialiseTweetAuthor();
@@ -47,8 +45,8 @@ export class ComposeTweetComponent implements OnInit {
   // Prepare tweet and comment for creation
   private initialiseTweetData() {
     const tweet: boolean = this.data.tweetType == TweetType.TWEET;
-    const onHomepage: boolean = this.router.url == '/home';
-    if (tweet || onHomepage) {
+    const tweetHomepage: boolean = this.router.url == '/home' && tweet;
+    if (tweet || tweetHomepage) {
       this.tweet = new Tweet();
       this.tweet.userId = this.currentUser.id;
       this.tweet.tweetType = TweetType.TWEET;
@@ -56,7 +54,8 @@ export class ComposeTweetComponent implements OnInit {
     }
 
     const comment: boolean = this.data.tweetType == TweetType.COMMENT;
-    if (comment) {
+    const commentHomepage: boolean = this.router.url == '/home' && comment;
+    if (comment || commentHomepage) {
       this.tweet = new Comment();
       this.tweet.userId = this.currentUser.id;
       this.tweet.tweetType = TweetType.COMMENT;
@@ -66,22 +65,32 @@ export class ComposeTweetComponent implements OnInit {
 
   // Additional preparation for comment creation
   private initializeParentTweetId() {
-    const notAComment = !this.data && this.data.tweetType != TweetType.COMMENT;
+    const notAComment: boolean =
+      !this.data && this.data.tweetType != TweetType.COMMENT;
     if (notAComment) {
       return;
     }
 
-    this.activatedRoute.queryParams.subscribe({
-      next: (queryParams: Params) => {
-        this.tweet.parentTweetId = queryParams['tweetId'];
-      },
-      complete: () => {
-        console.log('Initialised parent Tweet ID');
-      },
-      error: () => {
-        console.error('Failed to set parent tweet ID');
-      },
-    });
+    const onHomepage: boolean = this.router.url == '/home';
+    const creatingComment: boolean = Object.keys(this.data).length > 0;
+    if (onHomepage && creatingComment) {
+      this.tweet.parentTweetId = this.data.tweet.tweetId;
+    }
+
+    const viewingTweet: boolean = this.router.url.split('/')[1] == 'tweet';
+    if (viewingTweet) {
+      this.activatedRoute.queryParams.subscribe({
+        next: (queryParams: Params) => {
+          this.tweet.parentTweetId = queryParams['tweetId'];
+        },
+        complete: () => {
+          console.log('Initialised parent Tweet ID');
+        },
+        error: () => {
+          console.error('Failed to set parent tweet ID');
+        },
+      });
+    }
   }
 
   // Prepare the template information
@@ -199,9 +208,6 @@ export class ComposeTweetComponent implements OnInit {
       return;
     }
   }
-
-  // TODO: Commenting from the homepage does not work.
-  // Only make it possible when vieweing the tweet?
 
   private createTweetFromRemote() {
     this.tweetService.createTweetFromRemote(this.tweet).subscribe({

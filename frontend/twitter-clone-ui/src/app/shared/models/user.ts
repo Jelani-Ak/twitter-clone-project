@@ -1,5 +1,10 @@
 import { Tweet } from './tweet';
 
+export type UserInformation = {
+  username: string;
+  userHandleName: string;
+};
+
 export class User {
   userId!: string;
   username!: string;
@@ -11,7 +16,7 @@ export class User {
   biobioAboutTextText?: string;
   bioLocation?: string;
   bioExternalLink?: string;
-  
+
   roles!: Array<string>;
 
   dateOfCreation!: string;

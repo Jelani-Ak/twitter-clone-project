@@ -9,7 +9,7 @@ import { StorageService } from 'src/app/core/services/storage/storage.service';
   templateUrl: './user-management-button.component.html',
   styleUrls: ['./user-management-button.component.css'],
 })
-export class UserManagementButtonComponent {
+export class UserManagementButtonComponent implements OnInit {
   @Input() public text: string = '';
 
   constructor(
@@ -18,6 +18,13 @@ export class UserManagementButtonComponent {
     private snackbarService: SnackbarService,
     private authenticationService: AuthenticationService
   ) {}
+
+  public ngOnInit(): void {
+    const twitterCloneButton = this.text == 'Twitter Clone'
+    if (twitterCloneButton) {
+      document.getElementById('user-management-button')!.style.fontSize = '17.5px';
+    }
+  }
 
   public navigate() {
     const location = this.text;

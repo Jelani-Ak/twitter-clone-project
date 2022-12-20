@@ -48,6 +48,7 @@ export class TweetComponent implements OnChanges {
       if (tweetAuthorLoaded) {
         return;
       }
+      
       this.initialiseTweetAuthor();
     }
   }
@@ -196,7 +197,7 @@ export class TweetComponent implements OnChanges {
   }
 
   public showViewTweet() {
-    const viewingTweet = this.router.url.split('/')[1] == 'tweet';
+    const viewingTweet: boolean = this.router.url.split('/')[1] == 'tweet';
     if (viewingTweet) {
       return false;
     }

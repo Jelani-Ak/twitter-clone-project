@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
@@ -6,7 +6,9 @@ import {
   CommentDTO,
   TweetService,
 } from 'src/app/core/services/tweet/tweet.service';
+import { UserService } from 'src/app/core/services/user/user.service';
 import { Comment, TweetType } from 'src/app/shared/models/tweet';
+import { User } from 'src/app/shared/models/user';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 
 export type CommentIndex = {
@@ -19,10 +21,12 @@ export type CommentIndex = {
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.css'],
 })
-export class CommentComponent {
+export class CommentComponent implements OnChanges {
   @Input() public comment: Comment = new Comment();
   @Output() public deleteCommentEmit = new EventEmitter<CommentIndex>();
   @Output('decrement-comment') public decrementCommentEmit = new EventEmitter<number>();
+
+  public commentAuthor: User = new User();
 
   public dialogOpen: boolean = false;
   public imageLoaded: boolean = false;
@@ -30,10 +34,37 @@ export class CommentComponent {
 
   constructor(
     private dialog: MatDialog,
+    private userService: UserService,
     private tweetService: TweetService,
     private mediaService: MediaService,
     private snackbarService: SnackbarService
   ) {}
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    const tweetLoaded = Object.keys(this.comment).length > 0;
+    if (tweetLoaded) {
+      const tweetAuthorLoaded = Object.keys(this.commentAuthor).length > 0;
+      if (tweetAuthorLoaded) {
+        return;
+      }
+      
+      this.initialiseCommentAuthor();
+    }
+  }
+
+  private initialiseCommentAuthor() {
+    this.userService.findByUserId(this.comment.userId).subscribe({
+      next: (user) => {
+        this.commentAuthor = user;
+      },
+      complete: () => {
+        console.log('Tweet author data loaded');
+      },
+      error: (error) => {
+        console.error('Failed to retrieve tweet author data', error);
+      },
+    });
+  }
 
   public isAcceptableImage(commentMediaType: string | undefined) {
     if (commentMediaType == 'image/png' || 'image/jpg') {
