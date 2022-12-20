@@ -41,10 +41,10 @@ export class CommentComponent implements OnChanges {
   ) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
-    const tweetLoaded = Object.keys(this.comment).length > 0;
-    if (tweetLoaded) {
-      const tweetAuthorLoaded = Object.keys(this.commentAuthor).length > 0;
-      if (tweetAuthorLoaded) {
+    const commentLoaded = Object.keys(this.comment).length > 0;
+    if (commentLoaded) {
+      const commentAuthorLoaded = Object.keys(this.commentAuthor).length > 0;
+      if (commentAuthorLoaded) {
         return;
       }
       
