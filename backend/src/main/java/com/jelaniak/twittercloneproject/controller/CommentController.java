@@ -3,6 +3,7 @@ package com.jelaniak.twittercloneproject.controller;
 import com.jelaniak.twittercloneproject.dto.request.CommentDeleteDTO;
 import com.jelaniak.twittercloneproject.exception.comment.CommentNotFoundException;
 import com.jelaniak.twittercloneproject.exception.tweet.TweetNotFoundException;
+import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.Comment;
 import com.jelaniak.twittercloneproject.service.TweetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class CommentController {
     @RequestMapping(
             value = "/delete-comment",
             method = RequestMethod.DELETE)
-    public void deleteComment(@RequestBody CommentDeleteDTO data) throws TweetNotFoundException {
+    public void deleteComment(@RequestBody CommentDeleteDTO data) throws TweetNotFoundException, UserNotFoundException {
         tweetService.deleteComment(data);
     }
 }

@@ -21,10 +21,12 @@ export type CommentDTO = {
 export type CommentDeleteDTO = {
   parentTweetId: string;
   commentId: string;
+  userId: string;
 };
 
 export type TweetDeleteDTO = {
   tweetId: string;
+  userId: string;
 }
 
 @Injectable({
@@ -65,7 +67,8 @@ export class TweetService {
   public buildTweetDTO(tweet: Tweet): TweetDTO {
     const tweetDTO: TweetDTO = {
       tweetDeleteDTO: {
-        tweetId: tweet.tweetId
+        tweetId: tweet.tweetId,
+        userId: tweet.userId
       },
       mediaData: {
         mediaId: tweet.media?.mediaId,
@@ -81,6 +84,7 @@ export class TweetService {
       commentDeleteDTO: {
         parentTweetId: comment.parentTweetId,
         commentId: comment.commentId,
+        userId: comment.userId
       },
       mediaData: {
         mediaId: comment.media?.mediaId,

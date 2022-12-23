@@ -11,8 +11,7 @@ import com.jelaniak.twittercloneproject.model.User;
 import com.jelaniak.twittercloneproject.repository.UserRepository;
 import com.jelaniak.twittercloneproject.security.jwt.JwtUtils;
 import com.jelaniak.twittercloneproject.service.security.UserDetailsImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,11 +24,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 public class AuthenticationService {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(AuthenticationService.class);
-
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
@@ -93,16 +90,16 @@ public class AuthenticationService {
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            LOGGER.error("Failed to confirm token. Token expired");
+            log.error("Failed to confirm token. Token expired");
             throw new ConfirmationTokenExpiredException("Token expired");
         }
 
         try {
             confirmationTokenService.updateConfirmedAt(confirmationToken.getToken());
             enableUser(confirmationToken.getUser().getEmail());
-            LOGGER.info("Successfully confirmed token");
+            log.info("Successfully confirmed token");
         } catch (Exception e) {
-            LOGGER.error("Failed to confirm token. Reason unknown");
+            log.error("Failed to confirm token. Reason unknown");
             throw new RuntimeException(e);
         }
 

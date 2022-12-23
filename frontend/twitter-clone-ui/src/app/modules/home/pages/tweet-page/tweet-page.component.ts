@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { Tweet, Comment } from 'src/app/shared/models/tweet';
 
@@ -19,7 +19,7 @@ export class TweetPageComponent {
   selectedItem!: string;
 
   constructor(
-    private location: Location,
+    private router: Router,
     private tweetService: TweetService,
     private activatedRoute: ActivatedRoute
   ) {
@@ -32,9 +32,8 @@ export class TweetPageComponent {
     this.tweet.commentCount -= event.detail;
   }
 
-  // TODO: Last page reference is lost on page refresh
-  public goBack() {
-    this.location.back();
+  public goHome() {
+    this.router.navigate(['home']);
   }
 
   // TODO: Implement comment sorting

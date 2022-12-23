@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <form class="form-container" #RegisterForm="ngForm" (ngSubmit)="create()">
+  <form class="form-container" (ngSubmit)="create()">
     <mat-form-field appearance="fill" class="compose-tweet-form">
       <mat-label class="textarea-label">
         {{ data.textAreaLabel ?? "Compose Tweet" }}
@@ -47,29 +47,29 @@
         <label for="file-upload" class="custom-file-upload"></label>
       </button>
       <input
-        id="file-upload"
         #FileName
-        (change)="onFileSelected($event)"
         type="file"
+        id="file-upload"
+        (change)="onFileSelected($event)"
       />
 
       <div class="filename">
         {{ FileName.value.replace("C:\\fakepath\\", "") }}
       </div>
 
-      <mat-icon
+      <div
         *ngIf="FileName.value"
         class="remove-file"
         (click)="cancel(FileName)"
       >
-        cancel
-      </mat-icon>
+        <mat-icon>cancel</mat-icon>
+      </div>
 
       <button
         [disabled]="disableSubmitButton()"
-        class="tweet-button compose-tweet-button"
         mat-button
         type="submit"
+        class="tweet-button compose-tweet-button"
       >
         Create
       </button>

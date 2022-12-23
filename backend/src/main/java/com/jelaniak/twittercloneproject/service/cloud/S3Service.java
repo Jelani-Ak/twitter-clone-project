@@ -4,8 +4,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Deprecated
 @RequiredArgsConstructor
@@ -22,8 +22,6 @@ public class S3Service {
 
     private final AmazonS3Client awsS3Client;
     private final String BUCKET_NAME = "twitter-clone-tut";
-
-    private static final Logger logger = LoggerFactory.getLogger(S3Service.class);
 
     public String uploadS3Media(MultipartFile file) {
 
@@ -40,10 +38,10 @@ public class S3Service {
 
         try {
             awsS3Client.putObject(BUCKET_NAME, key, file.getInputStream(), metadata);
-            logger.info("Successfully uploaded file, '" + key + "'");
+            log.info("Successfully uploaded file, '" + key + "'");
         } catch (Exception exception) {
             String errorMessage = "Error occurred uploading the file";
-            logger.error(errorMessage, exception);
+            log.error(errorMessage, exception);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     errorMessage, exception);
         }

@@ -3,39 +3,39 @@ package com.jelaniak.twittercloneproject.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.SingletonManager;
 import com.cloudinary.utils.ObjectUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @Component
 @PropertySource("classpath:cloudinary.properties")
 public class CloudinaryConfig {
+    private final String API_KEY;
+    private final String CLOUD_NAME;
+    private final String API_SECRET_KEY;
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(CloudinaryConfig.class);
-
-    @Value("${CLOUD_NAME}")
-    private String CLOUD_NAME;
-
-    @Value("${API_KEY}")
-    private String API_KEY;
-
-    @Value("${API_SECRET_KEY}")
-    private String API_SECRET_KEY;
+    public CloudinaryConfig(
+            @Value("${API_KEY}") String API_KEY,
+            @Value("${CLOUD_NAME}") String CLOUD_NAME,
+            @Value("${API_SECRET_KEY}") String API_SECRET_KEY) {
+        this.API_KEY = API_KEY;
+        this.CLOUD_NAME = CLOUD_NAME;
+        this.API_SECRET_KEY = API_SECRET_KEY;
+    }
 
     @PostConstruct
     public void setup() {
-        LOGGER.info("Starting Cloudinary..");
+        log.info("Starting Cloudinary..");
 
         try {
             Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                    "cloud_name", getCLOUD_NAME(),
-                    "api_key", getAPI_KEY(),
-                    "api_secret", getAPI_SECRET_KEY(),
+                    "api_key", this.API_KEY,
+                    "cloud_name", this.CLOUD_NAME,
+                    "api_secret", this.API_SECRET_KEY,
                     "secure", true
             ));
 
@@ -43,22 +43,10 @@ public class CloudinaryConfig {
             manager.setCloudinary(cloudinary);
             manager.init();
 
-            LOGGER.info("Cloudinary started successfully");
+            log.info("Cloudinary started successfully");
         } catch (Exception error) {
-            LOGGER.warn("Failed to setup Cloudinary", error);
+            log.warn("Failed to setup Cloudinary", error);
             throw new RuntimeException(error);
         }
-    }
-
-    private String getCLOUD_NAME() {
-        return CLOUD_NAME;
-    }
-
-    private String getAPI_KEY() {
-        return API_KEY;
-    }
-
-    private String getAPI_SECRET_KEY() {
-        return API_SECRET_KEY;
     }
 }

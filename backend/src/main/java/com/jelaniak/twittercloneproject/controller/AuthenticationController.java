@@ -31,7 +31,7 @@ public class AuthenticationController {
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO signUpRequest) throws UserAlreadyExistsException {
         userService.signUp(signUpRequest);
-        return new ResponseEntity<>("Registration successful", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/sign-in", method = RequestMethod.POST)

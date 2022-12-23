@@ -110,7 +110,9 @@ public class UserService {
         user.setUsersFollowingYou(new HashSet<>());
         user.setMutualFollowers(new HashSet<>());
         user.setTweets(new HashSet<>());
+        user.setComments(new HashSet<>());
         user.setTweetCount(0);
+        user.setCommentCount(0);
         user.setTweetQuoteCount(0);
         user.setFollowing(false);
         user.setVerified(false);

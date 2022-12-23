@@ -1,9 +1,8 @@
 package com.jelaniak.twittercloneproject.security.jwt;
 
 import com.jelaniak.twittercloneproject.service.security.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,16 +20,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @NoArgsConstructor
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
     private JwtUtils jwtUtils;
-
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationTokenFilter.class);
+    @Autowired
+    public AuthenticationTokenFilter(
+            JwtUtils jwtUtils,
+            UserDetailsServiceImpl userDetailsService
+    ) {
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
@@ -48,7 +52,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            log.error("Cannot set user authentication: {}", e);
         }
 
         filterChain.doFilter(request, response);

@@ -196,6 +196,12 @@ export class TweetComponent implements OnChanges {
     });
   }
 
+  public goToProfile(userId: string, username: string) {
+    this.router.navigate([`/profile/${username}`], {
+      queryParams: { userId: userId },
+    });
+  }
+
   public showViewTweet() {
     const viewingTweet: boolean = this.router.url.split('/')[1] == 'tweet';
     if (viewingTweet) {

@@ -3,7 +3,8 @@ package com.jelaniak.twittercloneproject.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -15,10 +16,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @Document(value = "User")
 public class User {
@@ -49,15 +47,23 @@ public class User {
     private String pictureAvatarUrl;
     private String pictureBackgroundUrl;
 
+    @DBRef
     private Set<User> usersYouFollow; //TODO: Create new Model, 'FollowedUsers'
+    @DBRef
     private Set<User> usersFollowingYou; // TODO: Create new Model, 'UsersFollowing'
+    @DBRef
     private Set<User> mutualFollowers; // TODO: Create new Model, 'MutualFollowers'
 
     @DBRef
     private Set<Tweet> tweets;
+    @DBRef
+    private Set<Tweet> likedTweets;
+    @DBRef
+    private Set<Comment> comments;
 
-    private Integer tweetCount;
-    private Integer tweetQuoteCount;
+    private int tweetCount;
+    private int commentCount;
+    private int tweetQuoteCount;
 
     private boolean following;
     private boolean verified;

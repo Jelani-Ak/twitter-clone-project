@@ -1,0 +1,123 @@
+.back-navigation {
+  cursor: pointer;
+  display: flex;
+}
+
+.context {
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.context-icon,
+.context-icon-and-text {
+  display: flex;
+  align-items: center;
+}
+
+.context-icon {
+  padding-right: 10px;
+  height: 20px;
+}
+
+.profile-header {
+  padding: 10px;
+  background-color: #eee;
+}
+
+div.profile-header > img.background-image {
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
+  padding-bottom: 5px;
+}
+
+div.profile-header > .header-bottom > img.profile-image {
+  width: 200px;
+  height: 200px;
+  /* margin-left: 10px; */
+  margin-top: -100px;
+  transform-origin: top left;
+}
+
+.header-bottom {
+  display: flex;
+  background-color: #ddd;
+  justify-content: space-between;
+}
+
+.names {
+  display: grid;
+  padding-left: 10px;
+  height: fit-content;
+}
+
+.username {
+  font-size: 23.5px;
+}
+
+.username,
+.user-handle-name {
+  font-weight: 100;
+}
+
+.follow-and-more-button {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile-buttons {
+  display: flex;
+  padding: 10px 0;
+  justify-content: flex-end;
+}
+
+.profile-action-button {
+  padding-left: 10px;
+}
+
+.profile-action-button:first-child {
+  padding-left: 0;
+}
+
+.user-information {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #EEE;
+}
+
+.about-text,
+.location-link-join-date,
+.follow-information {
+  padding: 10px;
+  background-color: #DDD;
+}
+
+.location-link-join-date {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-icons {
+  padding-right: 5px;
+}
+
+.location,
+.link,
+.join-date {
+  display: flex;
+  align-items: center;
+}
+
+.follow-information {
+  display: flex;
+}
+
+.tweet-container {
+  padding: 10px 0;
+}

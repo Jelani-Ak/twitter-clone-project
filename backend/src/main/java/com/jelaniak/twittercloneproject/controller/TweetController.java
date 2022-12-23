@@ -3,6 +3,7 @@ package com.jelaniak.twittercloneproject.controller;
 import java.util.List;
 
 import com.jelaniak.twittercloneproject.dto.request.TweetDeleteDTO;
+import com.jelaniak.twittercloneproject.exception.tweet.TweetNotFoundException;
 import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class TweetController {
     @RequestMapping(
             value = "/delete-tweet",
             method = RequestMethod.DELETE)
-    public void deleteTweet(@RequestBody TweetDeleteDTO data) {
+    public void deleteTweet(@RequestBody TweetDeleteDTO data) throws UserNotFoundException, TweetNotFoundException {
         tweetService.deleteTweet(data);
     }
 

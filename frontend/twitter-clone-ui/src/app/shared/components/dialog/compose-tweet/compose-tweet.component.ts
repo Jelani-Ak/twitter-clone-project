@@ -45,7 +45,7 @@ export class ComposeTweetComponent implements OnInit {
   // Prepare tweet and comment for creation
   private initialiseTweetData() {
     const tweet: boolean = this.data.tweetType == TweetType.TWEET;
-    const tweetHomepage: boolean = this.router.url == '/home' && tweet;
+    const tweetHomepage: boolean = this.router.url == '/home';
     if (tweet || tweetHomepage) {
       this.tweet = new Tweet();
       this.tweet.userId = this.currentUser.id;
@@ -93,7 +93,7 @@ export class ComposeTweetComponent implements OnInit {
     }
   }
 
-  // Prepare the template information
+  // Prepare the HTML template information
   private initialiseTweetAuthor() {
     const tweetType = this.data?.tweetType == TweetType.TWEET;
     const comment = this.data?.tweet?.userId;

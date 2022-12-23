@@ -13,11 +13,11 @@ export class User {
   email!: string;
   displayName?: string;
   userHandleName?: string;
-  biobioAboutTextText?: string;
+  biobioAboutText?: string;
   bioLocation?: string;
   bioExternalLink?: string;
 
-  roles!: Array<string>;
+  roles!: Set<string>;
 
   dateOfCreation!: string;
   pictureAvatarUrl?: string;
@@ -26,9 +26,11 @@ export class User {
   usersYouFollow?: Set<User>;
   usersFollowingYou?: Set<User>;
   mutualFollowers?: Set<User>;
-  tweets?: Set<Tweet>;
+  tweets!: Set<Tweet>;
+  comments!: Set<Comment>;
 
-  tweetCount?: number;
+  tweetCount!: number;
+  commentCount!: number;
   tweetQuoteCount?: number;
 
   following?: boolean;

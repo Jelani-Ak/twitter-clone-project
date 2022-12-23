@@ -1,1 +1,81 @@
-<p>profile works!</p>
+<div class="title-container back-navigation" (click)="goHome()">
+  <div class="context">
+    <p>
+      {{ user.username }}, {{ user.tweetCount + user.commentCount }}
+      {{ user.tweetCount + user.commentCount == 1 ? "Tweet" : "Tweets" }}
+    </p>
+    <div class="context-icon-and-text">
+      <mat-icon class="context-icon">arrow_back</mat-icon>
+      <p class="context-text">Return</p>
+    </div>
+  </div>
+</div>
+
+<div class="profile-page-container">
+  <div class="profile-header">
+    <img
+      class="background-image"
+      src="{{ placeholderBackgroundImage }}"
+      onerror="this.style.display='none'"
+    />
+    <div class="header-bottom">
+      <img
+        class="profile-image"
+        src="{{ placeholderProfileImage }}"
+        onerror="this.style.display='none'"
+      />
+      <div class="follow-and-more-button">
+        <div class="names">
+          <p class="username">{{ user.username }}</p>
+          <p class="user-handle-name">{{ user.userHandleName }}</p>
+        </div>
+
+        <!-- TODO: Put follow count here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-buttons">
+    <app-generic-button class="profile-action-button" [text]="'Edit'">
+    </app-generic-button>
+
+    <app-generic-button class="profile-action-button" [text]="'Follow'">
+    </app-generic-button>
+  </div>
+
+  <div class="user-information">
+    <p class="about-text">{{ user.biobioAboutText }}</p>
+    <div class="location-link-join-date">
+      <div class="location">
+        <mat-icon class="profile-icons">location_on</mat-icon>
+        <p>{{ user.bioLocation }}</p>
+      </div>
+      <div class="link">
+        <mat-icon class="profile-icons">{{ user.bioExternalLink }}</mat-icon>
+        <p>Link</p>
+      </div>
+      <div class="join-date">
+        <mat-icon class="profile-icons">calendar_today</mat-icon>
+        <p>{{ user.dateOfCreation }}</p>
+      </div>
+    </div>
+
+    <div class="follow-information">
+      <p>Following {{ user.usersYouFollow?.size }}</p>
+      <p>Followers {{ user.usersFollowingYou?.size }}</p>
+    </div>
+  </div>
+
+  <br />
+
+  <mat-tab-group>
+    <mat-tab label="Tweets">
+      <div class="tweet-container" *ngFor="let tweet of tweetsAndRetweets">
+        <app-tweet [tweet]="tweet"></app-tweet>
+      </div>
+    </mat-tab>
+    <mat-tab label="Tweets & Replies">Content 2</mat-tab>
+    <mat-tab label="Media">Content 3</mat-tab>
+    <mat-tab label="Likes">Content 4</mat-tab>
+  </mat-tab-group>
+</div>
