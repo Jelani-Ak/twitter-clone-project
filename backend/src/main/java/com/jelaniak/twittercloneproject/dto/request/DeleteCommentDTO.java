@@ -4,7 +4,8 @@ import lombok.Data;
 import org.bson.types.ObjectId;
 
 @Data
-public class LikeTweetDTO {
-    private ObjectId tweetId;
+public class DeleteCommentDTO {
+    private ObjectId parentTweetId;
+    private ObjectId commentId;
     private ObjectId userId;
 }

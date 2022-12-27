@@ -30,15 +30,16 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     public AuthenticationTokenFilter(
             JwtUtils jwtUtils,
-            UserDetailsServiceImpl userDetailsService
-    ) {
+            UserDetailsServiceImpl userDetailsService) {
         this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
     }
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {

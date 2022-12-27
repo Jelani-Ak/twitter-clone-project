@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ConfirmationTokenService {
@@ -38,5 +39,9 @@ public class ConfirmationTokenService {
         ConfirmationToken foundToken = getToken(token);
 
         confirmationTokenRepository.delete(foundToken);
+    }
+
+    public List<ConfirmationToken> findAll() {
+        return confirmationTokenRepository.findAll();
     }
 }

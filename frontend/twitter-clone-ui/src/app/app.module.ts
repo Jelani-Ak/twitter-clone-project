@@ -49,6 +49,7 @@ import { CommentTimelineComponent } from './shared/components/center-panel/comme
 import { ConfirmationDialogComponent } from './shared/components/dialog/confirmation-dialog/confirmation-dialog.component';
 import { GenericButtonComponent } from './shared/components/button/generic-button/generic-button.component';
 import { httpInterceptorProviders } from './core/interceptors/http-request/http-request.interceptor';
+import { EditProfileComponent } from './shared/components/dialog/edit-profile/edit-profile.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { httpInterceptorProviders } from './core/interceptors/http-request/http-
     CommentTimelineComponent,
     ConfirmationDialogComponent,
     GenericButtonComponent,
+    EditProfileComponent,
   ],
   imports: [
     BrowserModule,

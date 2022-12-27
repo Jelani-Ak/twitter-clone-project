@@ -18,16 +18,19 @@ public class MediaService {
     private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public MediaService(CloudinaryService cloudinaryService, MediaRepository mediaRepository) {
-        this.cloudinaryService = cloudinaryService;
+    public MediaService(
+            MediaRepository mediaRepository,
+            CloudinaryService cloudinaryService) {
         this.mediaRepository = mediaRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public Media uploadMedia(MultipartFile multipartFile) throws IOException {
         Object mediaUrl = cloudinaryService.uploadCloudinaryMedia(multipartFile);
 
         Media media = new Media();
-        media.setMediaId(media.getMediaId());
+
+        media.setMediaId(new ObjectId());
         media.setMediaUrl(mediaUrl.toString());
         media.setMediaType(multipartFile.getContentType());
         media.setMediaKey(cloudinaryService.getPublicId());
@@ -41,7 +44,7 @@ public class MediaService {
         mediaRepository.deleteByMediaId(mediaId);
     }
 
-    public Media getMediaByID(ObjectId mediaId) {
+    public Media getMediaById(ObjectId mediaId) {
         return mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new IllegalArgumentException("Cannot find video by id: " + mediaId));
     }

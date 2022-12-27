@@ -1,0 +1,58 @@
+<mat-card class="edit-profile-container">
+  <mat-card-title>Change profile details</mat-card-title>
+  <div class="form-container">
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>Username</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="username" />
+      </mat-form-field>
+
+      <!-- TODO: Show a dialog if password contains text to confirm password change -->
+      <div class="password">
+        <mat-form-field appearance="fill" class="user-profile-form">
+          <mat-label>Password</mat-label>
+          <div class="password-input-and-icon">
+            <input matInput autocomplete="off" type="{{ inputType }}" formControlName="password">
+            <mat-icon class="show-password-icon" (click)="toggleShowPassword()">remove_red_eye</mat-icon>
+          </div>
+        </mat-form-field>        
+        <mat-icon  class="password-tooltip" matTooltip="Leave blank to keep your password the same">info</mat-icon>
+      </div>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>Email</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>Display Name</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="displayName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>Handle</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="userHandleName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>Location</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="bioLocation" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>External Link</mat-label>
+        <input matInput autocomplete="off" type="url" formControlName="bioExternalLink" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="user-profile-form">
+        <mat-label>About</mat-label>
+        <input matInput autocomplete="off" type="text" formControlName="bioAboutText" />
+      </mat-form-field>
+
+      <div class="register-container">
+        <app-generic-button class="update-button" type="submit" [text]="'Update'">
+        </app-generic-button>
+      </div>
+    </form>
+  </div>
+</mat-card>

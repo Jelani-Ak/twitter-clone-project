@@ -1,7 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { Comment, Tweet, TweetType } from 'src/app/shared/models/tweet';
+import {
+  Comment,
+  CreateTweetDTO,
+  Tweet,
+  TweetType,
+} from 'src/app/shared/models/tweet';
 import { TweetService } from '../../../../core/services/tweet/tweet.service';
-import { MediaService } from 'src/app/core/services/media/media.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -29,7 +33,6 @@ export class ComposeTweetComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private tweetService: TweetService,
-    private mediaService: MediaService,
     private storageService: StorageService,
     private activatedRoute: ActivatedRoute,
     private snackbarService: SnackbarService,
@@ -44,15 +47,6 @@ export class ComposeTweetComponent implements OnInit {
 
   // Prepare tweet and comment for creation
   private initialiseTweetData() {
-    const tweet: boolean = this.data.tweetType == TweetType.TWEET;
-    const tweetHomepage: boolean = this.router.url == '/home';
-    if (tweet || tweetHomepage) {
-      this.tweet = new Tweet();
-      this.tweet.userId = this.currentUser.id;
-      this.tweet.tweetType = TweetType.TWEET;
-      return;
-    }
-
     const comment: boolean = this.data.tweetType == TweetType.COMMENT;
     const commentHomepage: boolean = this.router.url == '/home' && comment;
     if (comment || commentHomepage) {
@@ -61,20 +55,55 @@ export class ComposeTweetComponent implements OnInit {
       this.tweet.tweetType = TweetType.COMMENT;
       return;
     }
+
+    const tweet: boolean = this.data.tweetType == TweetType.TWEET;
+    const tweetHomepage: boolean = this.router.url == '/home';
+    if (tweet || tweetHomepage) {
+      this.tweet = new Tweet();
+      this.tweet.userId = this.currentUser.id;
+      this.tweet.tweetType = TweetType.TWEET;
+      return;
+    }
+  }
+
+  // Prepare the HTML template information
+  private initialiseTweetAuthor() {
+    const isTweet = this.data?.tweetType == TweetType.TWEET;
+    const prepareComment = this.data?.tweet?.userId;
+    const prepareTweet = this.tweet.userId;
+
+    if (prepareComment == undefined || prepareTweet == undefined) {
+      return;
+    }
+
+    const userId = isTweet ? prepareTweet : prepareComment;
+
+    this.userService.findByUserId(userId).subscribe({
+      next: (user) => {
+        this.tweetAuthor = user;
+      },
+      complete: () => {
+        console.log('Tweet author data loaded');
+      },
+      error: (error) => {
+        console.error('Failed to retrieve tweet author data', error);
+      },
+    });
   }
 
   // Additional preparation for comment creation
   private initializeParentTweetId() {
-    const notAComment: boolean =
-      !this.data && this.data.tweetType != TweetType.COMMENT;
+    const notAComment: boolean = this.data.tweetType != TweetType.COMMENT;
     if (notAComment) {
       return;
     }
 
     const onHomepage: boolean = this.router.url == '/home';
+    const onProfile: boolean = this.router.url.split('/')[1] == 'profile';
     const creatingComment: boolean = Object.keys(this.data).length > 0;
-    if (onHomepage && creatingComment) {
+    if ((onHomepage || onProfile) && creatingComment) {
       this.tweet.parentTweetId = this.data.tweet.tweetId;
+      return;
     }
 
     const viewingTweet: boolean = this.router.url.split('/')[1] == 'tweet';
@@ -93,53 +122,38 @@ export class ComposeTweetComponent implements OnInit {
     }
   }
 
-  // Prepare the HTML template information
-  private initialiseTweetAuthor() {
-    const tweetType = this.data?.tweetType == TweetType.TWEET;
-    const comment = this.data?.tweet?.userId;
-    const tweet = this.tweet.userId;
-
-    if (comment == undefined || tweet == undefined) {
-      return;
-    }
-
-    const userId = tweetType ? tweet : comment;
-
-    this.userService.findByUserId(userId).subscribe({
-      next: (user) => {
-        this.tweetAuthor = user;
-      },
-      complete: () => {
-        console.log('Tweet author data loaded');
-      },
-      error: (error) => {
-        console.error('Failed to retrieve tweet author data', error);
-      },
-    });
-  }
-
-  public create() {
+  public create(input: any) {
     try {
-      console.log(`Creating ${this.tweet.tweetType}..`);
+      const hasNoMedia = this.selectedFile == null;
+      if (hasNoMedia) {
+        console.log(`Creating ${this.tweet.tweetType}..`);
+      } else {
+        console.log(`Creating ${this.tweet.tweetType} with Media..`);
+      }
 
-      this.createTweet();
-      this.createComment();
-      this.createTweetFromHomepage();
+      const data: CreateTweetDTO = {
+        tweet: this.tweet,
+        file: this.selectedFile,
+      };
+
+      this.createTweet(data);
 
       this.snackbarService.displayToast(
-        `${this.tweet.tweetType} Created Successfully`,
-        'Ok'
+        `${this.tweet.tweetType} Created Successfully`
       );
     } catch (error) {
       console.error(`Failed to create ${this.tweet.tweetType}`, error);
     }
+
+    this.cancel(input, true);
   }
 
   public onFileSelected(event: any) {
     this.selectedFile = <File>event.target.files[0];
   }
 
-  public cancel(input: any) {
+  public cancel(input: any, clearText: boolean) {
+    if (clearText) this.tweet.content = null;
     input.value = null;
     this.selectedFile = null;
     console.log('Selected file removed');
@@ -156,61 +170,41 @@ export class ComposeTweetComponent implements OnInit {
     return false;
   }
 
-  private createTweet() {
-    const tweet =
-      this.selectedFile == null && this.data.tweetType == TweetType.TWEET;
-    const tweetWithMedia =
-      this.selectedFile && this.data.tweetType == TweetType.TWEET;
+  public dialogIsOpen(): string {
+    return this.data.dialogOpen ? '20px' : '0';
+  }
 
+  private createTweet(data: CreateTweetDTO) {
+    const tweet = this.data.tweetType == TweetType.TWEET;
     if (tweet) {
-      this.createTweetFromRemote();
+      this.createTweetFromRemote(data);
       return;
     }
 
-    if (tweetWithMedia) {
-      this.createTweetFromRemoteWithMedia();
-      return;
-    }
-  }
-
-  private createComment() {
-    const comment =
-      this.selectedFile == null && this.data.tweetType == TweetType.COMMENT;
-    const commentWithMedia =
-      this.selectedFile && this.data.tweetType == TweetType.COMMENT;
-
+    const comment = this.data.tweetType == TweetType.COMMENT;
     if (comment) {
-      this.createCommentFromRemote();
+      this.createCommentFromRemote(data);
       return;
     }
 
-    if (commentWithMedia) {
-      this.createCommentFromRemoteWithMedia();
+    const onHomepage = this.router.url == '/home';
+    const dialogIsNotOpen = this.dialogIsNotOpen();
+    if (onHomepage && dialogIsNotOpen) {
+      this.createTweetFromRemote(data);
       return;
     }
   }
 
-  private createTweetFromHomepage() {
-    const tweet = this.selectedFile == null;
-    const tweetWithMedia = this.selectedFile != null;
-    const onHomepage = this.router.url == '/home';
+  private dialogIsNotOpen() {
     const dialogNotOpen =
       Object.keys(this.data).length === 0 &&
       Object.getPrototypeOf(this.data) === Object.prototype;
 
-    if (tweet && onHomepage && dialogNotOpen) {
-      this.createTweetFromRemote();
-      return;
-    }
-
-    if (tweetWithMedia && onHomepage && dialogNotOpen) {
-      this.createTweetFromRemoteWithMedia();
-      return;
-    }
+    return dialogNotOpen;
   }
 
-  private createTweetFromRemote() {
-    this.tweetService.createTweetFromRemote(this.tweet).subscribe({
+  private createTweetFromRemote(data: CreateTweetDTO) {
+    this.tweetService.createTweetFromRemote(data).subscribe({
       next: (tweet) => {
         this.tweetService.tweets.push(tweet);
       },
@@ -223,57 +217,16 @@ export class ComposeTweetComponent implements OnInit {
     });
   }
 
-  private createTweetFromRemoteWithMedia() {
-    this.mediaService.uploadMediaFromRemote(this.selectedFile!).subscribe({
-      next: (media) => {
-        this.tweet!.media = media;
-        this.createTweetFromRemote();
-      },
-      complete: () => {
-        console.log(`Media uploaded sucessfully to Cloudinary`);
-      },
-      error: (error) => {
-        console.error(`Failed to upload media to Cloudinary`, error);
-      },
-    });
-  }
-
-  private createCommentFromRemote() {
-    this.tweetService.createCommentFromRemote(this.tweet).subscribe({
+  private createCommentFromRemote(data: CreateTweetDTO) {
+    this.tweetService.createCommentFromRemote(data).subscribe({
       next: (comment) => {
-        const noMedia: boolean = !this.tweet!.media;
-        if (noMedia) this.closeDialog(comment);
+        this.closeDialog(comment);
       },
       complete: () => {
         console.log(`Comment created sucessfully`);
       },
       error: (error) => {
         console.error('Faled to create comment', error);
-      },
-    });
-  }
-
-  private createCommentFromRemoteWithMedia() {
-    this.mediaService.uploadMediaFromRemote(this.selectedFile!).subscribe({
-      next: (media) => {
-        this.tweet.media = media;
-        this.tweetService.createCommentFromRemote(this.tweet).subscribe({
-          next: (comment) => {
-            this.closeDialog(comment);
-          },
-          complete: () => {
-            console.log(`Comment created sucessfully`);
-          },
-          error: (error) => {
-            console.error('Faled to create comment', error);
-          },
-        });
-      },
-      complete: () => {
-        console.log(`Media uploaded sucessfully to Cloudinary`);
-      },
-      error: (error) => {
-        console.error(`Failed to upload media to Cloudinary`, error);
       },
     });
   }

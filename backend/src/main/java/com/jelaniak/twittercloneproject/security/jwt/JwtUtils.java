@@ -20,11 +20,15 @@ import java.util.Date;
 @PropertySource("classpath:jwt.properties")
 public class JwtUtils {
 
-    @Value("${twitterclone.app.jwtSecret}")
     private String jwtSecret;
+    private final int jwtExpirationMs;
 
-    @Value("${twitterclone.app.jwtExpirationMs}")
-    private int jwtExpirationMs;
+    public JwtUtils(
+            @Value("${twitterclone.app.jwtSecret}") String jwtSecret,
+            @Value("${twitterclone.app.jwtExpirationMs}") int jwtExpirationMs) {
+        this.jwtSecret = jwtSecret;
+        this.jwtExpirationMs = jwtExpirationMs;
+    }
 
     private void generateSafeKey() {
         SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -53,7 +57,7 @@ public class JwtUtils {
         try {
             Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(authToken);
             return true;
-        }  catch (SignatureException e) {
+        } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());

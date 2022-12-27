@@ -1,17 +1,19 @@
 <div class="tweet-container">
+
+  <!-- TODO: Display retweeted by name here -->
+  <!-- <div class="retweet">
+    {{ retweet.by }}
+  </div> -->
+
   <div class="details-container">    
     <div class="details" [ngClass]="!showViewTweet() ? 'fill-details' : 'details' ">
-      <p class="username" (click)="goToProfile(tweet.userId, tweetAuthor.username)">{{ tweetAuthor.username }}</p>
+      <p class="username" (click)="goToProfile()">{{ tweetAuthor.username }}</p>
       <p class="handle">{{ tweetAuthor.userHandleName }}</p>
       <span class="spacer"></span>
-      <p class="date">{{ tweet.dateOfCreation }}</p>
-      <mat-icon>more_vert</mat-icon>
+      <p class="date">{{ tweet.dateOfCreation | date:'longDate' }}</p>
+      <mat-icon *ngIf="showViewTweet()">more_vert</mat-icon>
     </div>
-    <div
-      class=" view-tweet"
-      *ngIf="showViewTweet()"
-      (click)="viewTweet(tweet.tweetId)"
-    >
+    <div class=" view-tweet" *ngIf="showViewTweet()" (click)="viewTweet()">
       <p class="context">View Tweet</p>
     </div>
   </div>
@@ -44,26 +46,21 @@
 
   <div class="metadata-container">
     <span class="metadata">
-      <span
-        class="metadata-line"
-        matTooltip="Comment"
-        matTooltipShowDelay="500"
-      >
+      <span class="metadata-line" matTooltip="Comment" matTooltipShowDelay="500">
         <mat-icon class="tweet-material-icon">chat_bubble</mat-icon>
         {{ tweet.commentCount }}
       </span>
-      <span
-        class="metadata-line"
-        matTooltip="Re-Tweet"
-        matTooltipShowDelay="500"
-      >
+      <span class="metadata-line" matTooltip="Re-Tweet" matTooltipShowDelay="500">
         <mat-icon class="tweet-material-icon">loop</mat-icon>
         {{ tweet.retweetCount }}
       </span>
-      <span class="metadata-line" matTooltip="Like" matTooltipShowDelay="500">
-        <mat-icon class="tweet-material-icon">thumb_up_alt</mat-icon>
-        {{ tweet.likeCount }}
-      </span>
+      <!-- TODO: Disable if you are the tweet author -->
+      <div (click)="likeTweet()">
+        <span class="metadata-line" matTooltip="Like" matTooltipShowDelay="500">
+          <mat-icon class="tweet-material-icon">thumb_up_alt</mat-icon>
+          {{ tweet.likeCount }}
+        </span>
+      </div>
       <span class="metadata-line" matTooltip="Share" matTooltipShowDelay="500">
         <mat-icon class="tweet-material-icon">share</mat-icon>
       </span>

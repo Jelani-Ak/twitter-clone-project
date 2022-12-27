@@ -3,8 +3,7 @@
     <p class="username">{{ commentAuthor.username }}</p>
     <p class="handle">{{ commentAuthor.userHandleName }}</p>
     <span class="spacer"></span>
-    <p class="date">{{ comment.dateOfCreation }}</p>
-    <mat-icon>more_vert</mat-icon>
+    <p class="date">{{ comment.dateOfCreation | date:'longDate' }}</p>
   </div>
 
   <div *ngIf="comment.media" class="comment-media-container">

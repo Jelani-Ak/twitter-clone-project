@@ -1,28 +1,19 @@
 package com.jelaniak.twittercloneproject.model;
 
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @Document(value = "Comment")
 public class Comment {
 
@@ -40,10 +31,12 @@ public class Comment {
     private String content;
 
     @CreatedDate
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateOfCreation;
 
-    private Integer commentCount;
+    private Integer commentCount; // TODO: 23/12/2022 - Remove?
     private Integer retweetCount;
     private Integer likeCount;
+
+    private TweetType tweetType;
 }

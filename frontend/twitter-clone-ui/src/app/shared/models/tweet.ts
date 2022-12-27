@@ -1,4 +1,30 @@
-import { Media } from './media';
+import { Media, MediaDTO } from './media';
+
+export type CreateTweetDTO = {
+  tweet: Tweet | Comment;
+  file: File | null;
+};
+
+export type TweetAndMediaDTO = {
+  tweetDTO: TweetDTO;
+  mediaDTO: MediaDTO;
+};
+
+export type CommentAndMediaDTO = {
+  commentDTO: CommentDTO;
+  mediaDTO: MediaDTO;
+};
+
+export type CommentDTO = {
+  parentTweetId: string;
+  commentId: string;
+  userId: string;
+};
+
+export type TweetDTO = {
+  tweetId: string;
+  userId: string;
+};
 
 export class Tweet {
   tweetId!: string;

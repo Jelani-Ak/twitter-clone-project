@@ -13,69 +13,117 @@
 
 <div class="profile-page-container">
   <div class="profile-header">
-    <img
-      class="background-image"
-      src="{{ placeholderBackgroundImage }}"
-      onerror="this.style.display='none'"
-    />
-    <div class="header-bottom">
+    <div class="profile-header-left">
       <img
         class="profile-image"
-        src="{{ placeholderProfileImage }}"
+        src="{{ user.pictureAvatarUrl ?? placeholderProfileImage }}"
         onerror="this.style.display='none'"
       />
-      <div class="follow-and-more-button">
+    </div>
+    <div class="profile-header-right">
+      <img
+        class="background-image"
+        src="{{ user.pictureBackgroundUrl ?? placeholderBackgroundImage }}"
+        onerror="this.style.display='none'"
+      />
+      <div class="names-and-follow-information">
         <div class="names">
           <p class="username">{{ user.username }}</p>
           <p class="user-handle-name">{{ user.userHandleName }}</p>
         </div>
 
-        <!-- TODO: Put follow count here -->
+        <div class="follow-information">
+          <div class="users-you-follow">
+            <p class="follow-text">Following</p>
+            <p class="follow-count">{{ user.usersYouFollowCount }}</p>
+          </div>
+          <div class="users-following-you">
+            <p class="follow-text">Followers</p>
+            <p class="follow-count">{{ user.usersFollowingYouCount }}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="profile-buttons">
-    <app-generic-button class="profile-action-button" [text]="'Edit'">
-    </app-generic-button>
+    <app-generic-button
+      class="profile-action-button"
+      [text]="'Edit'"
+      (click)="openEditProfile()"
+    ></app-generic-button>
 
-    <app-generic-button class="profile-action-button" [text]="'Follow'">
-    </app-generic-button>
+    <app-generic-button
+      class="profile-action-button"
+      [text]="'Follow'"
+      (click)="followUser()"
+    ></app-generic-button>
   </div>
 
   <div class="user-information">
-    <p class="about-text">{{ user.biobioAboutText }}</p>
+    <p class="about-text">{{ user.bioAboutText }}</p>
     <div class="location-link-join-date">
       <div class="location">
-        <mat-icon class="profile-icons">location_on</mat-icon>
+        <mat-icon class="profile-icons" matTooltip="Location">
+          location_on
+        </mat-icon>
         <p>{{ user.bioLocation }}</p>
       </div>
       <div class="link">
-        <mat-icon class="profile-icons">{{ user.bioExternalLink }}</mat-icon>
-        <p>Link</p>
+        <mat-icon class="profile-icons" matTooltip="External Link">
+          link
+        </mat-icon>
+        <p>{{ user.bioExternalLink }}</p>
       </div>
       <div class="join-date">
-        <mat-icon class="profile-icons">calendar_today</mat-icon>
-        <p>{{ user.dateOfCreation }}</p>
+        <mat-icon class="profile-icons" matTooltip="Join Date">
+          calendar_today
+        </mat-icon>
+        <p>Joined {{ user.dateOfCreation | date : "longDate" }}</p>
       </div>
-    </div>
-
-    <div class="follow-information">
-      <p>Following {{ user.usersYouFollow?.size }}</p>
-      <p>Followers {{ user.usersFollowingYou?.size }}</p>
     </div>
   </div>
 
   <br />
 
   <mat-tab-group>
+    <!-- TODO: Add retweet functionality -->
+    <!-- Tweets and Retweets -->
     <mat-tab label="Tweets">
       <div class="tweet-container" *ngFor="let tweet of tweetsAndRetweets">
         <app-tweet [tweet]="tweet"></app-tweet>
       </div>
     </mat-tab>
-    <mat-tab label="Tweets & Replies">Content 2</mat-tab>
-    <mat-tab label="Media">Content 3</mat-tab>
-    <mat-tab label="Likes">Content 4</mat-tab>
+
+    <!-- Tweets and Comments -->
+    <mat-tab label="Tweets & Replies">
+      <div
+        class="tweet-container"
+        *ngFor="let tweet of tweetsAndComments"
+        [ngSwitch]="tweet.tweetType"
+      >
+        <ng-template [ngSwitchCase]="'Tweet'">
+          <app-tweet [tweet]="tweet"></app-tweet>
+        </ng-template>
+
+        <ng-template [ngSwitchCase]="'Comment'">
+          <app-comment [comment]="tweet"></app-comment>
+        </ng-template>
+      </div>
+    </mat-tab>
+
+    <!-- Tweets with Media -->
+    <mat-tab label="Media">
+      <div class="tweet-container" *ngFor="let tweet of tweetsWithMedia">
+        <app-tweet [tweet]="tweet"></app-tweet>
+      </div>
+    </mat-tab>
+
+    <!-- Liked Tweets -->
+    <mat-tab label="Likes">
+      <div class="tweet-container" *ngFor="let tweet of likedTweets">
+        <app-tweet [tweet]="tweet"></app-tweet>
+      </div>
+    </mat-tab>
   </mat-tab-group>
 </div>

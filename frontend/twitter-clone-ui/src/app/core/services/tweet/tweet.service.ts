@@ -1,33 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Tweet, Comment } from 'src/app/shared/models/tweet';
-import { MediaData } from '../media/media.service';
-
-export type TweetId = {
-  tweetId: string;
-};
-
-export type TweetDTO = {
-  tweetDeleteDTO: TweetDeleteDTO;
-  mediaData: MediaData;
-};
-
-export type CommentDTO = {
-  commentDeleteDTO: CommentDeleteDTO;
-  mediaData: MediaData;
-};
-
-export type CommentDeleteDTO = {
-  parentTweetId: string;
-  commentId: string;
-  userId: string;
-};
-
-export type TweetDeleteDTO = {
-  tweetId: string;
-  userId: string;
-}
+import {
+  Tweet,
+  Comment,
+  TweetAndMediaDTO,
+  CommentAndMediaDTO,
+  CommentDTO,
+  CreateTweetDTO,
+  TweetDTO,
+} from 'src/app/shared/models/tweet';
 
 @Injectable({
   providedIn: 'root',
@@ -64,13 +46,13 @@ export class TweetService {
     });
   }
 
-  public buildTweetDTO(tweet: Tweet): TweetDTO {
-    const tweetDTO: TweetDTO = {
-      tweetDeleteDTO: {
+  public buildTweetDTO(tweet: Tweet): TweetAndMediaDTO {
+    const tweetDTO: TweetAndMediaDTO = {
+      tweetDTO: {
+        userId: tweet.userId,
         tweetId: tweet.tweetId,
-        userId: tweet.userId
       },
-      mediaData: {
+      mediaDTO: {
         mediaId: tweet.media?.mediaId,
         mediaKey: tweet.media?.mediaKey,
       },
@@ -79,14 +61,14 @@ export class TweetService {
     return tweetDTO;
   }
 
-  public buildCommentDTO(comment: Comment): CommentDTO {
-    const commentDTO: CommentDTO = {
-      commentDeleteDTO: {
-        parentTweetId: comment.parentTweetId,
+  public buildCommentDTO(comment: Comment): CommentAndMediaDTO {
+    const commentDTO: CommentAndMediaDTO = {
+      commentDTO: {
+        userId: comment.userId,
         commentId: comment.commentId,
-        userId: comment.userId
+        parentTweetId: comment.parentTweetId,
       },
-      mediaData: {
+      mediaDTO: {
         mediaId: comment.media?.mediaId,
         mediaKey: comment.media?.mediaKey,
       },
@@ -96,30 +78,50 @@ export class TweetService {
   }
 
   // Tweets
-  public createTweetFromRemote(tweet: any): Observable<Tweet> {
-    return this.http.post<Tweet>(this.baseTweetUrl + 'create-tweet', tweet);
+  public createTweetFromRemote(data: CreateTweetDTO): Observable<Tweet> {
+    const formData = new FormData();
+    formData.append('body', new Blob([JSON.stringify(data.tweet)]));
+
+    const fileSelected = data.file != null;
+    if (fileSelected) {
+      formData.append('file', data.file!, data.file!.name);
+    }
+
+    return this.http.post<Tweet>(this.baseTweetUrl + 'create-tweet', formData);
   }
 
-  public deleteTweetFromRemote(tweetData: TweetDeleteDTO): Observable<Tweet> {
+  public deleteTweetFromRemote(tweetData: TweetDTO): Observable<Tweet> {
     return this.http.delete<Tweet>(this.baseTweetUrl + 'delete-tweet', {
       body: tweetData,
     });
   }
 
   public getTweetById(tweetId: string): Observable<Tweet> {
-    return this.http.get<Tweet>(this.baseTweetUrl + tweetId);
+    return this.http.get<Tweet>(this.baseTweetUrl + tweetId + '/get-tweet');
   }
 
   public getAllTweets(): Observable<Tweet[]> {
     return this.http.get<Tweet[]>(this.baseTweetUrl + 'get-all-tweets');
   }
 
-  // Comments // TODO: Create and move into comment.service.ts?
-  public createCommentFromRemote(comment: any): Observable<Comment> {
-    return this.http.post<Comment>(this.baseCommentUrl + 'create-comment', comment);
+  public likeTweet(data: TweetDTO): Observable<Tweet> {
+    return this.http.post<Tweet>(this.baseTweetUrl + 'like-tweet', data);
   }
 
-  public deleteCommentFromRemote(commentData: CommentDeleteDTO): Observable<Comment> {
+  // Comments // TODO: Create and move into comment.service.ts?
+  public createCommentFromRemote(data: CreateTweetDTO): Observable<Comment> {
+    const formData = new FormData();
+    formData.append('body', new Blob([JSON.stringify(data.tweet)]));
+
+    const fileSelected = data.file != null;
+    if (fileSelected) {
+      formData.append('file', data.file!, data.file!.name);
+    }
+
+    return this.http.post<Comment>(this.baseCommentUrl + 'create-comment', formData);
+  }
+
+  public deleteCommentFromRemote(commentData: CommentDTO): Observable<Comment> {
     return this.http.delete<Comment>(this.baseCommentUrl + 'delete-comment', {
       body: commentData,
     });

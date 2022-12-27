@@ -1,11 +1,10 @@
 package com.jelaniak.twittercloneproject.utils;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-
+import com.jelaniak.twittercloneproject.model.User;
 import org.bson.types.ObjectId;
 
-import com.jelaniak.twittercloneproject.model.User;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 
 public class UserUtility {
     /**
@@ -17,10 +16,10 @@ public class UserUtility {
      * @param number identifier to give a user unique details
      * @return a new user
      */
-    public static User getNewUser(int number) {
+    public static User buildNewUser(int number) {
         User user = new User();
 
-        user.setUserId(ObjectId.get());
+        user.setUserId(new ObjectId());
         user.setUsername("User" + number);
         user.setPassword("password" + number);
         user.setEmail("User" + number + "@example.org");
@@ -28,18 +27,27 @@ public class UserUtility {
         user.setUserHandleName("@User-" + number);
         user.setBioAboutText("User" + number + " Bio About Text");
         user.setBioLocation("User" + number + " Bio Location");
+        user.setRoles(new HashSet<>());
         user.setBioExternalLink("User" + number + " Bio External Link");
-        user.setDateOfCreation(LocalDateTime.of(number, number, number, number, number));
+        user.setDateOfCreation(LocalDateTime.now());
         user.setPictureAvatarUrl("https://User" + number + "Avatar.org/example");
         user.setPictureBackgroundUrl("https://User" + number + "Background.org/example");
         user.setUsersYouFollow(new HashSet<>());
         user.setUsersFollowingYou(new HashSet<>());
         user.setMutualFollowers(new HashSet<>());
         user.setTweets(new HashSet<>());
+        user.setLikedTweets(new HashSet<>());
+        user.setComments(new HashSet<>());
+        user.setLikedComments(new HashSet<>());
+        user.setUsersYouFollowCount(user.getUsersYouFollow().size());
+        user.setUsersFollowingYouCount(user.getUsersFollowingYou().size());
+        user.setMutualFollowersCount(user.getMutualFollowers().size());
         user.setTweetCount(user.getTweets().size());
-        user.setTweetQuoteCount(number);
+        user.setCommentCount(user.getComments().size());
         user.setFollowing(false);
         user.setVerified(false);
+        user.setLocked(false);
+        user.setEnabled(false);
 
         return user;
     }

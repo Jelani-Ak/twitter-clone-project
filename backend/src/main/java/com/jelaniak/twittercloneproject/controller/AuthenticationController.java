@@ -5,6 +5,7 @@ import com.jelaniak.twittercloneproject.dto.request.SignUpRequestDTO;
 import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenExpiredException;
 import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenNotFoundException;
 import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyConfirmedException;
+import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyExistsException;
 import com.jelaniak.twittercloneproject.exception.user.EmailNotFoundException;
 import com.jelaniak.twittercloneproject.exception.user.UserAlreadyExistsException;
 import com.jelaniak.twittercloneproject.service.AuthenticationService;
@@ -23,13 +24,18 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationController(UserService userService, AuthenticationService authenticationService) {
+    public AuthenticationController(
+            UserService userService,
+            AuthenticationService authenticationService) {
         this.userService = userService;
         this.authenticationService = authenticationService;
     }
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO signUpRequest) throws UserAlreadyExistsException {
+    public ResponseEntity<?> signUp(
+            @RequestBody SignUpRequestDTO signUpRequest) throws
+                UserAlreadyExistsException,
+                EmailAlreadyExistsException {
         userService.signUp(signUpRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -45,18 +51,21 @@ public class AuthenticationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-    public ResponseEntity<?> confirmToken(@RequestParam("token") String token) throws
-            EmailAlreadyConfirmedException,
-            ConfirmationTokenExpiredException,
-            ConfirmationTokenNotFoundException,
-            EmailNotFoundException {
+    @RequestMapping(value = "/confirm-token", method = RequestMethod.GET)
+    public ResponseEntity<?> confirmToken(
+            @RequestParam("token") String token) throws
+                EmailAlreadyConfirmedException,
+                ConfirmationTokenExpiredException,
+                ConfirmationTokenNotFoundException,
+                EmailNotFoundException {
         authenticationService.confirmToken(token);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/delete-token", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteToken(@RequestBody String token) throws ConfirmationTokenNotFoundException {
+    public ResponseEntity<?> deleteToken(
+            @RequestBody String token) throws
+                ConfirmationTokenNotFoundException {
         authenticationService.deleteToken(token);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }

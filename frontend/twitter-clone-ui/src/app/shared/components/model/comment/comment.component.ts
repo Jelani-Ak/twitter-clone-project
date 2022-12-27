@@ -1,13 +1,15 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { Input } from '@angular/core';
+import { OnChanges } from '@angular/core';
+import { Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MediaService } from 'src/app/core/services/media/media.service';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import {
-  CommentDTO,
-  TweetService,
-} from 'src/app/core/services/tweet/tweet.service';
+import { TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { Comment, TweetType } from 'src/app/shared/models/tweet';
+import { Comment } from 'src/app/shared/models/tweet';
+import { CommentAndMediaDTO } from 'src/app/shared/models/tweet';
+import { TweetType } from 'src/app/shared/models/tweet';
 import { User } from 'src/app/shared/models/user';
 import { ConfirmationDialogComponent } from '../../dialog/confirmation-dialog/confirmation-dialog.component';
 
@@ -22,9 +24,9 @@ export type CommentIndex = {
   styleUrls: ['./comment.component.css'],
 })
 export class CommentComponent implements OnChanges {
-  @Input() public comment: Comment = new Comment();
-  @Output() public deleteCommentEmit = new EventEmitter<CommentIndex>();
-  @Output('decrement-comment') public decrementCommentEmit = new EventEmitter<number>();
+  @Input('comment') public comment: Comment = new Comment();
+  @Output('delete-comment') public deleteCommentEmit = new EventEmitter<CommentIndex>();
+  @Output('decrement-comment-count') public decrementCommentEmit = new EventEmitter<number>();
 
   public commentAuthor: User = new User();
 
@@ -36,18 +38,17 @@ export class CommentComponent implements OnChanges {
     private dialog: MatDialog,
     private userService: UserService,
     private tweetService: TweetService,
-    private mediaService: MediaService,
     private snackbarService: SnackbarService
   ) {}
 
-  public ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(): void {
     const commentLoaded = Object.keys(this.comment).length > 0;
     if (commentLoaded) {
       const commentAuthorLoaded = Object.keys(this.commentAuthor).length > 0;
       if (commentAuthorLoaded) {
         return;
       }
-      
+
       this.initialiseCommentAuthor();
     }
   }
@@ -58,10 +59,10 @@ export class CommentComponent implements OnChanges {
         this.commentAuthor = user;
       },
       complete: () => {
-        console.log('Tweet author data loaded');
+        console.log('Comment author data loaded');
       },
       error: (error) => {
-        console.error('Failed to retrieve tweet author data', error);
+        console.error('Failed to retrieve comment author data', error);
       },
     });
   }
@@ -88,14 +89,15 @@ export class CommentComponent implements OnChanges {
     const commentData = this.tweetService.buildCommentDTO(comment);
     this.deleteCommentFromCache(comment);
 
-    if (!comment.media) {
+    const hasNoMedia = !comment.media;
+    if (hasNoMedia) {
       console.log(`Deleting Comment..`);
     } else {
       console.log(`Deleting Comment and Media..`);
     }
 
     this.deleteCommentAndMediaFromRemote(commentData);
-    this.snackbarService.displayToast('Comment Deleted Successfully', 'Ok');
+    this.snackbarService.displayToast('Comment Deleted Successfully');
   }
 
   private deleteCommentFromCache(comment: Comment) {
@@ -108,7 +110,10 @@ export class CommentComponent implements OnChanges {
         })
         .indexOf(comment.commentId);
 
-      const data: CommentIndex = { comment: comment, index: commentIndex };
+      const data: CommentIndex = {
+        comment: comment,
+        index: commentIndex,
+      };
       this.deleteCommentEmit.emit(data);
     });
 
@@ -116,56 +121,29 @@ export class CommentComponent implements OnChanges {
     document.dispatchEvent(event);
   }
 
-  private deleteCommentAndMediaFromRemote(commentData: CommentDTO) {
-    const commentHasMedia: boolean =
-      commentData.mediaData.mediaId != undefined &&
-      commentData.mediaData.mediaKey != undefined;
-
-    this.tweetService
-      .deleteCommentFromRemote(commentData.commentDeleteDTO)
-      .subscribe({
-        complete: () => {
-          console.log(`Comment deleted succesfully`);
-        },
-        error: (error) => {
-          console.error(`Failed to delete Comment`, error);
-        },
-      });
-    if (commentHasMedia) {
-      this.mediaService
-        .deleteMediaFromRemote(commentData.mediaData.mediaId)
-        .subscribe({
-          complete: () => {
-            console.log(`Media deleted succesfully from Repository`);
-          },
-          error: (error) => {
-            console.error(`Failed to delete media from repository`, error);
-          },
-        });
-      this.mediaService
-        .deleteCloudinaryMedia(commentData.mediaData.mediaKey)
-        .subscribe({
-          complete: () => {
-            console.log(`Media deleted succesfully from Cloudinary`);
-          },
-          error: (error) => {
-            console.error(`Failed to delete media from Cloudinary`, error);
-          },
-        });
-    }
+  private deleteCommentAndMediaFromRemote(data: CommentAndMediaDTO) {
+    this.tweetService.deleteCommentFromRemote(data.commentDTO).subscribe({
+      complete: () => {
+        console.log(`Comment deleted succesfully`);
+      },
+      error: (error) => {
+        console.error(`Failed to delete Comment`, error);
+      },
+    });
   }
 
   public openConfirmationDialog(comment: Comment) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       id: 'delete-comment',
       data: {
-        type: TweetType.COMMENT,
+        title: `Delete ${TweetType.COMMENT}`,
+        message: `Are you sure you want to delete ${TweetType.COMMENT}`,
         dialogOpen: (this.dialogOpen = true),
       },
       width: '400px',
     });
 
-    dialogRef.afterClosed().subscribe((data: any) => {
+    dialogRef.afterClosed().subscribe((data: string) => {
       if (data == 'yes') {
         this.deleteComment(comment);
       }

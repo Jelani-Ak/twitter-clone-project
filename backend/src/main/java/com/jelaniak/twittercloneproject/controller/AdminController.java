@@ -32,10 +32,11 @@ public class AdminController {
     }
 
     @RequestMapping(
-            value = "/delete/{id}",
+            value = "/{userId}/delete-user",
             method = RequestMethod.DELETE)
-    public ResponseEntity<User> deleteUserById(@PathVariable ObjectId id) throws UserNotFoundException {
-        return new ResponseEntity<>(adminService.deleteUser(id), HttpStatus.OK);
+    public ResponseEntity<?> deleteUserById(@PathVariable ObjectId userId) throws UserNotFoundException {
+        adminService.deleteUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(

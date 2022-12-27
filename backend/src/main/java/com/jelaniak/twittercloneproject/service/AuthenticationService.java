@@ -8,7 +8,6 @@ import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyConfirmedExce
 import com.jelaniak.twittercloneproject.exception.user.EmailNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.UserRepository;
 import com.jelaniak.twittercloneproject.security.jwt.JwtUtils;
 import com.jelaniak.twittercloneproject.service.security.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -24,23 +23,25 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.jelaniak.twittercloneproject.utils.Helper.getTimeNow;
+
 @Slf4j
 @Service
 public class AuthenticationService {
     private final JwtUtils jwtUtils;
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final AuthenticationManager authenticationManager;
     private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     public AuthenticationService(
             JwtUtils jwtUtils,
-            UserRepository userRepository,
+            UserService userService,
             AuthenticationManager authenticationManager,
             ConfirmationTokenService confirmationTokenService
     ) {
         this.jwtUtils = jwtUtils;
-        this.userRepository = userRepository;
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.confirmationTokenService = confirmationTokenService;
     }
@@ -61,10 +62,10 @@ public class AuthenticationService {
                 .map(GrantedAuthority::getAuthority).toList();
 
         var response = new JwtResponseDTO(
-                jwt,
                 userDetails.getId(),
-                userDetails.getUsername(),
                 userDetails.getEmail(),
+                userDetails.getUsername(),
+                jwt,
                 roles
         );
 
@@ -90,16 +91,16 @@ public class AuthenticationService {
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            log.error("Failed to confirm token. Token expired");
+            log.error(getTimeNow() + "Failed to confirm token. Token expired");
             throw new ConfirmationTokenExpiredException("Token expired");
         }
 
         try {
             confirmationTokenService.updateConfirmedAt(confirmationToken.getToken());
             enableUser(confirmationToken.getUser().getEmail());
-            log.info("Successfully confirmed token");
+            log.info(getTimeNow() + "Successfully confirmed token");
         } catch (Exception e) {
-            log.error("Failed to confirm token. Reason unknown");
+            log.error(getTimeNow() + "Failed to confirm token. Reason unknown");
             throw new RuntimeException(e);
         }
 
@@ -111,11 +112,10 @@ public class AuthenticationService {
     }
 
     public void enableUser(String email) throws EmailNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EmailNotFoundException("User with username, " + email + "' not found"));
+        User user = userService.findByEmail(email);
 
         user.setEnabled(true);
 
-        userRepository.save(user);
+        userService.saveUser(user);
     }
 }

@@ -48,7 +48,7 @@ export class AuthenticationService {
   public confirmUserFromRemote(token: string): Observable<string> {
     let params = new HttpParams().append('token', token);
 
-    return this.http.get<string>(this.baseurl + '/confirm', { params: params });
+    return this.http.get<string>(this.baseurl + '/confirm-token', { params: params });
   }
 
   public deleteTokenFromRemote(token: string): Observable<string> {

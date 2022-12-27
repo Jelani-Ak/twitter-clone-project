@@ -29,7 +29,9 @@ public class CloudinaryConfig {
 
     @PostConstruct
     public void setup() {
-        log.info("Starting Cloudinary..");
+        double startTimer = System.nanoTime();
+
+        log.info("Setting up Cloudinary..");
 
         try {
             Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
@@ -43,7 +45,9 @@ public class CloudinaryConfig {
             manager.setCloudinary(cloudinary);
             manager.init();
 
-            log.info("Cloudinary started successfully");
+            double endTimer = System.nanoTime();
+            double secondsTaken = ((endTimer - startTimer) / 1_000_000_000);
+            log.info("Cloudinary setup finished in: " + secondsTaken + " seconds");
         } catch (Exception error) {
             log.warn("Failed to setup Cloudinary", error);
             throw new RuntimeException(error);

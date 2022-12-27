@@ -3,8 +3,6 @@ package com.jelaniak.twittercloneproject.service;
 import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;
 import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.ConfirmationTokenRepository;
-import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,38 +13,35 @@ import java.util.List;
 public class AdminService {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Autowired
     public AdminService(
             UserService userService,
-            UserRepository userRepository,
-            ConfirmationTokenRepository confirmationTokenRepository) {
+            ConfirmationTokenService confirmationTokenService) {
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.confirmationTokenRepository = confirmationTokenRepository;
+        this.confirmationTokenService = confirmationTokenService;
     }
 
-    public User deleteUser(ObjectId userId) throws UserNotFoundException {
+    public void deleteUser(ObjectId userId) throws UserNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
-        return userRepository.deleteByUserId(existingUser.getUserId());
+        userService.deleteByUserId(existingUser.getUserId());
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.findAllUsers();
     }
 
     public void deleteAllUsers() {
-        userRepository.deleteAll();
+        userService.deleteAllUsers();
     }
 
     public void createAllUsers(List<User> users) {
-        userRepository.saveAll(users);
+        userService.saveAllUsers(users);
     }
 
     public List<ConfirmationToken> getAllConfirmationTokens() {
-        return confirmationTokenRepository.findAll();
+        return confirmationTokenService.findAll();
     }
 }

@@ -1,8 +1,8 @@
 package com.jelaniak.twittercloneproject.controller;
 
 import com.jelaniak.twittercloneproject.model.Media;
-import com.jelaniak.twittercloneproject.service.cloud.CloudinaryService;
 import com.jelaniak.twittercloneproject.service.MediaService;
+import com.jelaniak.twittercloneproject.service.cloud.CloudinaryService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,9 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+@Deprecated
+@CrossOrigin()
 @RestController
 @RequestMapping(value = "/api/v1/media")
-@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 public class MediaController {
 
     private final CloudinaryService cloudinaryService;
@@ -37,7 +38,7 @@ public class MediaController {
             value = "/get/{mediaId}",
             method = RequestMethod.GET)
     public ResponseEntity<Media> getMedia(@PathVariable ObjectId mediaId) {
-        return new ResponseEntity<>(mediaService.getMediaByID(mediaId), HttpStatus.OK);
+        return new ResponseEntity<>(mediaService.getMediaById(mediaId), HttpStatus.OK);
     }
 
     @RequestMapping(

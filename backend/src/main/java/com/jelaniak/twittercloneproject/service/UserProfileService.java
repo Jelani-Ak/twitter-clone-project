@@ -1,46 +1,52 @@
 package com.jelaniak.twittercloneproject.service;
 
+import com.jelaniak.twittercloneproject.dto.request.UpdateUserDTO;
 import com.jelaniak.twittercloneproject.exception.user.UserNotFoundException;
 import com.jelaniak.twittercloneproject.model.User;
-import com.jelaniak.twittercloneproject.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserProfileService {
 
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserProfileService(
             UserService userService,
-            UserRepository userRepository) {
+            BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public User deleteUser(ObjectId userId) throws UserNotFoundException {
+    public void deleteUser(ObjectId userId) throws UserNotFoundException {
         User existingUser = userService.findByUserId(userId);
 
-        return userRepository.deleteByUserId(existingUser.getUserId());
+        userService.deleteByUserId(existingUser.getUserId());
     }
 
-    public User updateUser(ObjectId userId, User user) throws UserNotFoundException {
-        User existingUser = userService.findByUserId(userId);
+    public void updateUser(UpdateUserDTO data) throws UserNotFoundException {
+        User existingUser = userService.findByUserId(data.getUserId());
 
-        existingUser.setUsername(user.getUsername());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setDisplayName(user.getDisplayName());
-        existingUser.setUserHandleName(user.getUserHandleName());
-        existingUser.setBioLocation(user.getBioLocation());
-        existingUser.setBioExternalLink(user.getBioExternalLink());
-        existingUser.setBioAboutText(user.getBioAboutText());
-        existingUser.setPictureAvatarUrl(user.getPictureAvatarUrl());
-        existingUser.setPictureBackgroundUrl(user.getPictureBackgroundUrl());
+        existingUser.setUsername(data.getUsername());
 
-        return userRepository.save(existingUser);
+        final boolean passwordChanged = !data.getPassword().equals("");
+        if (passwordChanged) {
+            existingUser.setPassword(bCryptPasswordEncoder.encode(data.getPassword()));
+        }
+
+        existingUser.setEmail(data.getEmail());
+        existingUser.setDisplayName(data.getDisplayName());
+        existingUser.setUserHandleName(data.getUserHandleName());
+        existingUser.setBioLocation(data.getBioLocation());
+        existingUser.setBioExternalLink(data.getBioExternalLink());
+        existingUser.setBioAboutText(data.getBioAboutText());
+//        existingUser.setPictureAvatarUrl(data.getPictureAvatarUrl());
+//        existingUser.setPictureBackgroundUrl(data.getPictureBackgroundUrl());
+
+        userService.saveUser(existingUser);
     }
 }

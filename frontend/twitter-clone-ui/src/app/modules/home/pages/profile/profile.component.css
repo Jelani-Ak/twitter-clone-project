@@ -23,29 +23,41 @@
 }
 
 .profile-header {
-  padding: 10px;
+  display: flex;
+  height: 220px;
   background-color: #eee;
 }
 
-div.profile-header > img.background-image {
-  width: 100%;
-  height: 225px;
-  object-fit: cover;
-  padding-bottom: 5px;
-}
-
-div.profile-header > .header-bottom > img.profile-image {
+.profile-header-left {
   width: 200px;
   height: 200px;
-  /* margin-left: 10px; */
-  margin-top: -100px;
-  transform-origin: top left;
+  padding: 10px;
 }
 
-.header-bottom {
+.profile-header-right {
+  width: 100%;
   display: flex;
+  flex-direction: column;
+  padding: 10px 10px 10px 0;
+}
+
+.names-and-follow-information {
+  height: 100%;
+  display: flex;
+  align-items: center;
   background-color: #ddd;
   justify-content: space-between;
+}
+
+div.profile-header > div.profile-header-left > img {
+  width: 200px;
+  height: 200px;
+}
+
+div.profile-header > div.profile-header-right > img {
+  width: 100%;
+  height: 135px;
+  object-fit: cover;
 }
 
 .names {
@@ -61,13 +73,6 @@ div.profile-header > .header-bottom > img.profile-image {
 .username,
 .user-handle-name {
   font-weight: 100;
-}
-
-.follow-and-more-button {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .profile-buttons {
@@ -88,18 +93,22 @@ div.profile-header > .header-bottom > img.profile-image {
   padding: 10px;
   display: flex;
   flex-direction: column;
-  background-color: #EEE;
+  background-color: #eee;
 }
 
-.about-text,
+.about-text {
+  text-align: justify;
+  padding-bottom: 10px;
+}
+
 .location-link-join-date,
 .follow-information {
   padding: 10px;
-  background-color: #DDD;
 }
 
 .location-link-join-date {
   display: flex;
+  background-color: #ddd;
   justify-content: space-between;
 }
 
@@ -107,6 +116,7 @@ div.profile-header > .header-bottom > img.profile-image {
   padding-right: 5px;
 }
 
+.about-text,
 .location,
 .link,
 .join-date {
@@ -114,8 +124,13 @@ div.profile-header > .header-bottom > img.profile-image {
   align-items: center;
 }
 
-.follow-information {
+.users-you-follow,
+.users-following-you {
   display: flex;
+}
+
+.follow-text {
+  padding-right: 10px;
 }
 
 .tweet-container {

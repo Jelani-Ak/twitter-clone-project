@@ -1,13 +1,10 @@
-<div
-  class="compose-container"
-  [ngStyle]="{ padding: data.dialogOpen ? '20px' : '0' }"
->
+<div class="compose-container" [ngStyle]="{ padding: dialogIsOpen() }">
   <div class="tweet-reply-details" *ngIf="data.tweetType == 'Comment'">
     <div class="details">
       <p class="username">{{ tweetAuthor.username }}</p>
       <p class="handle">{{ tweetAuthor.userHandleName }}</p>
       <span class="spacer"></span>
-      <p class="date">{{ data.tweet.dateOfCreation }}</p>
+      <p class="date">{{ data.tweet.dateOfCreation | date : "longDate" }}</p>
     </div>
 
     <div class="tweet-content">
@@ -19,7 +16,7 @@
     </div>
   </div>
 
-  <form class="form-container" (ngSubmit)="create()">
+  <form class="form-container" (ngSubmit)="create(FileName)">
     <mat-form-field appearance="fill" class="compose-tweet-form">
       <mat-label class="textarea-label">
         {{ data.textAreaLabel ?? "Compose Tweet" }}
@@ -54,15 +51,15 @@
       />
 
       <div class="filename">
-        {{ FileName.value.replace("C:\\fakepath\\", "") }}
-      </div>
+        <p class="filename-text">
+          {{ FileName.value.replace("C:\\fakepath\\", "") }}
+        </p>
 
-      <div
-        *ngIf="FileName.value"
-        class="remove-file"
-        (click)="cancel(FileName)"
-      >
-        <mat-icon>cancel</mat-icon>
+        <div *ngIf="FileName.value" matTooltip="Remove">
+          <mat-icon class="remove-file" (click)="cancel(FileName, false)">
+            cancel
+          </mat-icon>
+        </div>
       </div>
 
       <button

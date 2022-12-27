@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
+import static com.jelaniak.twittercloneproject.utils.Helper.getTimeNow;
+
 @Slf4j
 @Service
 @Deprecated
@@ -38,10 +40,10 @@ public class S3Service {
 
         try {
             awsS3Client.putObject(BUCKET_NAME, key, file.getInputStream(), metadata);
-            log.info("Successfully uploaded file, '" + key + "'");
+            log.info(getTimeNow() + "Successfully uploaded file, '" + key + "'");
         } catch (Exception exception) {
             String errorMessage = "Error occurred uploading the file";
-            log.error(errorMessage, exception);
+            log.error(getTimeNow() + errorMessage, exception);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     errorMessage, exception);
         }

@@ -1,0 +1,23 @@
+mat-label {
+  font-weight: 100;
+}
+
+.edit-profile-container {
+  padding: 20px;
+}
+
+.user-profile-form {
+  font-weight: 100;
+}
+
+.password-input-and-icon {
+  display: flex;
+}
+
+.show-password-icon {
+  padding-right: 5px;
+}
+
+.password-tooltip {
+  padding-left: 10px;
+}

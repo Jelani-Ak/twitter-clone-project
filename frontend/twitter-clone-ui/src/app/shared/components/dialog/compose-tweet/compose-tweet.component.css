@@ -15,6 +15,7 @@
 
 .tweet-content {
   padding: 10px;
+  text-align: justify;
   background-color: #eee;
 }
 
@@ -70,12 +71,11 @@ button {
 }
 
 .filename {
-  width: 100%;
   display: flex;
-  padding: 10px 0;
   margin-left: 10px;
   text-align: center;
   align-items: center;
+  justify-content: space-between; 
 }
 
 .add-media-button {
@@ -92,7 +92,7 @@ button {
   background: #b5a1e7;
 }
 
-input[type="file"] {
+input[type="file"]#file-upload {
   display: none;
   pointer-events: auto;
 }
@@ -107,10 +107,9 @@ input[type="file"] {
 }
 
 .remove-file {
-  height: auto;
+  padding: 0 10px;
   display: flex;
   cursor: pointer;
-  padding: 5px 10px;
   align-items: center;
   transition-duration: 0.25s;
 }

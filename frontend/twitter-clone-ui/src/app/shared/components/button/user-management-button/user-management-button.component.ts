@@ -33,7 +33,7 @@ export class UserManagementButtonComponent implements OnInit {
   public navigate() {
     const location = this.text.toLowerCase();
     switch (location) {
-      case `${this.currentUser.username.toLowerCase()}`:
+      case `${this.currentUser?.username?.toLowerCase()}`:
         const userId = this.currentUser.id;
         const username = this.currentUser.username;
         this.goToProfile(userId, username);
@@ -61,7 +61,7 @@ export class UserManagementButtonComponent implements OnInit {
     this.authenticationService.logUserOutFromRemote().subscribe({
       complete: () => {
         console.log('Logout succesful');
-        this.snackbarService.displayToast('Logout successful', 'ok');
+        this.snackbarService.displayToast('Logout successful');
         this.router.navigate(['login']);
       },
       error: (error) => {
