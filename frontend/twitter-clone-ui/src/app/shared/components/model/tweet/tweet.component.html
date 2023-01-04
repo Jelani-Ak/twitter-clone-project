@@ -10,7 +10,9 @@
       <p class="username" (click)="goToProfile()">{{ tweetAuthor.username }}</p>
       <p class="handle">{{ tweetAuthor.userHandleName }}</p>
       <span class="spacer"></span>
-      <p class="date">{{ tweet.dateOfCreation | date:'longDate' }}</p>
+      <p class="date" matTooltip="{{ getDateSinceCreation() }}">
+        {{ tweet.dateOfCreation | date:'longDate' }}
+      </p>
       <mat-icon *ngIf="showViewTweet()">more_vert</mat-icon>
     </div>
     <div class=" view-tweet" *ngIf="showViewTweet()" (click)="viewTweet()">

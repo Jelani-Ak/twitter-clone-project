@@ -29,10 +29,6 @@ export class TweetService {
   }
 
   private cacheTweets(): void {
-    if (this.tweets.length > 0) {
-      return;
-    }
-
     this.getAllTweets().subscribe({
       next: (tweets) => {
         this.tweets = tweets;

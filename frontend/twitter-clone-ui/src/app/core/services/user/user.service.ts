@@ -12,6 +12,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   public findByUserId(userId: string): Observable<User> {
-    return this.http.get<User>(this.baseUrl + userId + '/get-user');
+    const url: string = this.baseUrl + userId + '/get-user';
+    return this.http.get<User>(url);
   }
 }

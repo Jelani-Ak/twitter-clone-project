@@ -1,18 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 
-/* Debugging */
-/* * {
-  border-width: 1px;
-  border-style: solid;
-  border-color: darkorange;
-  border-radius: 15px;
-} */
+/* TODO: Implement theme toggler */
+:root {
+  --primary-colour: #673ab7;
+}
 
-/* html,
-body {
-  color: white;
-  background-color: #121212;
-} */
+.light-theme {
+  --background-colour: #fff;
+}
+
+.dark-theme {
+  --background-colour: #000;
+}
 
 body {
   margin: 0;
@@ -29,7 +28,7 @@ p {
 
 .title-container {
   color: white;
-  background: #673ab7;
+  background: var(--primary-colour);
   padding: 18px;
   margin-bottom: 10px;
 }

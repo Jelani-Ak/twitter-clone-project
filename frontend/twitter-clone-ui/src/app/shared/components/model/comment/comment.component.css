@@ -16,6 +16,11 @@
   margin-right: 10px;
 }
 
+.username:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .date {
   display: flex;
   padding-right: 5px;

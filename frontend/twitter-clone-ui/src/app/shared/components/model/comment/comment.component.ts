@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { UtilityService } from 'src/app/core/services/utility/utility.service';
 import { Comment } from 'src/app/shared/models/tweet';
 import { CommentAndMediaDTO } from 'src/app/shared/models/tweet';
 import { TweetType } from 'src/app/shared/models/tweet';
@@ -26,7 +27,6 @@ export type CommentIndex = {
 export class CommentComponent implements OnChanges {
   @Input('comment') public comment: Comment = new Comment();
   @Output('delete-comment') public deleteCommentEmit = new EventEmitter<CommentIndex>();
-  @Output('decrement-comment-count') public decrementCommentEmit = new EventEmitter<number>();
 
   public commentAuthor: User = new User();
 
@@ -38,6 +38,7 @@ export class CommentComponent implements OnChanges {
     private dialog: MatDialog,
     private userService: UserService,
     private tweetService: TweetService,
+    private utilityService: UtilityService,
     private snackbarService: SnackbarService
   ) {}
 
@@ -85,6 +86,10 @@ export class CommentComponent implements OnChanges {
     return false;
   }
 
+  public getDateSinceCreation() {
+    return this.utilityService.getDateSinceCreation(this.comment);
+  }
+
   private deleteComment(comment: Comment) {
     const commentData = this.tweetService.buildCommentDTO(comment);
     this.deleteCommentFromCache(comment);
@@ -96,32 +101,24 @@ export class CommentComponent implements OnChanges {
       console.log(`Deleting Comment and Media..`);
     }
 
-    this.deleteCommentAndMediaFromRemote(commentData);
+    this.deleteCommentFromRemote(commentData);
     this.snackbarService.displayToast('Comment Deleted Successfully');
   }
 
   private deleteCommentFromCache(comment: Comment) {
     this.tweetService.getTweetById(comment.parentTweetId).subscribe((tweet) => {
-      const comments = tweet.comments;
-
-      const commentIndex: number = comments
-        .map((comment) => {
-          return comment.commentId;
-        })
-        .indexOf(comment.commentId);
-
       const data: CommentIndex = {
         comment: comment,
-        index: commentIndex,
+        index: tweet.comments
+          .map((comment) => comment.commentId)
+          .indexOf(comment.commentId),
       };
+
       this.deleteCommentEmit.emit(data);
     });
-
-    var event = new CustomEvent('decrement-comment-count', { detail: 1 });
-    document.dispatchEvent(event);
   }
 
-  private deleteCommentAndMediaFromRemote(data: CommentAndMediaDTO) {
+  private deleteCommentFromRemote(data: CommentAndMediaDTO) {
     this.tweetService.deleteCommentFromRemote(data.commentDTO).subscribe({
       complete: () => {
         console.log(`Comment deleted succesfully`);
@@ -137,7 +134,7 @@ export class CommentComponent implements OnChanges {
       id: 'delete-comment',
       data: {
         title: `Delete ${TweetType.COMMENT}`,
-        message: `Are you sure you want to delete ${TweetType.COMMENT}`,
+        message: `Are you sure you want to delete this ${TweetType.COMMENT}`,
         dialogOpen: (this.dialogOpen = true),
       },
       width: '400px',
@@ -147,6 +144,7 @@ export class CommentComponent implements OnChanges {
       if (data == 'yes') {
         this.deleteComment(comment);
       }
+
       this.dialogOpen = false;
     });
   }

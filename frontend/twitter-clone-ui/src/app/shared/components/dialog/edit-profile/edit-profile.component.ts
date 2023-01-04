@@ -143,7 +143,7 @@ export class EditProfileComponent implements OnInit {
         });
       },
       complete: () => {
-        console.log('Successfully retrieved profile information');
+        console.log('Retrieved profile information');
       },
       error: (error) => {
         console.error('Failed to rerieve profile infromation', error);

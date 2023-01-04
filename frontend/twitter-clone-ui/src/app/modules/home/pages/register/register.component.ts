@@ -9,6 +9,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { SignInRequestDTO } from 'src/app/shared/dto/sign-in-request.dto';
+import { SignUpRequestDTO } from 'src/app/shared/dto/sign-up-request.dto';
 
 export class CustomValidators {
   public static passwordMatcher(control: AbstractControl) {
@@ -49,18 +51,17 @@ function compare(firstString: string, secondString: string) {
 })
 export class RegisterComponent {
   public registerForm: FormGroup = this.formBuilder.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      confirmEmail: ['', [Validators.required, , Validators.email]],
-    }, {
-      validators: [
-        CustomValidators.passwordMatcher,
-        CustomValidators.emailMatcher,
-      ],
-    } as AbstractControlOptions
-  );
+    username: ['', [Validators.required]],
+    password: ['', [Validators.required]],
+    confirmPassword: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+    confirmEmail: ['', [Validators.required, , Validators.email]],
+  }, {
+    validators: [
+      CustomValidators.passwordMatcher,
+      CustomValidators.emailMatcher,
+    ],
+  } as AbstractControlOptions);
 
   public errorMessage: String = '';
   public isSuccessful: boolean = false;
@@ -77,34 +78,34 @@ export class RegisterComponent {
     const formEmpty =
       !this.registerForm.value.username ||
       !this.registerForm.value.password ||
-      !this.registerForm.value.email
+      !this.registerForm.value.email;
 
     if (formEmpty) {
       return;
     }
 
-    const username = this.registerForm.value.username;
-    const password = this.registerForm.value.password;
-    const email = this.registerForm.value.email;
+    const signUpRequest: SignUpRequestDTO = {
+      username: this.registerForm.value.username,
+      password: this.registerForm.value.password,
+      email: this.registerForm.value.email,
+    };
 
-    this.authenticationService
-      .signUpFromRemote({ username, password, email })
-      .subscribe({
-        complete: () => {
-          console.log('Registration Successful');
-          this.snackbarService.displayToast(
-            'Registration Successful',
-            username
-          );
-          this.isSuccessful = true;
-          this.signUpFailed = false;
-          this.router.navigateByUrl('/login');
-        },
-        error: (e) => {
-          console.warn('Failed to register', e);
-          this.errorMessage = e.error.errorMessage;
-          this.signUpFailed = true;
-        },
-      });
+    this.authenticationService.signUpFromRemote(signUpRequest).subscribe({
+      complete: () => {
+        console.log('Registration Successful');
+        this.snackbarService.displayToast(
+          'Registration Successful',
+          this.registerForm.value.username
+        );
+        this.isSuccessful = true;
+        this.signUpFailed = false;
+        this.router.navigateByUrl('/login');
+      },
+      error: (e) => {
+        console.warn('Failed to register', e);
+        this.errorMessage = e.error.errorMessage;
+        this.signUpFailed = true;
+      },
+    });
   }
 }

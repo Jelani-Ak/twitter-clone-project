@@ -1,14 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  Comment,
-  CreateTweetDTO,
-  Tweet,
-  TweetType,
-} from 'src/app/shared/models/tweet';
+import { Comment } from 'src/app/shared/models/tweet';
+import { CreateTweetDTO } from 'src/app/shared/models/tweet';
+import { Tweet } from 'src/app/shared/models/tweet';
+import { TweetType } from 'src/app/shared/models/tweet';
 import { TweetService } from '../../../../core/services/tweet/tweet.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
 import { User } from 'src/app/shared/models/user';
 import { UserService } from 'src/app/core/services/user/user.service';
@@ -23,7 +21,7 @@ export class ComposeTweetComponent implements OnInit {
     return this.storageService.getUser();
   }
 
-  public tweet: any = new Object();
+  public tweet: Tweet | Comment = new Tweet();
   public tweetAuthor: User = new User();
 
   private selectedFile: File | null = null;
@@ -34,7 +32,6 @@ export class ComposeTweetComponent implements OnInit {
     private userService: UserService,
     private tweetService: TweetService,
     private storageService: StorageService,
-    private activatedRoute: ActivatedRoute,
     private snackbarService: SnackbarService,
     private dialogRef: MatDialogRef<ComposeTweetComponent>
   ) {}
@@ -66,59 +63,33 @@ export class ComposeTweetComponent implements OnInit {
     }
   }
 
-  // Prepare the HTML template information
+  // Prepare the HTML template reply information
   private initialiseTweetAuthor() {
-    const isTweet = this.data?.tweetType == TweetType.TWEET;
-    const prepareComment = this.data?.tweet?.userId;
-    const prepareTweet = this.tweet.userId;
+    const creatingComment = this.data.dialogOpen;
+    if (creatingComment) {
+      const userId = this.data.tweet.userId;
 
-    if (prepareComment == undefined || prepareTweet == undefined) {
-      return;
+      this.userService.findByUserId(userId).subscribe({
+        next: (user) => {
+          this.tweetAuthor = user;
+        },
+        complete: () => {
+          console.log(`${this.tweet.tweetType} author data loaded`);
+        },
+        error: (error) => {
+          console.error(
+            `Failed to retrieve ${this.tweet.tweetType} author data`,
+            error
+          );
+        },
+      });
     }
-
-    const userId = isTweet ? prepareTweet : prepareComment;
-
-    this.userService.findByUserId(userId).subscribe({
-      next: (user) => {
-        this.tweetAuthor = user;
-      },
-      complete: () => {
-        console.log('Tweet author data loaded');
-      },
-      error: (error) => {
-        console.error('Failed to retrieve tweet author data', error);
-      },
-    });
   }
 
   // Additional preparation for comment creation
   private initializeParentTweetId() {
-    const notAComment: boolean = this.data.tweetType != TweetType.COMMENT;
-    if (notAComment) {
-      return;
-    }
-
-    const onHomepage: boolean = this.router.url == '/home';
-    const onProfile: boolean = this.router.url.split('/')[1] == 'profile';
-    const creatingComment: boolean = Object.keys(this.data).length > 0;
-    if ((onHomepage || onProfile) && creatingComment) {
+    if (this.tweet instanceof Comment) {
       this.tweet.parentTweetId = this.data.tweet.tweetId;
-      return;
-    }
-
-    const viewingTweet: boolean = this.router.url.split('/')[1] == 'tweet';
-    if (viewingTweet) {
-      this.activatedRoute.queryParams.subscribe({
-        next: (queryParams: Params) => {
-          this.tweet.parentTweetId = queryParams['tweetId'];
-        },
-        complete: () => {
-          console.log('Initialised parent Tweet ID');
-        },
-        error: () => {
-          console.error('Failed to set parent tweet ID');
-        },
-      });
     }
   }
 
@@ -141,11 +112,10 @@ export class ComposeTweetComponent implements OnInit {
       this.snackbarService.displayToast(
         `${this.tweet.tweetType} Created Successfully`
       );
+      this.cancel(input, true);
     } catch (error) {
       console.error(`Failed to create ${this.tweet.tweetType}`, error);
     }
-
-    this.cancel(input, true);
   }
 
   public onFileSelected(event: any) {
@@ -153,7 +123,7 @@ export class ComposeTweetComponent implements OnInit {
   }
 
   public cancel(input: any, clearText: boolean) {
-    if (clearText) this.tweet.content = null;
+    if (clearText) this.tweet.content = undefined;
     input.value = null;
     this.selectedFile = null;
     console.log('Selected file removed');
@@ -175,32 +145,17 @@ export class ComposeTweetComponent implements OnInit {
   }
 
   private createTweet(data: CreateTweetDTO) {
-    const tweet = this.data.tweetType == TweetType.TWEET;
+    const tweet = this.tweet instanceof Tweet;
     if (tweet) {
       this.createTweetFromRemote(data);
       return;
     }
 
-    const comment = this.data.tweetType == TweetType.COMMENT;
+    const comment = this.tweet instanceof Comment;
     if (comment) {
       this.createCommentFromRemote(data);
       return;
     }
-
-    const onHomepage = this.router.url == '/home';
-    const dialogIsNotOpen = this.dialogIsNotOpen();
-    if (onHomepage && dialogIsNotOpen) {
-      this.createTweetFromRemote(data);
-      return;
-    }
-  }
-
-  private dialogIsNotOpen() {
-    const dialogNotOpen =
-      Object.keys(this.data).length === 0 &&
-      Object.getPrototypeOf(this.data) === Object.prototype;
-
-    return dialogNotOpen;
   }
 
   private createTweetFromRemote(data: CreateTweetDTO) {
@@ -210,6 +165,7 @@ export class ComposeTweetComponent implements OnInit {
       },
       complete: () => {
         console.log(`Tweet created succesfully`);
+        this.closeDialog();
       },
       error: (error) => {
         console.warn(`Failed to create tweet`, error);
@@ -231,7 +187,7 @@ export class ComposeTweetComponent implements OnInit {
     });
   }
 
-  private closeDialog(comment: Comment | null) {
+  private closeDialog(comment: Comment | null = null) {
     if (this.data.dialogOpen) {
       this.dialogRef.close(comment);
     }

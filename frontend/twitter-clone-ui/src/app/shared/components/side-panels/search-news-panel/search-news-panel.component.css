@@ -26,6 +26,10 @@
   height: 254px;
 }
 
+.container:last-child {
+  margin-bottom: 0;
+}
+
 .whats-happening-container {
   margin-top: 10px;
 }

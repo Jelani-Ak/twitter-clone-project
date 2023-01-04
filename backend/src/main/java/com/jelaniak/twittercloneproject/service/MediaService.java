@@ -40,8 +40,9 @@ public class MediaService {
         return media;
     }
 
-    public void deleteMedia(ObjectId mediaId) {
-        mediaRepository.deleteByMediaId(mediaId);
+    public void deleteMedia(Media media) throws IOException {
+        mediaRepository.deleteByMediaId(media.getMediaId());
+        cloudinaryService.deleteCloudinaryMedia(media.getMediaKey());
     }
 
     public Media getMediaById(ObjectId mediaId) {

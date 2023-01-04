@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/core/services/snackbar/snackbar.service';
 import { TweetService } from 'src/app/core/services/tweet/tweet.service';
-import { Tweet } from '../../../models/tweet';
+import { Comment, Tweet } from '../../../models/tweet';
 import { TweetAndMediaDTO } from '../../../models/tweet';
 import { TweetDTO } from '../../../models/tweet';
 import { TweetType } from '../../../models/tweet';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { User } from 'src/app/shared/models/user';
 import { StorageService } from 'src/app/core/services/storage/storage.service';
+import { UtilityService } from 'src/app/core/services/utility/utility.service';
 
 @Component({
   selector: 'app-tweet',
@@ -37,6 +38,7 @@ export class TweetComponent implements OnInit, OnChanges {
     private router: Router,
     private dialog: MatDialog,
     private userService: UserService,
+    private utilityService: UtilityService,
     private storageService: StorageService,
     private snackbarService: SnackbarService
   ) {}
@@ -53,12 +55,15 @@ export class TweetComponent implements OnInit, OnChanges {
   }
 
   private checkIfTweetIsLiked() {
+    const notLoggedIn: boolean = !this.storageService.isLoggedIn();
+    if (notLoggedIn) return console.log('Not logged in');
+
     this.userService.findByUserId(this.currentUser.id).subscribe({
       next: (user) => {
-        const matchingTweet = [...user.likedTweets].find(
+        const matchingTweetFound = [...user.likedTweets].find(
           (tweet) => tweet.tweetId == this.tweet.tweetId
         );
-        if (matchingTweet) {
+        if (matchingTweetFound) {
           this.likedTweet = true;
         }
       },
@@ -95,6 +100,10 @@ export class TweetComponent implements OnInit, OnChanges {
     }
 
     return false;
+  }
+
+  public getDateSinceCreation() {
+    return this.utilityService.getDateSinceCreation(this.tweet);
   }
 
   public addComment() {
@@ -185,7 +194,7 @@ export class TweetComponent implements OnInit, OnChanges {
       id: 'delete-tweet',
       data: {
         title: `Delete ${TweetType.TWEET}`,
-        message: `Are you sure you want to delete ${TweetType.TWEET}`,
+        message: `Are you sure you want to delete this ${TweetType.TWEET}`,
         dialogOpen: (this.dialogOpen = true),
       },
       width: '400px',

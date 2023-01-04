@@ -21,16 +21,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
-import { FooterComponent } from './core/components/footer/footer.component';
 import { HomeComponent } from './modules/home/pages/home/home.component';
 import { NavigationButtonComponent } from './shared/components/button/navigation-button/navigation-button.component';
 import { NavigationPanelComponent } from './shared/components/side-panels/navigation-panel/navigation-panel.component';
 import { SearchNewsPanelComponent } from './shared/components/side-panels/search-news-panel/search-news-panel.component';
 import { UserComponent } from './shared/components/model/user/user.component';
-import { TweetTimelineComponent } from './shared/components/center-panel/tweet-timeline/tweet-timeline.component';
 import { ComposeTweetComponent } from './shared/components/dialog/compose-tweet/compose-tweet.component';
 import { UserManagementButtonComponent } from './shared/components/button/user-management-button/user-management-button.component';
 import { LoginComponent } from './modules/home/pages/login/login.component';
@@ -45,7 +44,6 @@ import { NotFoundPageComponent } from './modules/home/pages/not-found-page/not-f
 import { TweetPageComponent } from './modules/home/pages/tweet-page/tweet-page.component';
 import { TweetComponent } from './shared/components/model/tweet/tweet.component';
 import { MatOptionModule } from '@angular/material/core';
-import { CommentTimelineComponent } from './shared/components/center-panel/comment-timeline/comment-timeline.component';
 import { ConfirmationDialogComponent } from './shared/components/dialog/confirmation-dialog/confirmation-dialog.component';
 import { GenericButtonComponent } from './shared/components/button/generic-button/generic-button.component';
 import { httpInterceptorProviders } from './core/interceptors/http-request/http-request.interceptor';
@@ -55,13 +53,11 @@ import { EditProfileComponent } from './shared/components/dialog/edit-profile/ed
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent,
     HomeComponent,
     NavigationButtonComponent,
     NavigationPanelComponent,
     SearchNewsPanelComponent,
     UserComponent,
-    TweetTimelineComponent,
     ComposeTweetComponent,
     LoginComponent,
     UserManagementButtonComponent,
@@ -72,7 +68,6 @@ import { EditProfileComponent } from './shared/components/dialog/edit-profile/ed
     NotFoundPageComponent,
     TweetPageComponent,
     TweetComponent,
-    CommentTimelineComponent,
     ConfirmationDialogComponent,
     GenericButtonComponent,
     EditProfileComponent,
@@ -97,7 +92,8 @@ import { EditProfileComponent } from './shared/components/dialog/edit-profile/ed
     MatCardModule,
     MatOptionModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    ScrollingModule
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

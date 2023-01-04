@@ -22,8 +22,16 @@
   height: 20px;
 }
 
+mat-form-field {
+  margin-bottom: -1.36em;
+}
+
 .sort-tweet-container {
   display: flex;
   justify-content: flex-end;
+  margin: 10px 0;
+}
+
+.comment-container {
   margin: 10px 0;
 }

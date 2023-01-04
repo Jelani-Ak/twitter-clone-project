@@ -7,7 +7,6 @@
         <input matInput autocomplete="off" type="text" formControlName="username" />
       </mat-form-field>
 
-      <!-- TODO: Show a dialog if password contains text to confirm password change -->
       <div class="password">
         <mat-form-field appearance="fill" class="user-profile-form">
           <mat-label>Password</mat-label>
@@ -16,7 +15,9 @@
             <mat-icon class="show-password-icon" (click)="toggleShowPassword()">remove_red_eye</mat-icon>
           </div>
         </mat-form-field>        
-        <mat-icon  class="password-tooltip" matTooltip="Leave blank to keep your password the same">info</mat-icon>
+        <mat-icon class="password-tooltip" matTooltip="Leave blank to keep your password the same">
+          info
+        </mat-icon>
       </div>
 
       <mat-form-field appearance="fill" class="user-profile-form">
@@ -49,7 +50,7 @@
         <input matInput autocomplete="off" type="text" formControlName="bioAboutText" />
       </mat-form-field>
 
-      <div class="register-container">
+      <div class="update-container">
         <app-generic-button class="update-button" type="submit" [text]="'Update'">
         </app-generic-button>
       </div>

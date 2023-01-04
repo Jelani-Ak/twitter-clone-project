@@ -40,7 +40,7 @@ public class TweetController {
             value = "/delete-tweet",
             method = RequestMethod.DELETE)
     public void deleteTweet(
-            @RequestBody TweetDTO data) throws UserNotFoundException, TweetNotFoundException {
+            @RequestBody TweetDTO data) throws UserNotFoundException, TweetNotFoundException, IOException {
         tweetService.deleteTweet(data);
     }
 

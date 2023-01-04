@@ -3,7 +3,9 @@
     <p class="username">{{ commentAuthor.username }}</p>
     <p class="handle">{{ commentAuthor.userHandleName }}</p>
     <span class="spacer"></span>
-    <p class="date">{{ comment.dateOfCreation | date:'longDate' }}</p>
+    <p class="date" matTooltip="{{ getDateSinceCreation() }}">
+      {{ comment.dateOfCreation | date : "longDate" }}
+    </p>
   </div>
 
   <div *ngIf="comment.media" class="comment-media-container">
@@ -34,19 +36,11 @@
 
   <div class="metadata-container">
     <span class="metadata">
-      <span
-        class="metadata-line"
-        matTooltip="Comment"
-        matTooltipShowDelay="500"
-      >
+      <span class="metadata-line" matTooltip="Comment" matTooltipShowDelay="500">
         <mat-icon class="comment-material-icon">chat_bubble</mat-icon>
         {{ comment.commentCount }}
       </span>
-      <span
-        class="metadata-line"
-        matTooltip="Re-Tweet"
-        matTooltipShowDelay="500"
-      >
+      <span class="metadata-line" matTooltip="Re-Tweet" matTooltipShowDelay="500">
         <mat-icon class="comment-material-icon">loop</mat-icon>
         {{ comment.retweetCount }}
       </span>

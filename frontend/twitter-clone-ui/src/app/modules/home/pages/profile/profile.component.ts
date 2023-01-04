@@ -15,8 +15,8 @@ export class ProfileComponent implements OnInit {
   public user: User = new User();
   public tweetsAndRetweets: Set<Tweet> = new Set();
   public tweetsAndComments: Array<any> = new Array();
-  public tweetsWithMedia: Array<Tweet> = new Array();
-  public likedTweets: Set<Tweet> = new Set();
+  public tweetsAndCommentsWithMedia: Array<any> = new Array();
+  public likedTweetsAndComments: Set<Tweet> = new Set();
 
   public placeholderBackgroundImage = '/assets/images/cm.gif';
   public placeholderProfileImage = '/assets/images/me.png';
@@ -56,6 +56,8 @@ export class ProfileComponent implements OnInit {
         next: (user) => {
           this.user = user;
           this.tweetsAndRetweets = user.tweets;
+
+          // Setup tweets and commments then sort by newest
           this.tweetsAndComments = [...user.tweets, ...user.comments];
           this.tweetsAndComments.sort((a, b) => {
             const dateA = new Date(a.dateOfCreation);
@@ -64,16 +66,18 @@ export class ProfileComponent implements OnInit {
             return dateA.getTime() - dateB.getTime();
           });
 
+          // Setup tweets and comments with media
+          this.tweetsAndCommentsWithMedia = [...user.tweets, ...user.comments];
+          this.tweetsAndCommentsWithMedia =
+            this.tweetsAndCommentsWithMedia.filter((element) => element.media);
+
           // TODO: Include comments
-          this.tweetsWithMedia = [...user.tweets].filter(
-            (tweet) => tweet.media
-          );
-          this.likedTweets = user.likedTweets;
+          this.likedTweetsAndComments = user.likedTweets;
         },
         complete: () => {
           const endTime = performance.now();
           const timeTaken = ((endTime - startTime) / 1_000).toFixed(6);
-          console.log('Retrieved profile information', `${timeTaken} seconds`);
+          console.log(`Retrieved profile information in ${timeTaken} seconds`);
         },
         error: (error) => {
           console.error('Failed to rerieve user infromation', error);

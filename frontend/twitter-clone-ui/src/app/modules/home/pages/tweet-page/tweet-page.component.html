@@ -12,13 +12,9 @@
   <app-tweet [tweet]="tweet"></app-tweet>
 
   <form class="sort-tweet-container">
-    <mat-form-field appearance="fill" [style.margin-bottom]="'-1.36em'">
+    <mat-form-field appearance="fill">
       <mat-label>Sort Comments</mat-label>
-      <mat-select
-        name="sort-tweet"
-        [(ngModel)]="selectedItem"
-        (ngModelChange)="printSelection()"
-      >
+      <mat-select name="sort-tweet" [(ngModel)]="selectedOption" (ngModelChange)="sortComments()">
         <mat-option *ngFor="let option of options" [value]="option">
           {{ option }}
         </mat-option>
@@ -26,5 +22,7 @@
     </mat-form-field>
   </form>
 
-  <app-comment-timeline [comments]="comments"></app-comment-timeline>
+  <div class="comment-container" *ngFor="let comment of comments">
+    <app-comment [comment]="comment" (delete-comment)="deleteComment($event)"></app-comment>
+  </div>
 </div>

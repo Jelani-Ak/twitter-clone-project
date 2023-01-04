@@ -1,3 +1,14 @@
-.tweet-container {
+.compose-tweet-container {
   margin-bottom: 7px;
+}
+
+.tweet-container {
+  margin-bottom: 10px;
+}
+
+.all-tweets-viewport {
+  height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }

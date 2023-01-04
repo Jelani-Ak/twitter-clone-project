@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @CrossOrigin()
 @RestController
 @RequestMapping(value = "/api/v1/comment")
@@ -35,7 +37,7 @@ public class CommentController {
     @RequestMapping(
             value = "/delete-comment",
             method = RequestMethod.DELETE)
-    public void deleteComment(@RequestBody DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException {
+    public void deleteComment(@RequestBody DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
         tweetService.deleteComment(data);
     }
 }

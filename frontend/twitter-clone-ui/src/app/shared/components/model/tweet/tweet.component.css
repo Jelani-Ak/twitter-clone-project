@@ -23,16 +23,15 @@
 }
 
 .view-tweet {
-  width: fit-content;
+  width: 18%;
   cursor: pointer;
-  padding: 10px;
+  justify-content: center;
   transition-duration: 0.25s;
 }
 
 .view-tweet:hover {
-  color: white;
-  background-color: #673ab7;
-  transition-duration: 0.25s;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .details,
@@ -44,6 +43,11 @@
 
 .username {
   margin-right: 10px;
+}
+
+.username:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .date {

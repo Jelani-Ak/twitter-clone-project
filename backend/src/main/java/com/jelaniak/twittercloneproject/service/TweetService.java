@@ -143,7 +143,7 @@ public class TweetService {
         return comment;
     }
 
-    public void deleteTweet(TweetDTO data) throws TweetNotFoundException, UserNotFoundException {
+    public void deleteTweet(TweetDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
         double startTimer = System.nanoTime();
 
         // Remove associated comments and their media if present
@@ -158,7 +158,7 @@ public class TweetService {
 
                 boolean hasMedia = comment.getMedia() != null;
                 if (hasMedia) {
-                    mediaService.deleteMedia(comment.getMedia().getMediaId());
+                    mediaService.deleteMedia(comment.getMedia());
                     log.info(getTimeNow() + "Removed Media from comment");
                 }
 
@@ -168,7 +168,7 @@ public class TweetService {
                 userService.saveUser(user);
 
                 log.info(getTimeNow() + "Removed comment by '" + user.getUsername() + "', ID: '" + comment.getCommentId() + "'");
-            } catch (UserNotFoundException e) {
+            } catch (UserNotFoundException | IOException e) {
                 throw new RuntimeException(e);
             }
         });
@@ -183,7 +183,7 @@ public class TweetService {
         boolean hasMedia = tweet.getMedia() != null;
         if (hasMedia) {
             log.info(getTimeNow() + "Removed Media from Tweet");
-            mediaService.deleteMedia(tweet.getMedia().getMediaId());
+            mediaService.deleteMedia(tweet.getMedia());
         }
 
         user.getTweets().remove(tweetStoredInUser);
@@ -198,7 +198,7 @@ public class TweetService {
         log.info(getTimeNow() + "Delete Tweet: Request completed in: " + secondsTaken + " seconds");
     }
 
-    public void deleteComment(DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException {
+    public void deleteComment(DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
         double startTimer = System.nanoTime();
 
         // Remove comment from tweet
@@ -210,7 +210,7 @@ public class TweetService {
 
         boolean commentInTweetHasMedia = commentStoredInTweet.getMedia() != null;
         if (commentInTweetHasMedia) {
-            mediaService.deleteMedia(commentStoredInTweet.getMedia().getMediaId());
+            mediaService.deleteMedia(commentStoredInTweet.getMedia());
             log.info(getTimeNow() + "Removed Media from comment");
         }
 
@@ -227,7 +227,7 @@ public class TweetService {
 
         boolean commentStoredInUserHasMedia = commentStoredInUser.getMedia() != null;
         if (commentStoredInUserHasMedia) {
-            mediaService.deleteMedia(commentStoredInUser.getMedia().getMediaId());
+            mediaService.deleteMedia(commentStoredInUser.getMedia());
             log.info(getTimeNow() + "Removed Media from comment");
         }
 

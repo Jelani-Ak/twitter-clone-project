@@ -114,14 +114,25 @@
 
     <!-- Tweets with Media -->
     <mat-tab label="Media">
-      <div class="tweet-container" *ngFor="let tweet of tweetsWithMedia">
-        <app-tweet [tweet]="tweet"></app-tweet>
+      <div
+        class="tweet-container"
+        *ngFor="let tweet of tweetsAndCommentsWithMedia"
+        [ngSwitch]="tweet.tweetType"
+      >
+        <ng-template [ngSwitchCase]="'Tweet'">
+          <app-tweet [tweet]="tweet"></app-tweet>
+        </ng-template>
+
+        <ng-template [ngSwitchCase]="'Comment'">
+          <app-comment [comment]="tweet"></app-comment>
+        </ng-template>
       </div>
     </mat-tab>
 
+    <!-- TODO: Include comments -->
     <!-- Liked Tweets -->
     <mat-tab label="Likes">
-      <div class="tweet-container" *ngFor="let tweet of likedTweets">
+      <div class="tweet-container" *ngFor="let tweet of likedTweetsAndComments">
         <app-tweet [tweet]="tweet"></app-tweet>
       </div>
     </mat-tab>
