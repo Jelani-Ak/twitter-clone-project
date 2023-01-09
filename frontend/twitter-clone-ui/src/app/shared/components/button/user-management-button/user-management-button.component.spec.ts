@@ -1,6 +1,8 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import {UserManagementButtonComponent} from './user-management-button.component';
+import { UserManagementButtonComponent } from './user-management-button.component';
 
 describe('UserManagementButtonComponent', () => {
   let component: UserManagementButtonComponent;
@@ -8,9 +10,9 @@ describe('UserManagementButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserManagementButtonComponent]
-    })
-      .compileComponents();
+      declarations: [UserManagementButtonComponent],
+      imports: [MatSnackBarModule, HttpClientTestingModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  TITLE: string = 'twitter-clone-ui';
+  TITLE: string = 'Twitter Clone';
 
   TIMELINE_WIDTH: string = '600px';
   ADMIN_WIDTH: string = '100%';

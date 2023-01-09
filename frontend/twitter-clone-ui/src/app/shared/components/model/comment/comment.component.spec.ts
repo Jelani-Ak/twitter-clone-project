@@ -1,4 +1,7 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CommentComponent } from './comment.component';
 
@@ -8,9 +11,9 @@ describe('CommentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommentComponent ]
-    })
-    .compileComponents();
+      declarations: [CommentComponent],
+      imports: [MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
+    }).compileComponents();
   });
 
   beforeEach(() => {
