@@ -2,8 +2,8 @@ package com.jelaniak.twittercloneproject.service;
 
 import com.jelaniak.twittercloneproject.dto.request.SignInRequestDTO;
 import com.jelaniak.twittercloneproject.dto.response.JwtResponseDTO;
-import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenExpiredException;
-import com.jelaniak.twittercloneproject.exception.comment.ConfirmationTokenNotFoundException;
+import com.jelaniak.twittercloneproject.exception.confirmation.ConfirmationTokenExpiredException;
+import com.jelaniak.twittercloneproject.exception.confirmation.ConfirmationTokenNotFoundException;
 import com.jelaniak.twittercloneproject.exception.user.EmailAlreadyConfirmedException;
 import com.jelaniak.twittercloneproject.exception.user.EmailNotFoundException;
 import com.jelaniak.twittercloneproject.model.ConfirmationToken;

@@ -6,6 +6,10 @@ mat-label {
   padding: 20px;
 }
 
+.profile-title {
+  padding-bottom: 10px;
+}
+
 .user-profile-form {
   font-weight: 100;
 }

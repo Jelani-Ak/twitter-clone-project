@@ -22,7 +22,7 @@ export class EditProfileComponent implements OnInit {
     return this.storageService.getUser();
   }
 
-  // Properties must be kept in the same order as the user model
+  // Properties must be kept in the same order as listed in the User.ts model
   public profileForm: FormGroup = this.formBuilder.group({
     username: ['', [Validators.required]],
     password: ['', []],
@@ -64,14 +64,7 @@ export class EditProfileComponent implements OnInit {
       });
 
       dialogRef.afterClosed().subscribe((data: string) => {
-        if (data == 'no') {
-          return;
-        }
-
-        if (data == 'yes') {
-          this.setProfile();
-        }
-        
+        (data === 'yes') ? this.setProfile() : null;
         this.closeDialog();
       });
     } else {
@@ -86,8 +79,6 @@ export class EditProfileComponent implements OnInit {
   }
 
   public setProfile() {
-    console.log('Request made!');
-
     const userProfile: UserProfileDTO = {
       userId: this.currentUser.id,
       username: this.profileForm.value.username,
@@ -125,21 +116,18 @@ export class EditProfileComponent implements OnInit {
       next: (user) => {
         let j = 0;
 
-        Object.entries(user).some(([], i) => {
-          const userKey = Object.keys(user)[i];
-          const profileFormKey = Object.keys(this.profileForm.value)[j];
-          if (userKey == 'password' || profileFormKey == 'password') {
+        Object.keys(user).forEach((userProperty) => {
+          const profileFormProperty = Object.keys(this.profileForm.value)[j];
+          if (userProperty == 'password' || profileFormProperty == 'password') {
             j++;
             return;
           }
 
-          if (userKey != profileFormKey) {
+          if (userProperty != profileFormProperty) {
             return;
           }
 
-          this.profileForm
-            .get(profileFormKey)
-            ?.setValue(Object.values(user)[++j]);
+          this.profileForm.get(profileFormProperty)?.setValue(Object.values(user)[++j]);
         });
       },
       complete: () => {

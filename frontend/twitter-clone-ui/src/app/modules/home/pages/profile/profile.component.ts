@@ -54,24 +54,30 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((queryParams: Params) => {
       this.userService.findByUserId(queryParams['userId']).subscribe({
         next: (user) => {
+          // User
           this.user = user;
+
+          // Setup tweets and retweets
           this.tweetsAndRetweets = user.tweets;
 
           // Setup tweets and commments then sort by newest
-          this.tweetsAndComments = [...user.tweets, ...user.comments];
-          this.tweetsAndComments.sort((a, b) => {
-            const dateA = new Date(a.dateOfCreation);
-            const dateB = new Date(b.dateOfCreation);
+          this.tweetsAndComments = [...user.tweets, ...user.comments].sort(
+            (a: any, b: any) => {
+              const dateA = new Date(a.dateOfCreation);
+              const dateB = new Date(b.dateOfCreation);
 
-            return dateA.getTime() - dateB.getTime();
-          });
+              return dateA.getTime() - dateB.getTime();
+            }
+          );
 
           // Setup tweets and comments with media
-          this.tweetsAndCommentsWithMedia = [...user.tweets, ...user.comments];
-          this.tweetsAndCommentsWithMedia =
-            this.tweetsAndCommentsWithMedia.filter((element) => element.media);
+          this.tweetsAndCommentsWithMedia = [
+            ...user.tweets,
+            ...user.comments,
+          ].filter((tweetOrComment: any) => tweetOrComment.media);
 
           // TODO: Include comments
+          // Setup liked tweets and comments
           this.likedTweetsAndComments = user.likedTweets;
         },
         complete: () => {

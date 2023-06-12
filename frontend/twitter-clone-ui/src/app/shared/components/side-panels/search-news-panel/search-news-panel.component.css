@@ -4,26 +4,22 @@
 
 .search-form {
   width: 100%;
+  margin-bottom: -1.36em;
 }
 
-/* NOTE: */
+/* NOTE: This is the search form */
 ::ng-deep .mdc-text-field {
   border-radius: 0 !important;
 }
 
-/* ::ng-deep .mat-mdc-form-field {
-  width: 100%;
-} */
-
 .container {
   color: white;
-  background-color: #673ab7;
-  border: #673ab7 solid 3px;
+  background-color: var(--primary-colour);
   padding: 10px;
   margin-bottom: 10px;
   font-weight: 100;
   font-size: 15px;
-  height: 254px;
+  height: 260px;
 }
 
 .container:last-child {

@@ -24,7 +24,6 @@
 .date {
   display: flex;
   padding-right: 5px;
-  align-items: flex-end;
 }
 
 .comment-media-container {

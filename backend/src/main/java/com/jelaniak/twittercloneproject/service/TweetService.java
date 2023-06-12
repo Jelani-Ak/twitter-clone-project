@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.cloudinary.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.jelaniak.twittercloneproject.utils.Helper.getTimeNow;
 
@@ -49,18 +52,7 @@ public class TweetService {
         String createMessage = "Create Tweet";
         JSONObject tweetJSONObject = new JSONObject(tweetJSON);
 
-        tweet.setTweetId(new ObjectId());
-        tweet.setUserId(new ObjectId(tweetJSONObject.get("userId").toString()));
-        String content = tweetJSONObject.has("content")
-                ? tweetJSONObject.get("content").toString()
-                : null;
-        tweet.setContent(content);
-        tweet.setDateOfCreation(LocalDateTime.now());
-        tweet.setComments(new HashSet<>());
-        tweet.setRetweetCount(0);
-        tweet.setCommentCount(0);
-        tweet.setLikeCount(0);
-        tweet.setTweetType(TweetType.valueOf(tweetJSONObject.get("tweetType").toString()));
+        setTweetProperties(tweet, tweetJSONObject);
 
         boolean hasMedia = file != null;
         if (hasMedia) {
@@ -81,8 +73,23 @@ public class TweetService {
         return tweetRepository.save(tweet);
     }
 
+    private void setTweetProperties(Tweet tweet, JSONObject tweetJSONObject) {
+        tweet.setTweetId(new ObjectId());
+        tweet.setUserId(new ObjectId(tweetJSONObject.get("userId").toString()));
+        String content = tweetJSONObject.has("content")
+                ? tweetJSONObject.get("content").toString()
+                : null;
+        tweet.setContent(content);
+        tweet.setDateOfCreation(LocalDateTime.now());
+        tweet.setComments(new HashSet<>());
+        tweet.setRetweetCount(0);
+        tweet.setCommentCount(0);
+        tweet.setLikeCount(0);
+        tweet.setTweetType(TweetType.valueOf(tweetJSONObject.get("tweetType").toString()));
+    }
+
     public Comment createComment(String commentJSON, MultipartFile file)
-    throws IOException, UserNotFoundException, TweetNotFoundException {
+            throws IOException, UserNotFoundException, TweetNotFoundException {
         double startTimer = System.nanoTime();
         Comment comment = new Comment();
         String createMessage = "Create Comment";
@@ -90,18 +97,7 @@ public class TweetService {
 
         Tweet tweet = findByTweetId(new ObjectId(commentJSONObject.get("parentTweetId").toString()));
 
-        comment.setCommentId(new ObjectId());
-        comment.setParentTweetId(tweet.getTweetId());
-        comment.setUserId(new ObjectId(commentJSONObject.get("userId").toString()));
-        String content = commentJSONObject.has("content")
-                ? commentJSONObject.get("content").toString()
-                : null;
-        comment.setContent(content);
-        comment.setDateOfCreation(LocalDateTime.now());
-        comment.setCommentCount(0);
-        comment.setRetweetCount(0);
-        comment.setLikeCount(0);
-        comment.setTweetType(TweetType.valueOf(commentJSONObject.get("tweetType").toString()));
+        setCommentProperties(comment, commentJSONObject);
 
         boolean hasMedia = file != null;
         if (hasMedia) {
@@ -126,8 +122,109 @@ public class TweetService {
         return commentRepository.save(comment);
     }
 
+    private void setCommentProperties(Comment comment, JSONObject commentJSONObject) {
+        comment.setCommentId(new ObjectId());
+        comment.setParentTweetId(new ObjectId(commentJSONObject.get("parentTweetId").toString()));
+        comment.setUserId(new ObjectId(commentJSONObject.get("userId").toString()));
+        String content = commentJSONObject.has("content")
+                ? commentJSONObject.get("content").toString()
+                : null;
+        comment.setContent(content);
+        comment.setDateOfCreation(LocalDateTime.now());
+        comment.setCommentCount(0);
+        comment.setRetweetCount(0);
+        comment.setLikeCount(0);
+        comment.setTweetType(TweetType.valueOf(commentJSONObject.get("tweetType").toString()));
+    }
+
+    public void deleteTweet(TweetDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
+        double startTimer = System.nanoTime();
+
+        Tweet tweet = findByTweetId(data.getTweetId());
+        deleteAssociatedComments(tweet.getComments());
+
+        User user = userService.findByUserId(data.getUserId());
+        user.getTweets().removeIf(t -> t.getTweetId().equals(data.getTweetId()));
+        user.setTweetCount(user.getTweets().size());
+        userService.saveUser(user);
+        deleteMediaIfPresent(tweet.getMedia());
+
+        tweetRepository.deleteById(data.getTweetId());
+
+        double endTimer = System.nanoTime();
+        double secondsTaken = ((endTimer - startTimer) / 1_000_000_000);
+        log.info(getTimeNow() + "Delete Tweet: Request completed in: " + secondsTaken + " seconds");
+    }
+
+    public void deleteComment(DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
+        double startTimer = System.nanoTime();
+
+        Tweet tweet = findByTweetId(data.getParentTweetId());
+        Comment comment = findCommentById(tweet.getComments(), data.getCommentId());
+
+        deleteMediaIfPresent(comment.getMedia());
+
+        tweet.getComments().removeIf(tweetComment -> tweetComment.getCommentId().equals(data.getCommentId()));
+        tweet.setCommentCount(tweet.getComments().size());
+        tweetRepository.save(tweet);
+
+        User user = userService.findByUserId(data.getUserId());
+        user.getComments().removeIf(userComment -> userComment.getCommentId().equals(data.getCommentId()));
+        user.setCommentCount(user.getComments().size());
+        userService.saveUser(user);
+
+        commentRepository.deleteById(data.getCommentId());
+
+        double endTimer = System.nanoTime();
+        double secondsTaken = ((endTimer - startTimer) / 1_000_000_000);
+        log.info(getTimeNow() + "Delete Tweet: Request completed in: " + secondsTaken + " seconds");
+    }
+
+    private void deleteAssociatedComments(Set<Comment> comments) throws UserNotFoundException, IOException {
+        for (Comment comment : comments) {
+            User user = userService.findByUserId(comment.getUserId());
+
+            Comment commentStoredInUser = user.getComments().stream()
+                    .filter(commentIndex -> commentIndex.getCommentId().equals(comment.getCommentId()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Comment not found in user's comments"));
+
+            deleteMediaIfPresent(comment.getMedia());
+
+            user.getComments().remove(commentStoredInUser);
+            user.setCommentCount(user.getComments().size());
+            userService.saveUser(user);
+
+            log.info(getTimeNow() + "Removed comment by '" + user.getUsername() + "', ID: '" + comment.getCommentId() + "'");
+        }
+    }
+
+    private void deleteMediaIfPresent(Media media) throws IOException {
+        if (media != null) {
+            mediaService.deleteMedia(media);
+            log.info(getTimeNow() + "Removed Media");
+        }
+    }
+
+    private Comment findCommentById(Set<Comment> comments, ObjectId commentId) {
+        return comments.stream()
+                .filter(c -> c.getCommentId().equals(commentId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
+    }
+
     public List<Tweet> findAllTweets() {
         List<Tweet> tweets = tweetRepository.findAll();
+        return tweets;
+    }
+
+    // TODO: 05/01/2023 - Create another similar function that returns a Tweet[] pageable:
+    //  - belonging to the current logged in user
+    //  - belonging to a user's profile
+    //  - a concatenation of followed users
+    // This returns every single tweet in the repository as a pageable
+    public Page<Tweet> findAllTweetsAsPageable(Pageable pageable) {
+        Page<Tweet> tweets = tweetRepository.findAll(pageable);
         return tweets;
     }
 
@@ -143,105 +240,6 @@ public class TweetService {
         return comment;
     }
 
-    public void deleteTweet(TweetDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
-        double startTimer = System.nanoTime();
-
-        // Remove associated comments and their media if present
-        Tweet tweet = findByTweetId(data.getTweetId());
-        tweet.getComments().forEach(comment -> {
-            try {
-                User user = userService.findByUserId(comment.getUserId());
-
-                Comment commentStoredInUser = user.getComments().stream().filter(commentIndex ->
-                        commentIndex.getCommentId().equals(comment.getCommentId())
-                ).toList().get(0);
-
-                boolean hasMedia = comment.getMedia() != null;
-                if (hasMedia) {
-                    mediaService.deleteMedia(comment.getMedia());
-                    log.info(getTimeNow() + "Removed Media from comment");
-                }
-
-                user.getComments().remove(commentStoredInUser);
-                commentRepository.delete(comment);
-                user.setCommentCount(user.getComments().size());
-                userService.saveUser(user);
-
-                log.info(getTimeNow() + "Removed comment by '" + user.getUsername() + "', ID: '" + comment.getCommentId() + "'");
-            } catch (UserNotFoundException | IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        // Remove the tweet stored in the user, and the original tweet and media if present
-        User user = userService.findByUserId(data.getUserId());
-
-        Tweet tweetStoredInUser = user.getTweets().stream().filter(tweetIndex ->
-                tweetIndex.getTweetId().equals(tweet.getTweetId())
-        ).toList().get(0);
-
-        boolean hasMedia = tweet.getMedia() != null;
-        if (hasMedia) {
-            log.info(getTimeNow() + "Removed Media from Tweet");
-            mediaService.deleteMedia(tweet.getMedia());
-        }
-
-        user.getTweets().remove(tweetStoredInUser);
-        user.setTweetCount(user.getTweets().size());
-        userService.saveUser(user);
-        tweetRepository.deleteById(data.getTweetId());
-
-        log.info(getTimeNow() + "Removed tweet by '" + user.getUsername() + "', ID: '" + tweet.getTweetId() + "'");
-
-        double endTimer = System.nanoTime();
-        double secondsTaken = ((endTimer - startTimer) / 1_000_000_000);
-        log.info(getTimeNow() + "Delete Tweet: Request completed in: " + secondsTaken + " seconds");
-    }
-
-    public void deleteComment(DeleteCommentDTO data) throws TweetNotFoundException, UserNotFoundException, IOException {
-        double startTimer = System.nanoTime();
-
-        // Remove comment from tweet
-        Tweet tweet = findByTweetId(data.getParentTweetId());
-
-        Comment commentStoredInTweet = tweet.getComments().stream().filter(commentIndex ->
-                commentIndex.getCommentId().equals(data.getCommentId())
-        ).toList().get(0);
-
-        boolean commentInTweetHasMedia = commentStoredInTweet.getMedia() != null;
-        if (commentInTweetHasMedia) {
-            mediaService.deleteMedia(commentStoredInTweet.getMedia());
-            log.info(getTimeNow() + "Removed Media from comment");
-        }
-
-        tweet.getComments().remove(commentStoredInTweet);
-        tweet.setCommentCount(tweet.getComments().size());
-        tweetRepository.save(tweet);
-
-        // Remove comment from user
-        User user = userService.findByUserId(data.getUserId());
-
-        Comment commentStoredInUser = user.getComments().stream().filter(commentIndex ->
-                commentIndex.getCommentId().equals(data.getCommentId())
-        ).toList().get(0);
-
-        boolean commentStoredInUserHasMedia = commentStoredInUser.getMedia() != null;
-        if (commentStoredInUserHasMedia) {
-            mediaService.deleteMedia(commentStoredInUser.getMedia());
-            log.info(getTimeNow() + "Removed Media from comment");
-        }
-
-        user.getComments().remove(commentStoredInUser);
-        user.setCommentCount(user.getComments().size());
-        commentRepository.deleteById(data.getCommentId());
-        userService.saveUser(user);
-
-        log.info(getTimeNow() + "Removed comment by '" + user.getUsername() + "', ID: '" + data.getCommentId() + "'");
-
-        double endTimer = System.nanoTime();
-        double secondsTaken = ((endTimer - startTimer) / 1_000_000_000);
-        log.info(getTimeNow() + "Delete Tweet: Request completed in: " + secondsTaken + " seconds");
-    }
 
     public void likeTweet(TweetDTO data) throws TweetNotFoundException, UserNotFoundException {
         Tweet tweet = findByTweetId(data.getTweetId());
@@ -250,21 +248,19 @@ public class TweetService {
         boolean alreadyLiked = user.getLikedTweets().contains(tweet);
         if (alreadyLiked) {
             tweet.setLikeCount(tweet.getLikeCount() - 1);
-            tweetRepository.save(tweet);
-
-            Tweet likedTweet = user.getLikedTweets().stream().filter(likedTweetIndex ->
-                    likedTweetIndex.getTweetId().equals(data.getTweetId())
-            ).toList().get(0);
+            Tweet likedTweet = user.getLikedTweets().stream()
+                    .filter(likedTweetIndex -> likedTweetIndex.getTweetId().equals(data.getTweetId()))
+                    .findFirst()
+                    .orElseThrow(() -> new TweetNotFoundException("Liked tweet not found"));
 
             user.getLikedTweets().remove(likedTweet);
-            userService.saveUser(user);
         } else {
             tweet.setLikeCount(tweet.getLikeCount() + 1);
-            tweetRepository.save(tweet);
-
             user.getLikedTweets().add(tweet);
-            userService.saveUser(user);
         }
+
+        tweetRepository.save(tweet);
+        userService.saveUser(user);
     }
 
     public void likeComment(CommentDTO data) throws UserNotFoundException, CommentNotFoundException {
@@ -274,16 +270,13 @@ public class TweetService {
         boolean alreadyLiked = user.getLikedComments().contains(comment);
         if (alreadyLiked) {
             comment.setLikeCount(comment.getLikeCount() - 1);
-            commentRepository.save(comment);
-
             user.getLikedComments().remove(comment);
-            userService.saveUser(user);
         } else {
             comment.setLikeCount(comment.getLikeCount() + 1);
-            commentRepository.save(comment);
-
             user.getLikedComments().add(comment);
-            userService.saveUser(user);
         }
+
+        commentRepository.save(comment);
+        userService.saveUser(user);
     }
 }

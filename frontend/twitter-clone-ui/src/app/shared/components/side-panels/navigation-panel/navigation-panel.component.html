@@ -49,7 +49,7 @@
 
   <!-- Tweet -->
   <app-navigation-button
-    *ngIf="shouldShowButton()"
+    *ngIf="shouldShowButton() || isWithinView"
     class="create-tweet-button"
     icon="reply"
     text="Tweet">

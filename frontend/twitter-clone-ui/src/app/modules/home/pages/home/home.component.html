@@ -2,21 +2,20 @@
   <div class="title-container">
     <p class="page-title">Home</p>
   </div>
+  
+  <!-- NOTE: Autosize is experimental and may not work properly -->
+  <cdk-virtual-scroll-viewport class="timeline" autosize #scrollContainer (scroll)="onScroll()">
+    <div class="compose-tweet-container">
+      <app-compose-tweet #composeTweet></app-compose-tweet>
+    </div>
 
-  <div class="compose-tweet-container">
-    <app-compose-tweet></app-compose-tweet>
-  </div>
-
-  <!-- TODO: Decide between virtual scrolling or infinite scrolling or combine both? -->
-  <div class="all-tweets-container">
-    <cdk-virtual-scroll-viewport itemSize="50" class="all-tweets-viewport">
-      <!-- <div class="tweet-container" *ngFor="let tweet of tweetService.tweets">
-        <app-tweet [tweet]="tweet"></app-tweet>
-      </div> -->
-      
+    <div class="all-tweets-container">      
       <div class="tweet-container" *cdkVirtualFor="let tweet of tweetService.tweets">
         <app-tweet [tweet]="tweet"></app-tweet>
+        <div class="spinner-container">
+          <mat-spinner class="spinner" *ngIf="loading"></mat-spinner>
+        </div>
       </div>
-    </cdk-virtual-scroll-viewport>    
-  </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
 </div>

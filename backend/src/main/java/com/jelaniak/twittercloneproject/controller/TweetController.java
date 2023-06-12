@@ -7,6 +7,9 @@ import com.jelaniak.twittercloneproject.model.Tweet;
 import com.jelaniak.twittercloneproject.service.TweetService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +53,14 @@ public class TweetController {
     public ResponseEntity<Tweet> getTweetById(
             @PathVariable ObjectId tweetId) throws Exception {
         return new ResponseEntity<>(tweetService.findByTweetId(tweetId), HttpStatus.ACCEPTED);
+    }
+
+    @RequestMapping(
+            value = "/get-pageable-tweet",
+            method = RequestMethod.GET)
+    public Page<Tweet> getTweetsAsPageable(@RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return tweetService.findAllTweetsAsPageable(pageable);
     }
 
     @RequestMapping(

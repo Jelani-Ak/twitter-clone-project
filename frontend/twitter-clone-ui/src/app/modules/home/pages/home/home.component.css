@@ -6,9 +6,13 @@
   margin-bottom: 10px;
 }
 
-.all-tweets-viewport {
-  height: 100vh;
+.timeline {
+  height: 781px;
   width: 100%;
-  margin: 0;
-  padding: 0;
+}
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

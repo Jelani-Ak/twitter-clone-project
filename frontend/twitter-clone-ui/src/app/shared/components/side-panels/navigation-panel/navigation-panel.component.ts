@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { UtilityService } from 'src/app/core/services/utility/utility.service';
 
 @Component({
   selector: 'app-navigation-panel',
@@ -7,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./navigation-panel.component.css'],
 })
 export class NavigationPanelComponent {
-  constructor(public router: Router) {}
+  public get isWithinView(): boolean {
+    return this.utilityService.isWithinView;
+  }
+
+  constructor(public router: Router, public utilityService: UtilityService) {}
 
   public shouldShowButton() {
-    if (this.router.url !== '/home') {
-      return true;
-    }
-
-    return false;
+    return this.router.url !== '/home' ? true : false;
   }
 }

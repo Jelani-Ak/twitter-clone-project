@@ -22,6 +22,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ScrollingModule as ExperimentalScrollingModule } from '@angular/cdk-experimental/scrolling';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/components/header/header.component';
@@ -93,7 +94,8 @@ import { EditProfileComponent } from './shared/components/dialog/edit-profile/ed
     MatOptionModule,
     MatSelectModule,
     MatTabsModule,
-    ScrollingModule
+    ScrollingModule,
+    ExperimentalScrollingModule,
   ],
   providers: [
     { provide: MAT_DIALOG_DATA, useValue: {} },

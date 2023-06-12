@@ -4,6 +4,5 @@ public enum TweetType {
     Tweet,
     Retweet,
     Media,
-    Liked,
     Comment
 }

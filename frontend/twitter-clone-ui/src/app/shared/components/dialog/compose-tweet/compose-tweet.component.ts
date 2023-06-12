@@ -65,11 +65,10 @@ export class ComposeTweetComponent implements OnInit {
 
   // Prepare the HTML template reply information
   private initialiseTweetAuthor() {
-    const creatingComment = this.data.dialogOpen;
-    if (creatingComment) {
-      const userId = this.data.tweet.userId;
-
-      this.userService.findByUserId(userId).subscribe({
+    const creatingAComment =
+      this.data.tweetType == TweetType.COMMENT && this.data.dialogOpen;
+    if (creatingAComment) {
+      this.userService.findByUserId(this.data.tweet.userId).subscribe({
         next: (user) => {
           this.tweetAuthor = user;
         },
@@ -95,13 +94,6 @@ export class ComposeTweetComponent implements OnInit {
 
   public create(input: any) {
     try {
-      const hasNoMedia = this.selectedFile == null;
-      if (hasNoMedia) {
-        console.log(`Creating ${this.tweet.tweetType}..`);
-      } else {
-        console.log(`Creating ${this.tweet.tweetType} with Media..`);
-      }
-
       const data: CreateTweetDTO = {
         tweet: this.tweet,
         file: this.selectedFile,
@@ -145,14 +137,16 @@ export class ComposeTweetComponent implements OnInit {
   }
 
   private createTweet(data: CreateTweetDTO) {
-    const tweet = this.tweet instanceof Tweet;
-    if (tweet) {
+    this.selectedFile == null
+      ? console.log(`Creating ${this.tweet.tweetType}..`)
+      : console.log(`Creating ${this.tweet.tweetType} with Media..`);
+
+    if (this.tweet instanceof Tweet) {
       this.createTweetFromRemote(data);
       return;
     }
 
-    const comment = this.tweet instanceof Comment;
-    if (comment) {
+    if (this.tweet instanceof Comment) {
       this.createCommentFromRemote(data);
       return;
     }
